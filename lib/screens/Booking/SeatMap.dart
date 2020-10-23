@@ -198,8 +198,7 @@ class _SeatMapState extends State<SeatMap> {
 
   @override
   Widget build(BuildContext context) {
-    if (ConstantVar.jwt != "") {
-      return ( seats != null ?
+    return  ConstantVar.jwt != "" ? ( seats != null ?
     MainLayOut.getMailLayout(
         context,
         Container(
@@ -318,9 +317,6 @@ class _SeatMapState extends State<SeatMap> {
           ),
         ),
         "USER",
-        "Choose Seat") : Loading(type: "USER", title: "Choose seat"));
-    } else {
-      return LoginScreen(handel: "");
-    }
+        "Choose Seat") : Loading(type: "USER", title: "Choose seat")) : LoginScreen(handel: "");
   }
 }

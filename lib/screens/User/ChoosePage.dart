@@ -19,8 +19,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:firebase_storage/firebase_storage.dart'; // For File Upload To Firestore
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+
 
 class ChoosePageScreen extends StatefulWidget {
   @override
@@ -28,14 +29,13 @@ class ChoosePageScreen extends StatefulWidget {
 }
 
 class _ChoosePageScreen extends State<ChoosePageScreen> {
+
   Widget _signInBtn() {
     return ButtonGradientLarge(
         StringConstant.SIGN_IN,
         () => {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => LoginScreen(handel: "")))
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => LoginScreen(handel: "")))
             });
   }
 
@@ -43,48 +43,43 @@ class _ChoosePageScreen extends State<ChoosePageScreen> {
     return ButtonGradientLarge(
         StringConstant.SIGN_UP,
         () => {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => SignUpScreen(
-                            jwt: "",
-                          )))
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SignUpScreen(jwt: "",)))
             });
   }
 
   @override
-  void initState() {
-    UserDetail.fetchUserDetail(ConstantVar.jwt)
-        .then((value) => setState(() {}));
+  void initState(){
+    UserDetail.fetchUserDetail(ConstantVar.jwt).then((value) => setState((){
+    }));
   }
 
   @override
   Widget build(BuildContext context) {
-    return ConstantVar.jwt == ""
-        ? MainLayOut.getMailLayout(
-            context,
-            Container(
-                color: ColorConstant.VIOLET,
-                padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 20.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Image.asset(ImageConstant.LOGO1, height: 270),
-                    Text(
-                      "NOT LOGIN",
-                      textScaleFactor: 1.5,
-                      style: StyleConstant.normalTextStyle,
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    _signInBtn(),
-                    _signUpBtn(),
-                  ],
-                )),
-            "USER",
-            "Choose Page")
-        : ChooseProfile();
+    DynamicLinkService().handleDynamicLinks();
+    return ConstantVar.jwt == "" ?MainLayOut.getMailLayout(
+        context,
+         Container(
+            color: ColorConstant.VIOLET,
+            padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Image.asset(ImageConstant.LOGO1, height: 270),
+                Text(
+                  "NOT LOGIN",
+                  textScaleFactor: 1.5,
+                  style: StyleConstant.normalTextStyle,
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                _signInBtn(),
+                _signUpBtn(),
+              ],
+            )
+         ),
+        "USER", "Choose Page"): ChooseProfile();
   }
 }

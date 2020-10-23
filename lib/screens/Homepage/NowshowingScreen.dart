@@ -8,6 +8,7 @@ import 'package:bymyeyefe/screens/News/News.dart';
 import 'package:bymyeyefe/screens/User/ResetPassword.dart';
 import 'package:bymyeyefe/screens/User/SignUpScreen.dart';
 import 'package:bymyeyefe/services/dynamic_link_service.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:bymyeyefe/constant/ColorConstant.dart';
@@ -37,47 +38,47 @@ class _NowshowingScreen extends State<NowshowingScreen> {
     });
   }
 
-//  Future handleDynamicLinks() async {
-//    // Get the initial dynamic link if the app is opened with a dynamic link
-//    final PendingDynamicLinkData data =
-//        await FirebaseDynamicLinks.instance.getInitialLink();
-//
-//    // handle link that has been retrieved
-//    _handleDeepLink(data);
-//
-//    // Register a link callback to fire if the app is opened up from the background
-//    // using a dynamic link.
-//    FirebaseDynamicLinks.instance.onLink(
-//        onSuccess: (PendingDynamicLinkData dynamicLink) async {
-//      // handle link that has been retrieved
-//      _handleDeepLink(dynamicLink);
-//    }, onError: (OnLinkErrorException e) async {
-//      print('Link Failed: ${e.message}');
-//    });
-//  }
-//
-//  void _handleDeepLink(PendingDynamicLinkData data) {
-//    final Uri deepLink = data?.link;
-//    if (deepLink != null) {
-//      print('_handleDeepLink | deeplink: $deepLink');
-//      print(deepLink.queryParameters);
-//      String token = deepLink.queryParameters.values.toList()[0];
-//      print(token + " token");
-//      if (deepLink.path.contains('register')) {
-//        print(token + " token");
-//        ConstantVar.registerToken = token;
-//      } else {
-//        print(token + " reset token");
-//
-//        ConstantVar.resetPassWordToken = token;
-//      }
-//      setState(() {});
-//    }
-//  }
+  Future handleDynamicLinks() async {
+    // Get the initial dynamic link if the app is opened with a dynamic link
+    final PendingDynamicLinkData data =
+        await FirebaseDynamicLinks.instance.getInitialLink();
+
+    // handle link that has been retrieved
+    _handleDeepLink(data);
+
+    // Register a link callback to fire if the app is opened up from the background
+    // using a dynamic link.
+    FirebaseDynamicLinks.instance.onLink(
+        onSuccess: (PendingDynamicLinkData dynamicLink) async {
+      // handle link that has been retrieved
+      _handleDeepLink(dynamicLink);
+    }, onError: (OnLinkErrorException e) async {
+      print('Link Failed: ${e.message}');
+    });
+  }
+
+  void _handleDeepLink(PendingDynamicLinkData data) {
+    final Uri deepLink = data?.link;
+    if (deepLink != null) {
+      print('_handleDeepLink | deeplink: $deepLink');
+      print(deepLink.queryParameters);
+      String token = deepLink.queryParameters.values.toList()[0];
+      print(token + " token");
+      if (deepLink.path.contains('register')) {
+        print(token + " token");
+        ConstantVar.registerToken = token;
+      } else {
+        print(token + " reset token");
+
+        ConstantVar.resetPassWordToken = token;
+      }
+      setState(() {});
+    }
+  }
 
   @override
   void initState() {
-//    handleDynamicLinks();
+    handleDynamicLinks();
     print(ConstantVar.registerToken + " token");
     String url = UrlConstant.URL_FILM + 'now-showing';
     {

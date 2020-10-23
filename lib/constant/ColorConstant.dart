@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class ColorConstant{
   static const Color RED = Color(0xFFCA3E3D);
   static const Color YELLOW = Color(0xFFE2E096);

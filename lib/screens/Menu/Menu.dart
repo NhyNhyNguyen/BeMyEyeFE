@@ -44,8 +44,7 @@ class _MenuState extends State<Menu> {
                       decoration: BoxDecoration(
                           shape: BoxShape.rectangle,
                           image: DecorationImage(
-                            image: NetworkImage(UrlConstant.IMAGE +
-                                "photo1528790532372-1528790532372684051980-15889023877795083171.jpg"),
+                            image: AssetImage(ImageConstant.BG),
                             fit: BoxFit.cover,
                           ),
                           borderRadius: BorderRadius.only(
@@ -66,12 +65,7 @@ class _MenuState extends State<Menu> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
-                          image: (ConstantVar.userDetail == null)
-                              ? AssetImage(ImageConstant.LOGO1)
-                              : ConstantVar.userDetail.avt != null
-                              ? NetworkImage(UrlConstant.IMAGE +
-                              ConstantVar.userDetail.avt)
-                              : AssetImage(ImageConstant.LOGO1),
+                          image: AssetImage(ImageConstant.LOGO1),
                           fit: BoxFit.cover,
                         ),
                         // border: Border.all(color: Colors.white70, width: 4),
@@ -128,8 +122,8 @@ class _MenuState extends State<Menu> {
                     },
                   ),
                   MenuItem(
-                    text: StringConstant.HISTORY,
-                    icon: Icons.history,
+                    text: StringConstant.ADD_FACE,
+                    icon: Icons.add_to_photos,
                     selectHandle: () => {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => History()))

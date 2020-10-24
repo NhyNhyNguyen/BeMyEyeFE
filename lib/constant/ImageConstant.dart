@@ -1,5 +1,6 @@
 class ImageConstant{
   static const LOGO = "assets/logo.png";
+  static const BG = "assets/background1.png";
   static const LOGO1 = "assets/logo1.png";
   static const BOTTOM_LOGIN_BACKGROUND = "assets/background1.jpg";
   static const CALENDAR_GRAY = "assets/carlendar_gray.png";
@@ -10,7 +11,7 @@ class ImageConstant{
   static const HOME_YELLOW = "assets/icon_home_yellow.png";
   static const PERSON_GRAY = "assets/icon_person_gray.png";
   static const PERSON_YELLOW = "assets/icon_person_yellow.png";
-  static const TICKET = "assets/ticket.png";
+  static const TICKET = "assets/logo1.png";
 
   static const TICKET_PRICE = "assets/giave.jpg";
   static const NEWS1 = "assets/n1.PNG";

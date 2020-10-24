@@ -16,6 +16,7 @@ import 'package:bymyeyefe/screens/User/TextfieldWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import '../../main.dart';
 import '../../modal.dart';
 import '../ButtonGradientLarge.dart';
 import 'DetailScreen.dart';
@@ -32,7 +33,6 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final String handle;
-
 
   bool isLoading = true;
   bool _rememberMe = false;
@@ -56,8 +56,8 @@ class _LoginScreenState extends State<LoginScreen> {
         padding: EdgeInsets.only(right: 0.0),
         onPressed: () => {
           print('reset pass'),
-        Navigator.push(
-        context, MaterialPageRoute(builder: (context) => ResetPassScreen()))
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => ResetPassScreen()))
         },
         child: Text(
           StringConstant.FORGOT_PASS,
@@ -105,49 +105,50 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<User> login(
       BuildContext context, String username, String password) async {
-    http.Response response = await http.post(
-      UrlConstant.LOGIN,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'username': username,
-        'password': password,
-      }),
-    );
-
-    if (response.statusCode == 200) {
-      ConstantVar.jwt = json.decode(response.body)["token"];
-      print(response.body);
-//      Modal.showSimpleCustomDialog(
-//          context,
-//          "Login successfull!",
-//          onPressedLoginSuccess);
-      onPressedLoginSuccess(context);
-      return User.fromJson(json.decode(response.body));
-    } else {
-      //show popup
-      print("show popup");
-//      Modal.showSimpleCustomDialog(
-//          context,
-//          "Login fail",
-//          onPressedLoginFail);
-      onPressedLoginFail(context);
-      return null;
-    }
+//    http.Response response = await http.post(
+//      UrlConstant.LOGIN,
+//      headers: <String, String>{
+//        'Content-Type': 'application/json; charset=UTF-8',
+//      },
+//      body: jsonEncode(<String, String>{
+//        'username': username,
+//        'password': password,
+//      }),
+//    );
+//
+//    if (response.statusCode == 200) {
+//      ConstantVar.jwt = json.decode(response.body)["token"];
+//      print(response.body);
+////      Modal.showSimpleCustomDialog(
+////          context,
+////          "Login successfull!",
+////          onPressedLoginSuccess);
+//      onPressedLoginSuccess(context);
+//      return User.fromJson(json.decode(response.body));
+//    } else {
+//      //show popup
+//      print("show popup");
+////      Modal.showSimpleCustomDialog(
+////          context,
+////          "Login fail",
+////          onPressedLoginFail);
+//      onPressedLoginFail(context);
+//      return null;
+//    }
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => MyHomePage()));
+    ConstantVar.jwt = "token";
   }
 
   void onPressedLoginSuccess(BuildContext context) {
     UserDetail.fetchUserDetail(ConstantVar.jwt);
-    if(handle == "LOGIN"){
+    if (handle == "LOGIN") {
       print('redirect');
       Modal.showSimpleCustomDialog(context, "Login successfull!", "DETAIL");
-    }else{
+    } else {
       print('');
-      Modal.showSimpleCustomDialog(context, "Login successfull!",
-          "");
+      Modal.showSimpleCustomDialog(context, "Login successfull!", "");
     }
-
   }
 
   void onPressedLoginFail(BuildContext context) {
@@ -157,8 +158,8 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _signInBtn() {
     return GestureDetector(
       onTap: () => {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => SignUpScreen(jwt: "")))
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => SignUpScreen(jwt: "")))
       },
       child: RichText(
         text: TextSpan(children: [
@@ -180,74 +181,77 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     usernameController.text = "nhinhi";
     passController.text = "fun123";
-    return ConstantVar.jwt == ""  ? MainLayOut.getMailLayout(
-        context,
-        Container(
-          color: ColorConstant.VIOLET,
-          width: double.infinity,
-          height: double.infinity,
-          child: SingleChildScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
-            padding: EdgeInsets.symmetric(horizontal: 25, vertical: 60.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Text("Sign your account",
-                    style: StyleConstant.headerTextStyle),
-                SizedBox(
-                  height: 13,
-                ),
-                Container(
-                    padding:
-                    EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-                    decoration: BoxDecoration(
-                        color: ColorConstant.LIGHT_VIOLET,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black12,
-                              offset: Offset(0, 15),
-                              blurRadius: 15),
-                          BoxShadow(
-                              color: Colors.black12,
-                              offset: Offset(0, -10),
-                              blurRadius: 10)
-                        ]),
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        children: <Widget>[
-                          TextFieldWidget.buildTextField(
-                              StringConstant.USERNAME,
-                              StringConstant.USERNAME_HINT,
-                              Icon(Icons.mail, color: Colors.white),
-                              TextInputType.emailAddress,
-                              usernameController),
-                          SizedBox(
-                            height: 15,
+    return ConstantVar.jwt == ""
+        ? MainLayOut.getMailLayout(
+            context,
+            Container(
+              color: ColorConstant.VIOLET,
+              width: double.infinity,
+              height: double.infinity,
+              child: SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                padding: EdgeInsets.symmetric(horizontal: 25, vertical: 60.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Text("Sign your account",
+                        style: StyleConstant.headerTextStyle),
+                    SizedBox(
+                      height: 13,
+                    ),
+                    Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 20.0),
+                        decoration: BoxDecoration(
+                            color: ColorConstant.LIGHT_VIOLET,
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.black12,
+                                  offset: Offset(0, 15),
+                                  blurRadius: 15),
+                              BoxShadow(
+                                  color: Colors.black12,
+                                  offset: Offset(0, -10),
+                                  blurRadius: 10)
+                            ]),
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            children: <Widget>[
+                              TextFieldWidget.buildTextField(
+                                  StringConstant.USERNAME,
+                                  StringConstant.USERNAME_HINT,
+                                  Icon(Icons.mail, color: Colors.white),
+                                  TextInputType.emailAddress,
+                                  usernameController),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              TextFieldWidget.buildTextField(
+                                  StringConstant.PASSWORD,
+                                  StringConstant.PASSWORD_HINT,
+                                  Icon(Icons.lock, color: Colors.white),
+                                  TextInputType.visiblePassword,
+                                  passController),
+                              _forgetPassAndRememberMe(context),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              _loginBtn(context),
+                            ],
                           ),
-                          TextFieldWidget.buildTextField(
-                              StringConstant.PASSWORD,
-                              StringConstant.PASSWORD_HINT,
-                              Icon(Icons.lock, color: Colors.white),
-                              TextInputType.visiblePassword,
-                              passController),
-                          _forgetPassAndRememberMe(context),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          _loginBtn(context),
-                        ],
-                      ),
-                    )),
-                SizedBox(
-                  height: 15,
+                        )),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    _signInBtn(),
+                  ],
                 ),
-                _signInBtn(),
-              ],
+              ),
             ),
-          ),
-        ),
-        "USER", "Login") : DetailScreen();
+            "USER",
+            "Login")
+        : DetailScreen();
   }
 }

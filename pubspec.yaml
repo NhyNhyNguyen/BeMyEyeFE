@@ -27,7 +27,6 @@ dependencies:
   scoped_model: ^1.0.1
   http: ^0.12.0+2
   http_parser: ^3.1.4
-  flutter_datetime_picker: 1.2.5
   intl: ^0.15.8
   carousel_slider: ^2.0.0
   firebase_dynamic_links: ^0.5.0+11
@@ -95,6 +94,8 @@ flutter:
     - assets/images/ic_play.png
     - assets/images/ic_stop_video.png
     - assets/images/ic_video_shutter.png
+    - assets/background1.png
+    - assets/icon_home.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

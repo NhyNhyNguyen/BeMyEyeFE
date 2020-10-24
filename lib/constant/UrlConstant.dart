@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 class UrlConstant{
   //
  // static const String HOST = "http://192.168.43.171:9000";
-  static const String HOST = "https://moviesworldbe.herokuapp.com";
+  static const String HOST = "http://192.168.1.115:3000/api";
   static const String REGISTER = HOST + "/api/register";
   static const String LOGIN = HOST + "/api/auth";
   static const String PROFILE =  HOST + "/api/profile";
@@ -33,4 +33,10 @@ class UrlConstant{
   static const String URL_POST_COMMENT = HOST_MOBILE +"api/comments";
   static const String URL_GET_SHOWTIME = HOST_MOBILE + "api/showtimefilms/filmInDate?date=" ;
   static const String URL_SEARCH = HOST_MOBILE +"api/films/searching?name=" ;
+
+
+  static const String URL_COGNITIVE = HOST +"/v1/cognitive_face" ;
+
+
+
 }

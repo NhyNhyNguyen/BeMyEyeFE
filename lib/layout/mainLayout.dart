@@ -89,7 +89,7 @@ class MainLayOut {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: <Widget>[
-                                InkWell(
+                              /*  InkWell(
                                   onTap: () {
                                     Navigator.push(
                                         context,
@@ -171,7 +171,7 @@ class MainLayOut {
                                                   .size
                                                   .height *
                                               0.06),
-                                )
+                                )*/
                               ],
                             ),
                           ),
@@ -187,7 +187,7 @@ class MainLayOut {
                         child: InkWell(
                           onTap: () {},
                           child: Image.asset(ImageConstant.TICKET,
-                              height: MediaQuery.of(context).size.height * 0.1),
+                              height: MediaQuery.of(context).size.height * 0.12),
                         ),
                       ),
                     ],

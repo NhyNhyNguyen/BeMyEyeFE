@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:bymyeyefe/screens/Menu/Menu.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:camera/camera.dart';
@@ -11,25 +12,30 @@ import 'package:quiver/collection.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart' show join;
 
+import 'constant/ColorConstant.dart';
+import 'constant/ImageConstant.dart';
+import 'constant/StyleConstant.dart';
+import 'constant/UrlConstant.dart';
 import 'detect_face/detector_painters.dart';
 import 'detect_face/util.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(MaterialApp(
     themeMode: ThemeMode.light,
     theme: ThemeData(brightness: Brightness.light),
-    home: _MyHomePage(),
+    home: MyHomePage(),
     title: "Face Recognition",
     debugShowCheckedModeBanner: false,
   ));
 }
 
-class _MyHomePage extends StatefulWidget {
+class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<_MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> {
   File jsonFile;
   dynamic _scanResults;
   CameraController _camera;
@@ -42,6 +48,7 @@ class _MyHomePageState extends State<_MyHomePage> {
   List e1;
   bool _faceFound = false;
   CameraDescription description;
+  var name;
 
   final TextEditingController _name = new TextEditingController();
   Future<void> _initializeControllerFuture;
@@ -55,8 +62,6 @@ class _MyHomePageState extends State<_MyHomePage> {
     _initializeCamera();
   }
 
-  Future loadModel() async {}
-
   void _initializeCamera() async {
     description = await getCamera(_direction);
 
@@ -64,7 +69,10 @@ class _MyHomePageState extends State<_MyHomePage> {
         CameraController(description, ResolutionPreset.low, enableAudio: false);
 
     _initializeControllerFuture = _camera.initialize();
+    streamImage();
+  }
 
+  Future<void> streamImage() async {
     await Future.delayed(Duration(milliseconds: 500));
     tempDir = await getApplicationDocumentsDirectory();
     String _embPath = tempDir.path + '/emb.json';
@@ -82,14 +90,14 @@ class _MyHomePageState extends State<_MyHomePage> {
         String res;
         dynamic finalResult = Multimap<String, Face>();
         detect(image, _getDetectionMethod(), rotation).then(
-              (dynamic result) async {
+          (dynamic result) async {
             if (result.length == 0)
               _faceFound = false;
             else
               _faceFound = true;
             Face _face;
             imglib.Image convertedImage =
-            _convertCameraImage(image, _direction);
+                _convertCameraImage(image, _direction);
             for (_face in result) {
               double x, y, w, h;
               x = (_face.boundingBox.left - 10);
@@ -113,7 +121,7 @@ class _MyHomePageState extends State<_MyHomePage> {
             _isDetecting = false;
           },
         ).catchError(
-              (_) {
+          (_) {
             _isDetecting = false;
           },
         );
@@ -139,9 +147,9 @@ class _MyHomePageState extends State<_MyHomePage> {
 //      File file = File('$tempPath/profile.png');
 //      await file.writeAsBytes(image.getBytes());
 
-
-      StorageReference storageReference =
-      FirebaseStorage.instance.ref().child('chats/' + '${DateTime.now()}.png');
+      StorageReference storageReference = FirebaseStorage.instance
+          .ref()
+          .child('chats/' + '${DateTime.now()}.png');
       i++;
       StorageUploadTask uploadTask = storageReference.putFile(File(path));
       await uploadTask.onComplete;
@@ -149,6 +157,7 @@ class _MyHomePageState extends State<_MyHomePage> {
       storageReference.getDownloadURL().then((fileURL) {
         setState(() {
           print(fileURL);
+          cognitiveFace(context, fileURL);
         });
       });
       // If the picture was taken, display it on a new screen.
@@ -156,11 +165,8 @@ class _MyHomePageState extends State<_MyHomePage> {
       // If an error occurs, log the error to the console.
       print(e);
     }
-    setState(() {
-      _camera = null;
-    });
-     _initializeCamera();
 
+    streamImage();
   }
 
   HandleDetection _getDetectionMethod() {
@@ -203,12 +209,18 @@ class _MyHomePageState extends State<_MyHomePage> {
       child: _camera == null
           ? const Center(child: null)
           : Stack(
-        fit: StackFit.expand,
-        children: <Widget>[
-          CameraPreview(_camera),
-          _buildResults(),
-        ],
-      ),
+              fit: StackFit.expand,
+              children: <Widget>[
+                CameraPreview(_camera),
+                _buildResults(),
+                name != null
+                    ? Align(
+                        alignment: Alignment.center,
+                        child: Text(name, style: StyleConstant.headerTextStyle),
+                      )
+                    : Container()
+              ],
+            ),
     );
   }
 
@@ -231,32 +243,160 @@ class _MyHomePageState extends State<_MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Face recognition'),
-        actions: <Widget>[
-          PopupMenuButton<Choice>(
-            onSelected: (Choice result) {
-              if (result == Choice.delete)
-                _resetFile();
-              else
-                _viewLabels();
-            },
-            itemBuilder: (BuildContext context) => <PopupMenuEntry<Choice>>[
-              const PopupMenuItem<Choice>(
-                child: Text('View Saved Faces'),
-                value: Choice.view,
-              ),
-              const PopupMenuItem<Choice>(
-                child: Text('Remove all faces'),
-                value: Choice.delete,
-              )
-            ],
+      appBar: PreferredSize(
+        preferredSize:
+            Size.fromHeight(MediaQuery.of(context).size.height * 0.07),
+        child: AppBar(
+          elevation: 0,
+          backgroundColor: ColorConstant.LIGHT_VIOLET,
+          title: Text(
+            "Be Your Eye",
+            style: StyleConstant.appBarText,
           ),
+        ),
+      ),
+      drawer: Menu(),
+      body: Stack(
+        children: <Widget>[
+          Container(
+            width: double.infinity,
+            height: double.infinity,
+          ),
+          _buildImage(),
+          Container(
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.1,
+                child: Stack(
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.015,
+                        ),
+                        Container(
+                          height: MediaQuery.of(context).size.height * 0.07,
+                          alignment: Alignment.bottomCenter,
+                          color: ColorConstant.LIGHT_VIOLET,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical:
+                              MediaQuery.of(context).size.height * 0.01),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget>[
+                              /*  InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                NowshowingScreen()));
+                                  },
+                                  child: type == 'HOME'
+                                      ? Image.asset(ImageConstant.HOME_YELLOW,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.05)
+                                      : Image.asset(ImageConstant.HOME_GRAY,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.05),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => ShowtimeScreen()));
+                                  },
+                                  child: type == 'CAL'
+                                      ? Image.asset(
+                                          ImageConstant.CALENDAR_YELLOW,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.06)
+                                      : Image.asset(ImageConstant.CALENDAR_GRAY,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.06),
+                                ),
+                                InkWell(
+                                  onTap: () {},
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.height *
+                                        0.1,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.06,
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                NewsScreen()));
+                                  },
+                                  child: type == 'FILM'
+                                      ? Image.asset(ImageConstant.FILM_YELLOW,
+                                          height: 45)
+                                      : Image.asset(ImageConstant.FILM_GRAY,
+                                          height: 45),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                LoginScreen(handel: "LOGIN",)));
+                                  },
+                                  child: type == 'USER'
+                                      ? Image.asset(ImageConstant.PERSON_YELLOW,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.06)
+                                      : Image.asset(ImageConstant.PERSON_GRAY,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.06),
+                                )*/
+                            ],
+                          ),
+                        ),
+                        Container(
+                          height: MediaQuery.of(context).size.height * 0.015,
+                          color: ColorConstant.LIGHT_VIOLET,
+                        )
+                      ],
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.1,
+                      alignment: Alignment.center,
+                      child: InkWell(
+                        onTap: () {},
+                        child: Image.asset(ImageConstant.TICKET,
+                            height: MediaQuery.of(context).size.height * 0.12),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          )
         ],
       ),
-      body: _buildImage(),
       floatingActionButton:
-      Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+          Column(mainAxisAlignment: MainAxisAlignment.end, children: [
         FloatingActionButton(
           backgroundColor: (_faceFound) ? Colors.blue : Colors.blueGrey,
           child: Icon(Icons.add),
@@ -312,7 +452,6 @@ class _MyHomePageState extends State<_MyHomePage> {
         : imglib.copyRotate(img, 90);
     return img1;
   }
-
 
   String compare(List currEmb) {
     if (data.length == 0) return "No Face saved";
@@ -430,21 +569,30 @@ class _MyHomePageState extends State<_MyHomePage> {
     jsonFile.writeAsStringSync(json.encode(data));
     _initializeCamera();
   }
-}
 
-class DisplayPictureScreen extends StatelessWidget {
-  final String imagePath;
+  Future<void> cognitiveFace(BuildContext context, String url) async {
+    print("Cognitive url: " + url);
 
-  const DisplayPictureScreen({Key key, this.imagePath}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Display the Picture')),
-      // The image is stored as a file on the device. Use the `Image.file`
-      // constructor with the given path to display the image.
-      body: Image.file(File(imagePath)),
+    http.Response response = await http.post(
+      UrlConstant.URL_COGNITIVE,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'url': url,
+      }),
     );
+
+    if (response.statusCode == 200) {
+      print(response.body);
+      setState(() {
+        print("cognitive success");
+        name = json.decode(response.body)[0]['idol']['name'];
+        print(json.decode(response.body)[0]['idol']['name']);
+      });
+      return json.decode(response.body);
+    } else {
+      return null;
+    }
   }
 }
-

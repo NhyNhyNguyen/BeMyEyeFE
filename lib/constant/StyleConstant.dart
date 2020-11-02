@@ -65,7 +65,7 @@ class StyleConstant {
     color: ColorConstant.WHITE,
       fontFamily: "Open Sans",
       fontWeight: FontWeight.bold,
-      fontSize: 16
+      fontSize: 18
   );
 
   static const TextStyle btnNormalStyle = TextStyle(
@@ -89,7 +89,7 @@ class StyleConstant {
 
   static const appBarText = TextStyle(
     color: ColorConstant.WHITE,
-    fontSize: 25,
+    fontSize: 20,
   );
 
   // style for detail page

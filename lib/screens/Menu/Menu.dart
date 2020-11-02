@@ -4,6 +4,7 @@ import 'package:bymyeyefe/constant/ImageConstant.dart';
 import 'package:bymyeyefe/constant/StringConstant.dart';
 import 'package:bymyeyefe/constant/StyleConstant.dart';
 import 'package:bymyeyefe/constant/UrlConstant.dart';
+import 'package:bymyeyefe/detect_face/TakePictureScreen.dart';
 import 'package:bymyeyefe/screens/User/ChangePassword.dart';
 import 'package:bymyeyefe/screens/User/ChoosePage.dart';
 import 'package:bymyeyefe/screens/User/ChooseProfile.dart';
@@ -126,7 +127,7 @@ class _MenuState extends State<Menu> {
                     icon: Icons.add_to_photos,
                     selectHandle: () => {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => History()))
+                          MaterialPageRoute(builder: (context) => TakePictureScreen()))
                     },
                   ),
                   MenuItem(

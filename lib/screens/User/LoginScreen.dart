@@ -136,7 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
 //      return null;
 //    }
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => MyHomePage()));
+        context, MaterialPageRoute(builder: (context) => LoginScreen()));
     ConstantVar.jwt = "token";
   }
 

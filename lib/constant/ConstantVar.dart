@@ -6,4 +6,5 @@ class ConstantVar{
   static UserDetail userDetail = null;
   static String registerToken = "";
   static String resetPassWordToken = "";
+  static String currentLocal = "vi_VN";
 }

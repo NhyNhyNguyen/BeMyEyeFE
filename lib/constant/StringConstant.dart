@@ -1,7 +1,7 @@
 import 'dart:core';
 
 class StringConstant{
-  static const APP_NAME = 'Movie\'s World';
+  static const APP_NAME = "My Angle Eyes";
   static const USERNAME = 'Username';
   static const USERNAME_HINT = 'Enter your username';
   static const PASSWORD = 'Password';
@@ -90,4 +90,11 @@ static const NAME3 =" Frozen";
 static const NOT_LOGIN = "Not login";
 static const CHOOSE_YOUR_SEAT = "Choose your seat";
 static const ADD_FACE = "Add Face";
+
+
+// My Angle eyes
+  static const BECOME_ASSISTANCE = "I need visual assistance";
+  static const BECOME_VOLUNTEER = "I'd like become volunteer";
+  static const SLOGAN = "Join a global support community.\nSee the world together";
+
 }

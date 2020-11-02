@@ -15,14 +15,14 @@ class ButtonGradientLarge extends StatelessWidget {
       Container(
         width: MediaQuery.of(context).size.width * 0.8,
         height: 50,
-        margin: EdgeInsets.all(5),
-        padding: EdgeInsets.only(left: 10, right: 10),
+        margin: EdgeInsets.only(top: 5, bottom: 5),
+        padding: EdgeInsets.only(left: 5, right: 5, top: 15,  bottom: 15),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(25)),
           gradient: ColorConstant.RAINBOW_BUTTON,
         ),
         child: FlatButton(
-          child: Text(text, style:StyleConstant.btnLargeStyle ),
+          child: Text(text, style:StyleConstant.btnSelectedStyle ),
           onPressed: selectHandler,
         ),
       );

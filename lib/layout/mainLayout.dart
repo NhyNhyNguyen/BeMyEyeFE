@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:bymyeyefe/constant/ColorConstant.dart';
 import 'package:bymyeyefe/constant/ConstantVar.dart';
 import 'package:bymyeyefe/constant/ImageConstant.dart';
@@ -16,13 +18,24 @@ import 'package:bymyeyefe/screens/Showtime/ShowtimeScreen.dart';
 import 'package:bymyeyefe/screens/User/ChoosePage.dart';
 import 'package:bymyeyefe/screens/User/LoginScreen.dart';
 import 'package:bymyeyefe/screens/User/SignUpScreen.dart';
+import 'package:bymyeyefe/screens/home_page/HomePage.dart';
+import 'package:bymyeyefe/screens/tutorial/ChooseTypeUser.dart';
+import 'package:bymyeyefe/voice_control/MyApp.dart';
 import 'package:flutter/material.dart';
+import 'package:speech_to_text/speech_recognition_error.dart';
+import 'package:speech_to_text/speech_recognition_result.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 
 class MainLayOut {
-  void loginHandle(BuildContext context) {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => LoginScreen(handel: "LOGIN")));
-  }
+  static bool _hasSpeech = false;
+  static double level = 0.0;
+  static double minSoundLevel = 50000;
+  static double maxSoundLevel = -50000;
+  static String lastWords = "";
+  static String lastError = "";
+  static String lastStatus = "";
+  static String _currentLocaleId = "";
+  static final SpeechToText speech = SpeechToText();
 
   static Widget getMailLayout(
       BuildContext context, Widget widget, String type, String title) {
@@ -47,12 +60,18 @@ class MainLayOut {
                 style: StyleConstant.appBarText,
               ),
               actions: <Widget>[
-                type == 'HOME' ? IconButton(
-                  icon: Icon(Icons.search, color: Colors.white), onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => Search()));
-                },) : Container(),
-              ]
-              ,
+                type == 'HOME'
+                    ? IconButton(
+                        icon: Icon(Icons.search, color: Colors.white),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Search()));
+                        },
+                      )
+                    : Container(),
+              ],
               leading: new IconButton(
                   icon: new Icon(Icons.storage, color: ColorConstant.WHITE),
                   onPressed: () => _scaffoldKey.currentState.openDrawer())),
@@ -87,49 +106,48 @@ class MainLayOut {
                                     MediaQuery.of(context).size.height * 0.01),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
-                              /*  InkWell(
+                                InkWell(
                                   onTap: () {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) =>
-                                                NowshowingScreen()));
+                                            builder: (context) => Homepage()));
                                   },
                                   child: type == 'HOME'
                                       ? Image.asset(ImageConstant.HOME_YELLOW,
                                           height: MediaQuery.of(context)
                                                   .size
                                                   .height *
-                                              0.05)
+                                              0.04)
                                       : Image.asset(ImageConstant.HOME_GRAY,
                                           height: MediaQuery.of(context)
                                                   .size
                                                   .height *
-                                              0.05),
+                                              0.04),
                                 ),
                                 InkWell(
                                   onTap: () {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => ShowtimeScreen()));
+                                            builder: (context) =>
+                                                ChooseTypeUser()));
                                   },
-                                  child: type == 'CAL'
-                                      ? Image.asset(
-                                          ImageConstant.CALENDAR_YELLOW,
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.06)
-                                      : Image.asset(ImageConstant.CALENDAR_GRAY,
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.06),
+                                  child: type == 'SETTING'
+                                      ? Icon(
+                                          Icons.settings,
+                                          color: Colors.yellow,
+                                          size: 38,
+                                        )
+                                      : Icon(
+                                          Icons.settings,
+                                          color: Colors.white,
+                                          size: 38,
+                                        ),
                                 ),
-                                InkWell(
+                                /*  InkWell(
                                   onTap: () {},
                                   child: Container(
                                     width: MediaQuery.of(context).size.height *
@@ -184,11 +202,7 @@ class MainLayOut {
                       Container(
                         height: MediaQuery.of(context).size.height * 0.1,
                         alignment: Alignment.center,
-                        child: InkWell(
-                          onTap: () {},
-                          child: Image.asset(ImageConstant.TICKET,
-                              height: MediaQuery.of(context).size.height * 0.12),
-                        ),
+                        child: MyApp(),
                       ),
                     ],
                   ),
@@ -197,8 +211,9 @@ class MainLayOut {
             )
           ],
         ),
+//        floatingActionButton:
+//          MyApp(),
       ),
     );
   }
 }
-

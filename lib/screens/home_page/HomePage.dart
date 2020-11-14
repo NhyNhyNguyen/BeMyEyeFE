@@ -110,7 +110,7 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
-    return ConstantVar.currentUser != null ?  MainLayOut.getMailLayout(
+    return ConstantVar.currentUser != null && ConstantVar.user != null ?  MainLayOut.getMailLayout(
         context,
         Container(
           width: double.infinity,

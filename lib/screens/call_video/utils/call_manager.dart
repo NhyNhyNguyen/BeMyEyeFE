@@ -100,7 +100,7 @@ class CallManager {
 
   sendCallMessage(String roomId, List<int> participantIds) {
     User.getUsersByRole("volunteer").then((value) => {
-      participantIds = value
+      participantIds = value.map((s) => s as int).toList()
     });
     print("=====");
     print(participantIds);

@@ -15,6 +15,7 @@ import 'package:bymyeyefe/screens/User/TextfieldWidget.dart';
 import 'package:bymyeyefe/screens/call_video/select_opponents_screen.dart';
 import 'package:bymyeyefe/screens/home_page/HomePage.dart';
 import 'package:connectycube_sdk/connectycube_chat.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:bymyeyefe/screens/call_video/utils/configs.dart' as utils;
@@ -40,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final String type;
   final users = utils.users;
   bool _isLoginContinues = false;
-
+  String token;
 
   bool isLoading = true;
   final _formKey = GlobalKey<FormState>();
@@ -48,6 +49,18 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController passController = TextEditingController();
 
   _LoginScreenState(this.handle, this.type);
+
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+
+
+  @override
+  void initState(){
+    // update token
+    _firebaseMessaging.getToken().then((String token) {
+      this.token = token;
+      print(token);
+    });
+  }
 
   Widget _forgetPassAndRememberMe(BuildContext context) {
     return Row(
@@ -189,6 +202,13 @@ Future<void > login (
   }
 
   void _goSelectOpponentsScreen(BuildContext context, CubeUser cubeUser) {
+
+    if(ConstantVar.user != null && ConstantVar.user.firebaseToken != this.token){
+      //update token
+      ConstantVar.user.firebaseToken = this.token;
+      User.updateUserProfile(ConstantVar.user);
+      print("[[[[");
+    }
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -244,16 +264,13 @@ Future<void > login (
                                         StringConstant.EMAIL,
                                         StringConstant.EMAIL_HINT,
                                         Icon(Icons.mail, color: Colors.white),
-                                        TextInputType.emailAddress,
+                                        TextInputType.text,
                                         usernameController),
-                                    SizedBox(
-                                      height: 15,
-                                    ),
-                                    TextFieldWidget.buildTextField(
+                                    TextFieldWidget.buildPassField(
                                         StringConstant.PASSWORD,
                                         StringConstant.PASSWORD_HINT,
                                         Icon(Icons.lock, color: Colors.white),
-                                        TextInputType.visiblePassword,
+                                        TextInputType.text,
                                         passController),
                                     _forgetPassAndRememberMe(context),
                                     SizedBox(

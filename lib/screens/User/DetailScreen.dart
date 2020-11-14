@@ -247,7 +247,7 @@ class _DetailScreenState extends State<DetailScreen> {
 
   Future<http.Response> postUserDetail() async {
     final http.Response response = await http.put(
-      UrlConstant.EDIT,
+      UrlConstant.UPDATE_PROFILE,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Accept': 'application/json',

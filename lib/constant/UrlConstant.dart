@@ -12,7 +12,7 @@ class UrlConstant{
   static const String LOGOUT = HOST + "/logout";
   static const String GET_USERS_BY_ROLE = HOST + "/getAllUserByRole";
   static const String PROFILE =  HOST + "/api/profile";
-  static const String EDIT = HOST + "/api/edit-profile";
+  static const String UPDATE_PROFILE = HOST + "/updateProfile";
   static const String RESET_PASS = HOST + "/api/reset-password";
   static const String IMAGE = HOST + "/api/images/";
   static const String POST_IMAGE = HOST + "/api/users/upload-avatar";

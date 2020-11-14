@@ -171,7 +171,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             StringConstant.EMAIL,
                             StringConstant.EMAIL_HINT,
                             Icon(Icons.email, color: Colors.white),
-                            TextInputType.visiblePassword,
+                            TextInputType.text,
                             emailController),
                         TextFieldWidget.buildTextField(
                             StringConstant.USERNAME,
@@ -182,7 +182,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
                             TextInputType.text,
                             usernameController),
-                        TextFieldWidget.buildTextField(
+                        TextFieldWidget.buildPassField(
                             StringConstant.PASSWORD,
                             StringConstant.PASSWORD_HINT,
                             Icon(

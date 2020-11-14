@@ -10,8 +10,9 @@ class User {
   final String password;
   final String username;
   final String role;
+  String firebaseToken;
 
-  User({this.id, this.email, this.password, this.role, this.username});
+  User({this.id, this.email, this.password, this.role, this.username, this.firebaseToken});
 
   factory User.fromJson(Map<String, dynamic> json) {
     var userJson = json['user'];
@@ -22,6 +23,7 @@ class User {
       password: userJson['password'],
       role: userJson['role'],
       username: userJson['username'],
+      firebaseToken: userJson['token'],
     );
   }
 
@@ -55,10 +57,36 @@ class User {
 
     if (response.statusCode == 200) {
       print(response.body);
-      print("========");
       return List.from(json.decode(response.body));
     } else {
       return [];
+    }
+  }
+
+  static Future<bool> updateUserProfile(User user) async {
+    http.Response response = await http.post(
+      UrlConstant.UPDATE_PROFILE,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'id': user.id.toString(),
+        'username': user.username,
+        'email': user.email,
+        'token': user.firebaseToken,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      print(response.body);
+      User user =  User.fromJson(json.decode(response.body));
+      if(user == null){
+        return false;
+      }
+      ConstantVar.user = user;
+      return true;
+    } else {
+      return true;
     }
   }
 }

@@ -7,11 +7,11 @@ import 'package:bymyeyefe/constant/StringConstant.dart';
 import 'package:bymyeyefe/constant/StyleConstant.dart';
 import 'package:bymyeyefe/constant/UrlConstant.dart';
 import 'package:bymyeyefe/layout/mainLayout.dart';
-import 'package:bymyeyefe/screens/Homepage/NowshowingScreen.dart';
 import 'package:bymyeyefe/screens/User/ChooseProfile.dart';
 import 'package:bymyeyefe/screens/User/LoginScreen.dart';
 import 'package:bymyeyefe/screens/User/ResetPass.dart';
 import 'package:bymyeyefe/screens/User/TextfieldWidget.dart';
+import 'package:bymyeyefe/screens/home_page/HomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -147,6 +147,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               ),
             ),
             "USER",
-            "Change Password") : NowshowingScreen();
+            "Change Password") : Homepage();
   }
 }

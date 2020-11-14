@@ -1,7 +1,7 @@
-import 'package:bymyeyefe/screens/Homepage/NowshowingScreen.dart';
 import 'package:bymyeyefe/screens/User/ChooseProfile.dart';
 import 'package:bymyeyefe/screens/User/DetailScreen.dart';
 import 'package:bymyeyefe/screens/User/LoginScreen.dart';
+import 'package:bymyeyefe/screens/home_page/HomePage.dart';
 import 'package:flutter/material.dart';
 
 import 'constant/ColorConstant.dart';
@@ -42,9 +42,9 @@ class Modal{
                          Navigator.of(context, rootNavigator: true).pop('dialog');
                          Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
                        }else{
-                         if(onPressed == "DETAIL"){
+                         if(onPressed == "HOME_PAGE"){
                            Navigator.of(context, rootNavigator: true).pop('dialog');
-                           Navigator.push(context, MaterialPageRoute(builder: (context) => NowshowingScreen()));
+                           Navigator.push(context, MaterialPageRoute(builder: (context) => Homepage()));
                          }else{
                            Navigator.of(context, rootNavigator: true).pop('dialog');
                            Navigator.of(context).pop(true);

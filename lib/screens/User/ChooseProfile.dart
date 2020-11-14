@@ -11,7 +11,6 @@ import 'package:bymyeyefe/screens/ButtonGradientLarge.dart';
 import 'package:bymyeyefe/screens/User/ButtonGradientSmall.dart';
 import 'package:bymyeyefe/screens/User/ChoosePage.dart';
 import 'package:bymyeyefe/screens/User/DetailScreen.dart';
-import 'package:bymyeyefe/screens/User/History.dart';
 import 'package:bymyeyefe/screens/User/LoginScreen.dart';
 import 'package:bymyeyefe/screens/User/ResetPassword.dart';
 import 'package:bymyeyefe/screens/User/SignUpScreen.dart';

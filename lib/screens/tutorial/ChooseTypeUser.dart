@@ -10,8 +10,8 @@ import 'package:bymyeyefe/constant/UrlConstant.dart';
 import 'package:bymyeyefe/layout/mainLayout.dart';
 import 'package:bymyeyefe/model/User.dart';
 import 'package:bymyeyefe/model/UserDetail.dart';
-import 'package:bymyeyefe/screens/Homepage/NowshowingScreen.dart';
 import 'package:bymyeyefe/screens/User/ChooseProfile.dart';
+import 'package:bymyeyefe/screens/User/LoginScreen.dart';
 import 'package:bymyeyefe/screens/User/ResetPass.dart';
 import 'package:bymyeyefe/screens/User/TextfieldWidget.dart';
 import 'package:bymyeyefe/screens/home_page/HomePage.dart';
@@ -47,12 +47,19 @@ class _ChooseTypeUserScreenState extends State<ChooseTypeUser> {
   Widget _assistanceBtn() {
     return ButtonGradientLarge(StringConstant.BECOME_ASSISTANCE, () {
       //to do
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => LoginScreen(type: StringConstant.BLIND)));
     });
   }
 
   Widget _volunteerBtn() {
     return ButtonGradientLarge(StringConstant.BECOME_VOLUNTEER, () {
-      //to do
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => LoginScreen(type: StringConstant.VOLUNTEER)));
     });
   }
 
@@ -64,51 +71,85 @@ class _ChooseTypeUserScreenState extends State<ChooseTypeUser> {
           color: ColorConstant.VIOLET,
           width: double.infinity,
           height: double.infinity,
-          child: SingleChildScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
-            padding: EdgeInsets.symmetric(horizontal: 25, vertical: 60.0),
+          child: Container(
+            padding: EdgeInsets.only(top: 25, bottom: 60.0, left: 20, right: 20),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                SizedBox(
-                  height: 13,
-                ),
-                Image.asset(ImageConstant.LOGO),
-                Text(
-                  StringConstant.SLOGAN,
-                  style: StyleConstant.bigTxtStyle,
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(
-                  height: 50,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(20),
-                      child: Text(
-                        "100000\nBlind",
-                        style: StyleConstant.normalTextStyle,
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    children: [
+                      Image.asset(ImageConstant.LOGO),
+                      Text(
+                        StringConstant.SLOGAN,
+                        style: StyleConstant.bigTxtStyle,
                         textAlign: TextAlign.center,
                       ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: ColorConstant.LIGHT_VIOLET,
+                      SizedBox(
+                        height: 30,
                       ),
-                    ),
-                    Container(
-                        padding: EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: ColorConstant.LIGHT_VIOLET),
-                        child: Text(
-                          "100000\nVolunteers",
-                          style: StyleConstant.normalTextStyle,
-                          textAlign: TextAlign.center,
-                        ))
-                  ],
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: ColorConstant.LIGHT_VIOLET,
+                            ),
+                            child: Column(
+                              children: [
+                                Text(
+                                  "111111",
+                                  style: StyleConstant.normalTextStyle,
+                                  textAlign: TextAlign.center,
+                                ),
+                                Text(
+                                  "Blind",
+                                  style: StyleConstant.colorTextStyle,
+                                  textAlign: TextAlign.center,
+                                )
+                              ],
+                            ),
+                          ),
+                          Container(
+                            width: 1,
+                            height: 45,
+                            margin: EdgeInsets.symmetric(
+                                vertical: 5, horizontal: 30),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: ColorConstant.LIGHT_VIOLET,
+                            ),
+                            padding: EdgeInsets.all(20),
+                            child: Column(
+                              children: [
+                                Text(
+                                  "11111",
+                                  style: StyleConstant.normalTextStyle,
+                                  textAlign: TextAlign.center,
+                                ),
+                                Text(
+                                  "Volunteers",
+                                  style: StyleConstant.colorTextStyle,
+                                  textAlign: TextAlign.center,
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
+                _assistanceBtn(),
+                _volunteerBtn(),
+                SizedBox(
+                  height: 20,
+                )
               ],
             ),
           ),

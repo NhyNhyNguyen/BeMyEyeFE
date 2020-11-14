@@ -6,15 +6,8 @@ import 'package:bymyeyefe/constant/ImageConstant.dart';
 import 'package:bymyeyefe/constant/StringConstant.dart';
 import 'package:bymyeyefe/constant/StyleConstant.dart';
 import 'package:bymyeyefe/constant/UrlConstant.dart';
-import 'package:bymyeyefe/screens/Homepage/Homepage.dart';
-import 'package:bymyeyefe/screens/Homepage/NowshowingScreen.dart';
-import 'package:bymyeyefe/screens/Homepage/Search.dart';
 import 'package:bymyeyefe/screens/Menu/Menu.dart';
 import 'package:bymyeyefe/screens/Menu/MenuItem.dart';
-import 'package:bymyeyefe/screens/News/News.dart';
-import 'package:bymyeyefe/screens/News/TicketPrice.dart';
-import 'package:bymyeyefe/screens/Showtime/Showtime.dart';
-import 'package:bymyeyefe/screens/Showtime/ShowtimeScreen.dart';
 import 'package:bymyeyefe/screens/User/ChoosePage.dart';
 import 'package:bymyeyefe/screens/User/LoginScreen.dart';
 import 'package:bymyeyefe/screens/User/SignUpScreen.dart';
@@ -67,7 +60,7 @@ class MainLayOut {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => Search()));
+                                  builder: (context) => Homepage()));
                         },
                       )
                     : Container(),
@@ -108,88 +101,44 @@ class MainLayOut {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
-                                InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => Homepage()));
-                                  },
-                                  child: type == 'HOME'
-                                      ? Image.asset(ImageConstant.HOME_YELLOW,
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.04)
-                                      : Image.asset(ImageConstant.HOME_GRAY,
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.04),
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                ChooseTypeUser()));
-                                  },
-                                  child: type == 'SETTING'
-                                      ? Icon(
-                                          Icons.settings,
-                                          color: Colors.yellow,
-                                          size: 38,
-                                        )
-                                      : Icon(
-                                          Icons.settings,
-                                          color: Colors.white,
-                                          size: 38,
-                                        ),
-                                ),
-                                /*  InkWell(
-                                  onTap: () {},
-                                  child: Container(
-                                    width: MediaQuery.of(context).size.height *
-                                        0.1,
-                                    height: MediaQuery.of(context).size.height *
-                                        0.06,
-                                  ),
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                NewsScreen()));
-                                  },
-                                  child: type == 'FILM'
-                                      ? Image.asset(ImageConstant.FILM_YELLOW,
-                                          height: 45)
-                                      : Image.asset(ImageConstant.FILM_GRAY,
-                                          height: 45),
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                LoginScreen(handel: "LOGIN",)));
-                                  },
-                                  child: type == 'USER'
-                                      ? Image.asset(ImageConstant.PERSON_YELLOW,
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.06)
-                                      : Image.asset(ImageConstant.PERSON_GRAY,
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.06),
-                                )*/
+//                                InkWell(
+//                                  onTap: () {
+//                                    Navigator.push(
+//                                        context,
+//                                        MaterialPageRoute(
+//                                            builder: (context) => Homepage()));
+//                                  },
+//                                  child: type == 'HOME'
+//                                      ? Image.asset(ImageConstant.HOME_YELLOW,
+//                                          height: MediaQuery.of(context)
+//                                                  .size
+//                                                  .height *
+//                                              0.04)
+//                                      : Image.asset(ImageConstant.HOME_GRAY,
+//                                          height: MediaQuery.of(context)
+//                                                  .size
+//                                                  .height *
+//                                              0.04),
+//                                ),
+//                                InkWell(
+//                                  onTap: () {
+//                                    Navigator.push(
+//                                        context,
+//                                        MaterialPageRoute(
+//                                            builder: (context) =>
+//                                                ChooseTypeUser()));
+//                                  },
+//                                  child: type == 'SETTING'
+//                                      ? Icon(
+//                                          Icons.settings,
+//                                          color: Colors.yellow,
+//                                          size: 38,
+//                                        )
+//                                      : Icon(
+//                                          Icons.settings,
+//                                          color: Colors.white,
+//                                          size: 38,
+//                                  ))
                               ],
                             ),
                           ),

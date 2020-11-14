@@ -9,12 +9,15 @@ import 'package:bymyeyefe/constant/UrlConstant.dart';
 import 'package:bymyeyefe/layout/mainLayout.dart';
 import 'package:bymyeyefe/model/User.dart';
 import 'package:bymyeyefe/model/UserDetail.dart';
-import 'package:bymyeyefe/screens/Homepage/NowshowingScreen.dart';
 import 'package:bymyeyefe/screens/User/ChooseProfile.dart';
 import 'package:bymyeyefe/screens/User/ResetPass.dart';
 import 'package:bymyeyefe/screens/User/TextfieldWidget.dart';
+import 'package:bymyeyefe/screens/call_video/select_opponents_screen.dart';
+import 'package:bymyeyefe/screens/home_page/HomePage.dart';
+import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:bymyeyefe/screens/call_video/utils/configs.dart' as utils;
 
 import '../../main.dart';
 import '../../modal.dart';
@@ -24,23 +27,27 @@ import 'SignUpScreen.dart';
 
 class LoginScreen extends StatefulWidget {
   final String handel;
+  final String type;
 
-  const LoginScreen({Key key, this.handel}) : super(key: key);
+  const LoginScreen({Key key, this.handel, this.type}) : super(key: key);
 
   @override
-  _LoginScreenState createState() => _LoginScreenState(this.handel);
+  _LoginScreenState createState() => _LoginScreenState(this.handel, this.type);
 }
 
 class _LoginScreenState extends State<LoginScreen> {
   final String handle;
+  final String type;
+  final users = utils.users;
+  bool _isLoginContinues = false;
+
 
   bool isLoading = true;
-  bool _rememberMe = false;
   final _formKey = GlobalKey<FormState>();
   TextEditingController usernameController = TextEditingController();
   TextEditingController passController = TextEditingController();
 
-  _LoginScreenState(this.handle);
+  _LoginScreenState(this.handle, this.type);
 
   Widget _forgetPassAndRememberMe(BuildContext context) {
     return Row(
@@ -70,96 +77,57 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _rememberMeCheckBox() {
-    return Container(
-        child: Row(
-      children: <Widget>[
-        Theme(
-          data: ThemeData(unselectedWidgetColor: Colors.black),
-          child: Checkbox(
-            value: _rememberMe,
-            checkColor: ColorConstant.WHITE,
-            activeColor: ColorConstant.BLUE_TEXT,
-            onChanged: (value) {
-              setState(() {
-                _rememberMe = value;
-              });
-            },
-          ),
-        ),
-        Text(
-          StringConstant.REMEMBER_ME,
-          style: StyleConstant.smallTextStyle,
-        )
-      ],
-    ));
-  }
-
   Widget _loginBtn(BuildContext context) {
     return ButtonGradientLarge(StringConstant.SIGN_IN, () {
       if (_formKey.currentState.validate()) {
+        setState(() {
+          _isLoginContinues = true;
+        });
         login(context, usernameController.text, passController.text);
       }
     });
   }
 
-  Future<User> login(
-      BuildContext context, String username, String password) async {
-//    http.Response response = await http.post(
-//      UrlConstant.LOGIN,
-//      headers: <String, String>{
-//        'Content-Type': 'application/json; charset=UTF-8',
-//      },
-//      body: jsonEncode(<String, String>{
-//        'username': username,
-//        'password': password,
-//      }),
-//    );
-//
-//    if (response.statusCode == 200) {
-//      ConstantVar.jwt = json.decode(response.body)["token"];
-//      print(response.body);
-////      Modal.showSimpleCustomDialog(
-////          context,
-////          "Login successfull!",
-////          onPressedLoginSuccess);
-//      onPressedLoginSuccess(context);
-//      return User.fromJson(json.decode(response.body));
-//    } else {
-//      //show popup
-//      print("show popup");
-////      Modal.showSimpleCustomDialog(
-////          context,
-////          "Login fail",
-////          onPressedLoginFail);
-//      onPressedLoginFail(context);
-//      return null;
-//    }
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => LoginScreen()));
-    ConstantVar.jwt = "token";
-  }
+Future<void > login (
+     BuildContext context, String email, String password)  async {
+    http.Response response = await http.post(
+      UrlConstant.LOGIN,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'email': email,
+        'password': password,
+      }),
+    );
 
-  void onPressedLoginSuccess(BuildContext context) {
-    UserDetail.fetchUserDetail(ConstantVar.jwt);
-    if (handle == "LOGIN") {
-      print('redirect');
-      Modal.showSimpleCustomDialog(context, "Login successfull!", "DETAIL");
+
+    if (response.statusCode == 200) {
+      User user =  User.fromJson(json.decode(response.body));
+      if(user == null){
+        Modal.showSimpleCustomDialog(context, "Login Fail!", "LOGIN");
+        return null;
+      }
+      ConstantVar.user = user;
+      _loginToCC(context, CubeUser(
+          id: user.id, password: passController.text , login: user.username)
+      );
+      return user;
     } else {
-      print('');
-      Modal.showSimpleCustomDialog(context, "Login successfull!", "");
+      Modal.showSimpleCustomDialog(context, "Login Fail!", "LOGIN");
+      return null;
     }
   }
 
-  void onPressedLoginFail(BuildContext context) {
-    Modal.showSimpleCustomDialog(context, "Invalid user name pass word!", null);
+  void onPressedLoginSuccess(BuildContext context) {
+      Modal.showSimpleCustomDialog(context, "Login successfull!", "HOME_PAGE");
   }
 
   Widget _signInBtn() {
     return GestureDetector(
       onTap: () => {
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => SignUpScreen(jwt: "")))
+            MaterialPageRoute(builder: (context) => SignUpScreen(type: type)))
       },
       child: RichText(
         text: TextSpan(children: [
@@ -177,81 +145,132 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  _loginToCC(BuildContext context, CubeUser user) {
+
+    if (CubeSessionManager.instance.isActiveSessionValid()) {
+      _loginToCubeChat(context, user);
+    } else {
+      createSession(user).then((cubeSession) {
+        _loginToCubeChat(context, user);
+      }).catchError(_processLoginError);
+    }
+  }
+
+  void _loginToCubeChat(BuildContext context, CubeUser user) {
+    CubeChatConnection.instance.login(user).then((cubeUser) {
+      setState(() {
+        _isLoginContinues = false;
+      });
+      _goSelectOpponentsScreen(context, cubeUser);
+      ConstantVar.currentUser = cubeUser;
+    }).catchError(_processLoginError);
+  }
+
+  void _processLoginError(exception) {
+
+    setState(() {
+      _isLoginContinues = false;
+    });
+
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Login Error"),
+            content: Text("Something went wrong during login to ConnectyCube"),
+            actions: <Widget>[
+              FlatButton(
+                child: Text("OK"),
+                onPressed: () => Navigator.of(context).pop(),
+              )
+            ],
+          );
+        });
+  }
+
+  void _goSelectOpponentsScreen(BuildContext context, CubeUser cubeUser) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Homepage(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    usernameController.text = "nhinhi";
-    passController.text = "fun123";
-    return ConstantVar.jwt == ""
+    usernameController.text = "a@gmail.com";
+    passController.text = "123456789";
+    return !_isLoginContinues
         ? MainLayOut.getMailLayout(
             context,
             Container(
-              color: ColorConstant.VIOLET,
-              width: double.infinity,
-              height: double.infinity,
-              child: SingleChildScrollView(
-                physics: AlwaysScrollableScrollPhysics(),
-                padding: EdgeInsets.symmetric(horizontal: 25, vertical: 60.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Text("Sign your account",
-                        style: StyleConstant.headerTextStyle),
-                    SizedBox(
-                      height: 13,
-                    ),
-                    Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 20.0, vertical: 20.0),
-                        decoration: BoxDecoration(
-                            color: ColorConstant.LIGHT_VIOLET,
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.black12,
-                                  offset: Offset(0, 15),
-                                  blurRadius: 15),
-                              BoxShadow(
-                                  color: Colors.black12,
-                                  offset: Offset(0, -10),
-                                  blurRadius: 10)
-                            ]),
-                        child: Form(
-                          key: _formKey,
-                          child: Column(
-                            children: <Widget>[
-                              TextFieldWidget.buildTextField(
-                                  StringConstant.USERNAME,
-                                  StringConstant.USERNAME_HINT,
-                                  Icon(Icons.mail, color: Colors.white),
-                                  TextInputType.emailAddress,
-                                  usernameController),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              TextFieldWidget.buildTextField(
-                                  StringConstant.PASSWORD,
-                                  StringConstant.PASSWORD_HINT,
-                                  Icon(Icons.lock, color: Colors.white),
-                                  TextInputType.visiblePassword,
-                                  passController),
-                              _forgetPassAndRememberMe(context),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              _loginBtn(context),
-                            ],
+                    color: ColorConstant.VIOLET,
+                    width: double.infinity,
+                    height: double.infinity,
+                    child: SingleChildScrollView(
+                      physics: AlwaysScrollableScrollPhysics(),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 25, vertical: 60.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Text("Sign in your account",
+                              style: StyleConstant.headerTextStyle),
+                          SizedBox(
+                            height: 13,
                           ),
-                        )),
-                    SizedBox(
-                      height: 15,
+                          Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 20.0, vertical: 20.0),
+                              decoration: BoxDecoration(
+                                  color: ColorConstant.LIGHT_VIOLET,
+                                  borderRadius: BorderRadius.circular(5),
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Colors.black12,
+                                        offset: Offset(0, 15),
+                                        blurRadius: 15),
+                                    BoxShadow(
+                                        color: Colors.black12,
+                                        offset: Offset(0, -10),
+                                        blurRadius: 10)
+                                  ]),
+                              child: Form(
+                                key: _formKey,
+                                child: Column(
+                                  children: <Widget>[
+                                    TextFieldWidget.buildTextField(
+                                        StringConstant.EMAIL,
+                                        StringConstant.EMAIL_HINT,
+                                        Icon(Icons.mail, color: Colors.white),
+                                        TextInputType.emailAddress,
+                                        usernameController),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    TextFieldWidget.buildTextField(
+                                        StringConstant.PASSWORD,
+                                        StringConstant.PASSWORD_HINT,
+                                        Icon(Icons.lock, color: Colors.white),
+                                        TextInputType.visiblePassword,
+                                        passController),
+                                    _forgetPassAndRememberMe(context),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    _loginBtn(context),
+                                  ],
+                                ),
+                              )),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          _signInBtn(),
+                        ],
+                      ),
                     ),
-                    _signInBtn(),
-                  ],
-                ),
-              ),
-            ),
-            "USER",
-            "Login")
-        : DetailScreen();
+                  ), "USER", "Login")
+        : Loading(type: "USER",title: "Login");
   }
 }

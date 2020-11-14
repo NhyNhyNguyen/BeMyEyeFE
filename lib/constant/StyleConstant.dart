@@ -5,12 +5,10 @@ import 'ColorConstant.dart';
 class StyleConstant {
   static const TextStyle normalTextStyle = TextStyle(
       color: ColorConstant.WHITE,
-      fontFamily: "Open Sans",
       fontSize: 20,
       fontWeight: FontWeight.normal);
   static const TextStyle formTextStyle = TextStyle(
       color: Colors.white70,
-      fontFamily: "Open Sans",
       fontSize: 18,
       fontWeight: FontWeight.w600);
 
@@ -18,45 +16,44 @@ class StyleConstant {
     color: Colors.white,
     fontSize: 16,
     fontWeight: FontWeight.w400,
-    fontFamily: "Open Sans",
+  );
+
+  static const TextStyle colorTextStyle = TextStyle(
+    color: Colors.white70,
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
   );
 
   static const TextStyle boldHintTextStyle = TextStyle(
     color: Colors.white,
     fontSize: 14,
     fontWeight: FontWeight.w600,
-    fontFamily: "Open Sans",
   );
 
 
   static const TextStyle smallTextStyle = TextStyle(
       color: ColorConstant.WHITE,
-      fontFamily: "Open Sans",
       fontSize: 12,
       fontWeight: FontWeight.normal);
 
   static const TextStyle moreSmallTextStyle = TextStyle(
       color: ColorConstant.WHITE,
-      fontFamily: "Open Sans",
       fontSize: 14,
       fontWeight: FontWeight.normal);
 
   static const TextStyle largerHeaderTextStyle = TextStyle(
       color: ColorConstant.WHITE,
-      fontFamily: "Open Sans",
       fontSize: 30,
       fontWeight: FontWeight.bold
   );
   static const TextStyle headerTextStyle = TextStyle(
       color: ColorConstant.WHITE,
-      fontFamily: "Open Sans",
       fontSize: 25,
       fontWeight: FontWeight.bold
   );
 
   static const TextStyle buttonTextStyle = TextStyle(
       color: Colors.white,
-      fontFamily: "Open Sans",
       fontSize: 22,
       fontWeight: FontWeight.bold
   );
@@ -94,7 +91,7 @@ class StyleConstant {
 
   // style for detail page
   static const bigTxtStyle = TextStyle(
-    fontSize: 22,
+    fontSize: 18,
     color: ColorConstant.WHITE,
   );
 

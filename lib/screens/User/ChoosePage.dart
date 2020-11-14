@@ -43,7 +43,7 @@ class _ChoosePageScreen extends State<ChoosePageScreen> {
         StringConstant.SIGN_UP,
         () => {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => SignUpScreen(jwt: "",)))
+                  MaterialPageRoute(builder: (context) => SignUpScreen(type: "",)))
             });
   }
 

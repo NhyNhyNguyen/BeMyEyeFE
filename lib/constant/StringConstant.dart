@@ -1,7 +1,7 @@
 import 'dart:core';
 
 class StringConstant{
-  static const APP_NAME = "My Angle Eyes";
+  static const APP_NAME = "My Angel Eyes";
   static const USERNAME = 'Username';
   static const USERNAME_HINT = 'Enter your username';
   static const PASSWORD = 'Password';
@@ -73,8 +73,8 @@ Không áp dụng cho các ngày Lễ, Tết, suất chiếu đặc biệt, ho�
   static const CONFIRM_PASSWORD = "Confirm Password";
   static const CONFIRM_PASSWORD_HINT = "Enter your confirm password";
   static const RESET_PASS = "Reset Pass";
-  static const CHANGE_PASS = "Change";
-  static const UPLOAD = "UPLOAD IMAGE";
+  static const CHANGE_PASS = "Change pass";
+  static const UPLOAD = "Upload Image";
 
   //Home page
   static const NOW_SHOWING = "Now Showing";
@@ -96,5 +96,8 @@ static const ADD_FACE = "Add Face";
   static const BECOME_ASSISTANCE = "I need visual assistance";
   static const BECOME_VOLUNTEER = "I'd like become volunteer";
   static const SLOGAN = "Join a global support community.\nSee the world together";
+  static const HOW_TO_CALL = "Learn the way how to call";
+  static const BLIND = "blind";
+  static const VOLUNTEER = "volunteer";
 
 }

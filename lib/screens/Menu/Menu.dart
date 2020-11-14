@@ -9,7 +9,6 @@ import 'package:bymyeyefe/screens/User/ChangePassword.dart';
 import 'package:bymyeyefe/screens/User/ChoosePage.dart';
 import 'package:bymyeyefe/screens/User/ChooseProfile.dart';
 import 'package:bymyeyefe/screens/User/DetailScreen.dart';
-import 'package:bymyeyefe/screens/User/History.dart';
 import 'package:bymyeyefe/screens/User/LoginScreen.dart';
 import 'package:bymyeyefe/screens/User/ResetPass.dart';
 import 'package:bymyeyefe/screens/User/SignUpScreen.dart';
@@ -75,17 +74,17 @@ class _MenuState extends State<Menu> {
                   ],
                 ),
               ]),
-              ConstantVar.userDetail == null
+              ConstantVar.user == null
                   ? Container()
                   : Text(
-                ConstantVar.userDetail.username,
+                ConstantVar.user.email,
                 textAlign: TextAlign.center,
                 style: StyleConstant.btnSelectedStyle,
               ),
               Container(
                 margin: EdgeInsets.symmetric(vertical: 20),
               ),
-              ConstantVar.jwt == "" ? Column(
+              ConstantVar.user == null ? Column(
                 children: <Widget>[
                   MenuItem(
                     text: StringConstant.LOGIN,
@@ -100,7 +99,7 @@ class _MenuState extends State<Menu> {
                     icon: Icons.person_add,
                     selectHandle: () => {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => SignUpScreen(jwt: "",)))
+                          MaterialPageRoute(builder: (context) => SignUpScreen(type: "",)))
                     },
                   ),
                 ],
@@ -142,8 +141,8 @@ class _MenuState extends State<Menu> {
                     text: StringConstant.LOGOUT,
                     icon: Icons.arrow_forward,
                     selectHandle: () => {
-                        ConstantVar.userDetail = null,
-                      ConstantVar.jwt = "",
+                        ConstantVar.user = null,
+                      ConstantVar.currentCall = null,
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => LoginScreen(handel: "")))
                     },

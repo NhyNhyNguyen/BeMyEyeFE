@@ -13,12 +13,12 @@ class ButtonGradientLarge extends StatelessWidget {
   Widget build(BuildContext context) {
     return
       Container(
-        width: MediaQuery.of(context).size.width * 0.8,
-        height: 50,
-        margin: EdgeInsets.only(top: 5, bottom: 5),
+        width: MediaQuery.of(context).size.width,
+        height: text == "SPECIAL CALL" ? 150 : 60,
+        margin: EdgeInsets.only(top: 10, bottom: 5),
         padding: EdgeInsets.only(left: 5, right: 5, top: 15,  bottom: 15),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(25)),
+          borderRadius: BorderRadius.all(Radius.circular(5)),
           gradient: ColorConstant.RAINBOW_BUTTON,
         ),
         child: FlatButton(

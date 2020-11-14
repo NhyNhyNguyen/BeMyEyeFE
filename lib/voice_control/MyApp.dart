@@ -1,6 +1,9 @@
 import 'dart:math';
 
 import 'package:bymyeyefe/constant/ConstantVar.dart';
+import 'package:bymyeyefe/screens/User/LoginScreen.dart';
+import 'package:bymyeyefe/screens/User/SignUpScreen.dart';
+import 'package:bymyeyefe/screens/call_video/call_screen.dart';
 import 'package:bymyeyefe/screens/home_page/HomePage.dart';
 import 'package:bymyeyefe/screens/tutorial/ChooseTypeUser.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,7 +25,7 @@ class _MyAppState extends State<MyApp> {
   String lastWords = "";
   String lastError = "";
   String lastStatus = "";
-  String _currentLocaleId = "";
+  String _currentLocaleId = "vi_VN";
   bool hasStart = false;
   final SpeechToText speech = SpeechToText();
 
@@ -69,19 +72,22 @@ class _MyAppState extends State<MyApp> {
           color: Colors.white,
           borderRadius: BorderRadius.all(Radius.circular(50)),
         ),
-        child: IconButton(icon: Icon(Icons.mic, size: 30, color: hasStart ? Colors.red : Colors.black,), onPressed: ()=>{
-          start()
-        },),
+        child: IconButton(icon: Icon(
+          Icons.mic, size: 30, color: hasStart ? Colors.red : Colors.black,),
+          onPressed: () =>
+          {
+            start()
+          },),
       ),
       SizedBox(height: 5,)
     ]);
   }
 
-  void start(){
+  void start() {
     print("start listen");
-    if(!hasStart){
+    if (!hasStart) {
       startListening();
-    }else{
+    } else {
       stopListening();
     }
   }
@@ -91,7 +97,7 @@ class _MyAppState extends State<MyApp> {
     lastError = "";
     speech.listen(
         onResult: resultListener,
-        listenFor: Duration(seconds: 10),
+        listenFor: Duration(seconds: 7),
         localeId: _currentLocaleId,
         onSoundLevelChange: soundLevelListener,
         cancelOnError: true,
@@ -122,9 +128,67 @@ class _MyAppState extends State<MyApp> {
       lastWords = "${result.recognizedWords} - ${result.finalResult}";
       print(lastWords);
     });
-    if(result.recognizedWords.toLowerCase() == "hi"){
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => ChooseTypeUser())
+    redirect(result.recognizedWords.toLowerCase());
+  }
+
+  void redirect(String comman) {
+    switch (comman.toLowerCase()) {
+      case "gọi điện":
+      case "call":
+        _startCall();
+        break;
+      case "tắt gọi":
+        break;
+      case "chấp nhận":
+        break;
+      case "từ chối":
+        break;
+      case "đăng nhập":
+      case "sign in":
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    LoginScreen()
+            )
+        );
+        break;
+      case "sign up":
+      case "đăng ký":
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    SignUpScreen()
+            )
+        );
+        break;
+    }
+  }
+
+  void _startCall() async {
+    if (ConstantVar.currentUser != null) {
+      ConstantVar.currentCall =
+      await ConstantVar.callClient.createCallSession(
+          ConstantVar.currentUser.id);
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              ConversationCallScreen(
+                  ConstantVar.currentCall,
+                  ConstantVar.currentUser.id.toString(),
+                  [], false),
+        ),
+      );
+    } else {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  LoginScreen()
+          )
       );
     }
   }

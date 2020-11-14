@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:bymyeyefe/Loading.dart';
 import 'package:bymyeyefe/constant/ColorConstant.dart';
 import 'package:bymyeyefe/constant/ConstantVar.dart';
 import 'package:bymyeyefe/constant/ImageConstant.dart';
@@ -8,42 +9,43 @@ import 'package:bymyeyefe/constant/StyleConstant.dart';
 import 'package:bymyeyefe/constant/UrlConstant.dart';
 import 'package:bymyeyefe/layout/mainLayout.dart';
 import 'package:bymyeyefe/modal.dart';
+import 'package:bymyeyefe/model/User.dart';
 import 'package:bymyeyefe/model/UserDetail.dart';
 import 'package:bymyeyefe/screens/User/ChooseProfile.dart';
 import 'package:bymyeyefe/screens/User/DetailScreen.dart';
 import 'package:bymyeyefe/screens/User/LoginScreen.dart';
 import 'package:bymyeyefe/screens/User/TextfieldWidget.dart';
 import 'package:bymyeyefe/utils/DateTimeUtils.dart';
+import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:flutter/material.dart';
 
 import '../ButtonGradientLarge.dart';
 import 'package:http/http.dart' as http;
 
 class SignUpScreen extends StatefulWidget {
-  final String jwt;
+  final String type;
 
-  const SignUpScreen({Key key, this.jwt}) : super(key: key);
+  const SignUpScreen({Key key, this.type}) : super(key: key);
 
   @override
-  _SignUpScreenState createState() => _SignUpScreenState(this.jwt);
+  _SignUpScreenState createState() => _SignUpScreenState(this.type);
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  final String jwt;
+  final String type;
+  bool isSignUp = false;
 
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  TextEditingController fullNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
-  TextEditingController addressController = TextEditingController();
 
   DateTime selectedDate = DateTime.now();
   final _formKey = GlobalKey<FormState>();
 
-  _SignUpScreenState(this.jwt);
+  _SignUpScreenState(this.type);
 
-  Future<http.Response> postUserDetail(BuildContext context) async {
+  Future<http.Response> postUserDetail(BuildContext context, CubeUser user) async {
+    print("type "  + type);
     final http.Response response = await http.post(
       UrlConstant.REGISTER,
       headers: <String, String>{
@@ -51,75 +53,84 @@ class _SignUpScreenState extends State<SignUpScreen> {
       },
       body: jsonEncode(<String, String>{
         "username": usernameController.text,
-        "fullName": fullNameController.text,
         "password": passwordController.text,
-        "address": addressController.text,
-        "phone": phoneController.text,
-        "email": emailController.text
+        "role": type == null || type =="" ? StringConstant.BLIND :type,
+        "email": emailController.text,
+        "id": user.id.toString()
       }),
     );
     if (response.statusCode == 200) {
-      print("sign_up success");
-      Modal.showSimpleCustomDialog(
-          context, "Please enter mail to determine", null);
+      User user =  User.fromJson(json.decode(response.body));
+      if(user == null){
+        Modal.showSimpleCustomDialog(context, "Sign up fail", null);
+        print("sign up error");
+        setState(() {
+          isSignUp = false;
+        });
+        return null;
+      }
+      Modal.showSimpleCustomDialog(context, "Sign up successfull", "LOGIN");
+      print("sign up success");
     } else {
-      Modal.showSimpleCustomDialog(
-          context, "Sign up fail", null);
+      Modal.showSimpleCustomDialog(context, "Sign up fail", null);
+      print("sign up error");
     }
     return response;
   }
 
-  Future<bool> confirmDetail(String jwt) async {
-    print(UrlConstant.CONFIRM_ACCOUNT + "?token=" + jwt);
-    final response =
-        await http.get(UrlConstant.CONFIRM_ACCOUNT + "?token=" + jwt, headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json; charset=utf-8',
-    });
-    print(json.decode(response.body));
+  void _processSignUpError(){
+    Modal.showSimpleCustomDialog(context, "Sign up fail", null);
 
-    if (response.statusCode == 200) {
-      Modal.showSimpleCustomDialog(
-          context,
-          "Create account successfull!", "LOGIN");
-      ConstantVar.registerToken = "";
-    } else {
-      Modal.showSimpleCustomDialog(
-          context,
-          "Create account fail!",null);
-      ConstantVar.registerToken = "";
-    }
-
-    return false;
   }
+
 
   Widget _signUpBtn(BuildContext context) {
     return ButtonGradientLarge(StringConstant.REGISTER_NOW, () {
       if (_formKey.currentState.validate()) {
-        postUserDetail(context);
+        if (CubeSessionManager.instance.isActiveSessionValid()) {
+          _signUpCC(context);
+        } else {
+          createSession().then((cubeSession) {
+            _signUpCC(context);
+          }).catchError(_processSignUpError);
+        }
       }
     });
   }
 
+  void _signUpCC(BuildContext context){
+    CubeUser user = CubeUser(
+        login: usernameController.text,
+        password: passwordController.text,
+        email: emailController.text,
+        phone: "",
+        customData: "{token: ''}");
+
+
+    signUp(user)
+        .then((cubeUser) {
+      print("sign up cc success");
+      postUserDetail(context, cubeUser);
+    })
+        .catchError((error){
+          setState(() {
+            isSignUp = false;
+          });
+      Modal.showSimpleCustomDialog(context, "Sign up to cc fail", null);
+    });
+
+  }
+
   @override
   void initState() {
-    if (jwt != "") {
-      print('confirm account');
-      confirmDetail(jwt);
-    }
-    print('confirm account' + jwt);
-
-    usernameController.text = "nhinhi";
-    passwordController.text = "123123";
-    fullNameController.text = "nhinhi";
-    addressController.text = "Ha lang quang phu quang dien";
-    phoneController.text = "12345678910";
-    emailController.text = "dddnhi@gmail.com";
+    usernameController.text = "nhinhinhi";
+    passwordController.text = "123456789";
+    emailController.text = "a@gmail.com";
   }
 
   @override
   Widget build(BuildContext context) {
-    return MainLayOut.getMailLayout(
+    return !isSignUp ? MainLayOut.getMailLayout(
         context,
         Container(
           color: ColorConstant.VIOLET,
@@ -141,7 +152,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
                   decoration: BoxDecoration(
                       color: ColorConstant.LIGHT_VIOLET,
-                      borderRadius: BorderRadius.circular(8.0),
+                      borderRadius: BorderRadius.circular(5),
                       boxShadow: [
                         BoxShadow(
                             color: Colors.black12,
@@ -156,6 +167,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     key: _formKey,
                     child: Column(
                       children: <Widget>[
+                        TextFieldWidget.buildTextField(
+                            StringConstant.EMAIL,
+                            StringConstant.EMAIL_HINT,
+                            Icon(Icons.email, color: Colors.white),
+                            TextInputType.visiblePassword,
+                            emailController),
                         TextFieldWidget.buildTextField(
                             StringConstant.USERNAME,
                             StringConstant.USERNAME_HINT,
@@ -174,33 +191,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
                             TextInputType.visiblePassword,
                             passwordController),
-                        TextFieldWidget.buildTextField(
-                            StringConstant.FULL_NAME,
-                            StringConstant.FULL_NAME_HINT,
-                            Icon(Icons.edit, color: Colors.white),
-                            TextInputType.text,
-                            fullNameController),
-                        TextFieldWidget.buildTextField(
-                            StringConstant.EMAIL,
-                            StringConstant.EMAIL_HINT,
-                            Icon(Icons.email, color: Colors.white),
-                            TextInputType.visiblePassword,
-                            emailController),
-                        TextFieldWidget.buildTextField(
-                            StringConstant.PHONE,
-                            StringConstant.PHONE_HINT,
-                            Icon(
-                              Icons.phone_in_talk,
-                              color: Colors.white,
-                            ),
-                            TextInputType.visiblePassword,
-                            phoneController),
-                        TextFieldWidget.buildTextField(
-                            StringConstant.ADDRESS,
-                            StringConstant.ADDRESS_HINT,
-                            Icon(Icons.add_to_photos, color: Colors.white),
-                            TextInputType.visiblePassword,
-                            addressController),
                       ],
                     ),
                   ),
@@ -214,6 +204,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
         ),
         "USER",
-        "Sign up");
+        "Sign up") :Loading(type: "USER",
+        title: "Sign up");
   }
 }

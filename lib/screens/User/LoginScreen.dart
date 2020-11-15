@@ -56,6 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState(){
     // update token
+    this.token = '';
     _firebaseMessaging.getToken().then((String token) {
       this.token = token;
       print(token);
@@ -207,7 +208,6 @@ Future<void > login (
       //update token
       ConstantVar.user.firebaseToken = this.token;
       User.updateUserProfile(ConstantVar.user);
-      print("[[[[");
     }
     Navigator.push(
       context,

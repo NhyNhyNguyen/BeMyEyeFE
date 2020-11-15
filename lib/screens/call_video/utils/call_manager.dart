@@ -98,11 +98,13 @@ class CallManager {
     _clearProperties();
   }
 
-  sendCallMessage(String roomId, List<int> participantIds) {
-    User.getUsersByRole("volunteer").then((value) => {
+  sendCallMessage(String roomId, List<int> participantIds) async {
+    print("===xcvxcvxv==");
+    print(participantIds);
+    await User.getUsersByRole("volunteer").then((value) => {
       participantIds = value.map((s) => s as int).toList()
     });
-    print("=====");
+    print("===xcvxcvxv==");
     print(participantIds);
     List<CubeMessage> callMsgList = _buildCallMessages(roomId, participantIds);
     callMsgList.forEach((callMsg) {

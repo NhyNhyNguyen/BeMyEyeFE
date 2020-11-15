@@ -1,31 +1,20 @@
-import 'dart:convert';
-
-import 'package:bymyeyefe/Loading.dart';
 import 'package:bymyeyefe/constant/ColorConstant.dart';
-import 'package:bymyeyefe/constant/ConstantVar.dart';
 import 'package:bymyeyefe/constant/ImageConstant.dart';
 import 'package:bymyeyefe/constant/StringConstant.dart';
 import 'package:bymyeyefe/constant/StyleConstant.dart';
-import 'package:bymyeyefe/constant/UrlConstant.dart';
 import 'package:bymyeyefe/layout/mainLayout.dart';
 import 'package:bymyeyefe/model/User.dart';
-import 'package:bymyeyefe/model/UserDetail.dart';
-import 'package:bymyeyefe/screens/User/ChooseProfile.dart';
 import 'package:bymyeyefe/screens/User/LoginScreen.dart';
-import 'package:bymyeyefe/screens/User/ResetPass.dart';
-import 'package:bymyeyefe/screens/User/TextfieldWidget.dart';
-import 'package:bymyeyefe/screens/home_page/HomePage.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
-import '../../main.dart';
 import '../../modal.dart';
 import '../ButtonGradientLarge.dart';
 
 class ChooseTypeUser extends StatefulWidget {
   final String handel;
 
-  const ChooseTypeUser({Key key, this.handel}) : super(key: key);
+  ChooseTypeUser({Key key, this.handel}) : super(key: key);
 
   @override
   _ChooseTypeUserScreenState createState() =>
@@ -33,6 +22,14 @@ class ChooseTypeUser extends StatefulWidget {
 }
 
 class _ChooseTypeUserScreenState extends State<ChooseTypeUser> {
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+
   final String handle;
 
   bool isLoading = true;
@@ -59,7 +56,8 @@ class _ChooseTypeUserScreenState extends State<ChooseTypeUser> {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => LoginScreen(type: StringConstant.VOLUNTEER)));
+              builder: (context) =>
+                  LoginScreen(type: StringConstant.VOLUNTEER)));
     });
   }
 
@@ -72,7 +70,8 @@ class _ChooseTypeUserScreenState extends State<ChooseTypeUser> {
           width: double.infinity,
           height: double.infinity,
           child: Container(
-            padding: EdgeInsets.only(top: 25, bottom: 60.0, left: 20, right: 20),
+            padding:
+                EdgeInsets.only(top: 25, bottom: 60.0, left: 20, right: 20),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[

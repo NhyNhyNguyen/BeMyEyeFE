@@ -49,7 +49,7 @@ class User {
 
   static Future<List> getUsersByRole(String role) async {
     http.Response response = await http.get(
-      UrlConstant.GET_USERS_BY_ROLE + "?role=${role}",
+      UrlConstant.GET_USERS_BY_ROLE + "?role=${role}&roomID=1111}",
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -57,8 +57,12 @@ class User {
 
     if (response.statusCode == 200) {
       print(response.body);
-      return List.from(json.decode(response.body));
+      print("=======");
+      print(json.decode(response.body) as List);
+      return json.decode(response.body) as List;
     } else {
+      print("===sai====");
+
       return [];
     }
   }

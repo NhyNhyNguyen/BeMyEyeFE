@@ -1,6 +1,6 @@
 class ImageConstant{
   static const LOGO = "assets/logo.png";
-  static const BG = "assets/background1.png";
+  static const BG = "assets/background1.jpg";
   static const LOGO1 = "assets/logo1.png";
   static const BOTTOM_LOGIN_BACKGROUND = "assets/background1.jpg";
   static const CALENDAR_GRAY = "assets/carlendar_gray.png";

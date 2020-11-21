@@ -10,6 +10,7 @@ class StringConstant{
   static const REMEMBER_ME = 'Remember me';
   static const SIGN_UP = 'Sign up';
   static const LOGIN = 'Login';
+  static const DETECT = 'Detect object';
   static const SIGN_IN = 'Sign in';
   static const HAVE_ACCOUNT = 'Don\'s have account? ';
   static const REGISTER_NOW = ' Register Now';
@@ -27,6 +28,7 @@ class StringConstant{
 
   //news
   static const TICKET_PRICE = 'Ticket Price';
+  static const SPECIAL_CALL = 'Special call';
   static const NEWS = '     News     ';
   static const NEWSDETAIL1 ='''
 MEMBER - NGÀY HỘI THÀNH VIÊN

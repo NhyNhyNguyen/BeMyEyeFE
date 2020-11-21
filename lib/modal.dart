@@ -1,5 +1,3 @@
-import 'package:bymyeyefe/screens/User/ChooseProfile.dart';
-import 'package:bymyeyefe/screens/User/DetailScreen.dart';
 import 'package:bymyeyefe/screens/User/LoginScreen.dart';
 import 'package:bymyeyefe/screens/home_page/HomePage.dart';
 import 'package:flutter/material.dart';

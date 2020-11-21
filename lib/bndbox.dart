@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'dart:math' as math;
 import 'models.dart';
 
@@ -9,6 +10,33 @@ class BndBox extends StatelessWidget {
   final double screenH;
   final double screenW;
   final String model;
+  FlutterTts flutterTts;
+  double volume = 0.5;
+  double pitch = 1.0;
+  double rate = 0.5;
+
+  @override
+  initState() {
+    initTts();
+  }
+
+  initTts() {
+    flutterTts = FlutterTts();
+  }
+
+  Future _speak(String text) async {
+    await flutterTts.setVolume(volume);
+    await flutterTts.setSpeechRate(rate);
+    await flutterTts.setPitch(pitch);
+
+    if (text != null) {
+      if (text.isNotEmpty) {
+        await flutterTts.awaitSpeakCompletion(true);
+        await flutterTts.speak(text);
+      }
+    }
+  }
+
 
   BndBox(this.results, this.previewH, this.previewW, this.screenH, this.screenW,
       this.model);
@@ -16,6 +44,8 @@ class BndBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Widget> _renderBoxes() {
+      print("======sdfsd==========");
+
       return results.map((re) {
         var _x = re["rect"]["x"];
         var _w = re["rect"]["w"];
@@ -43,6 +73,11 @@ class BndBox extends StatelessWidget {
           if (_y < difH / 2) h -= (difH / 2 - _y) * scaleH;
         }
 
+        if(re["detectedClass"] == "person"){
+          print("======" + re["detectedClass"]);
+          _speak("người");
+        }
+
         return Positioned(
           left: math.max(0, x),
           top: math.max(0, y),
@@ -56,7 +91,7 @@ class BndBox extends StatelessWidget {
                 width: 3.0,
               ),
             ),
-            child: Text(
+      child: Text(
               "${re["detectedClass"]} ${(re["confidenceInClass"] * 100).toStringAsFixed(0)}%",
               style: TextStyle(
                 color: Color.fromRGBO(37, 213, 253, 1.0),
@@ -70,9 +105,14 @@ class BndBox extends StatelessWidget {
     }
 
     List<Widget> _renderStrings() {
+      print("================");
       double offset = -10;
       return results.map((re) {
         offset = offset + 14;
+        print("======");
+        if(re["label"] == "person"){
+          print("======");
+        }
         return Positioned(
           left: 10,
           top: offset,
@@ -91,6 +131,8 @@ class BndBox extends StatelessWidget {
     }
 
     List<Widget> _renderKeypoints() {
+      print("=====zdfsdfsdf=sdfsd==========");
+
       var lists = <Widget>[];
       results.forEach((re) {
         var list = re["keypoints"].values.map<Widget>((k) {

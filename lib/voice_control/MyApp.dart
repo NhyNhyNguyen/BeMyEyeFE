@@ -1,11 +1,10 @@
 import 'dart:math';
 
 import 'package:bymyeyefe/constant/ConstantVar.dart';
+import 'package:bymyeyefe/home.dart';
 import 'package:bymyeyefe/screens/User/LoginScreen.dart';
 import 'package:bymyeyefe/screens/User/SignUpScreen.dart';
 import 'package:bymyeyefe/screens/call_video/call_screen.dart';
-import 'package:bymyeyefe/screens/home_page/HomePage.dart';
-import 'package:bymyeyefe/screens/tutorial/ChooseTypeUser.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:speech_to_text/speech_recognition_error.dart';
@@ -72,14 +71,18 @@ class _MyAppState extends State<MyApp> {
           color: Colors.white,
           borderRadius: BorderRadius.all(Radius.circular(50)),
         ),
-        child: IconButton(icon: Icon(
-          Icons.mic, size: 30, color: hasStart ? Colors.red : Colors.black,),
-          onPressed: () =>
-          {
-            start()
-          },),
+        child: IconButton(
+          icon: Icon(
+            Icons.mic,
+            size: 30,
+            color: hasStart ? Colors.red : Colors.black,
+          ),
+          onPressed: () => {start()},
+        ),
       ),
-      SizedBox(height: 5,)
+      SizedBox(
+        height: 5,
+      )
     ]);
   }
 
@@ -146,50 +149,36 @@ class _MyAppState extends State<MyApp> {
       case "đăng nhập":
       case "sign in":
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    LoginScreen()
-            )
-        );
+            context, MaterialPageRoute(builder: (context) => LoginScreen()));
         break;
       case "sign up":
       case "đăng ký":
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    SignUpScreen()
-            )
-        );
+            context, MaterialPageRoute(builder: (context) => SignUpScreen()));
+        break;
+      case "nhận diện":
+      case "detect":
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => HomePage()));
         break;
     }
   }
 
   void _startCall() async {
     if (ConstantVar.currentUser != null) {
-      ConstantVar.currentCall =
-      await ConstantVar.callClient.createCallSession(
-          ConstantVar.currentUser.id);
+      ConstantVar.currentCall = await ConstantVar.callClient
+          .createCallSession(ConstantVar.currentUser.id);
 
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) =>
-              ConversationCallScreen(
-                  ConstantVar.currentCall,
-                  ConstantVar.currentUser.id.toString(),
-                  [], false),
+          builder: (context) => ConversationCallScreen(ConstantVar.currentCall,
+              ConstantVar.currentUser.id.toString(), [], false),
         ),
       );
     } else {
       Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  LoginScreen()
-          )
-      );
+          context, MaterialPageRoute(builder: (context) => LoginScreen()));
     }
   }
 

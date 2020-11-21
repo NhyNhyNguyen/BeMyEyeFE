@@ -4,6 +4,7 @@ import 'package:bymyeyefe/constant/ImageConstant.dart';
 import 'package:bymyeyefe/constant/StringConstant.dart';
 import 'package:bymyeyefe/constant/StyleConstant.dart';
 import 'package:bymyeyefe/detect_face/TakePictureScreen.dart';
+import 'package:bymyeyefe/home.dart';
 import 'package:bymyeyefe/screens/User/ChangePassword.dart';
 import 'package:bymyeyefe/screens/User/ChooseProfile.dart';
 import 'package:bymyeyefe/screens/User/DetailScreen.dart';
@@ -85,13 +86,13 @@ class _MenuState extends State<Menu> {
               ? Column(
                   children: <Widget>[
                     MenuItem(
-                      text: StringConstant.LOGIN,
-                      icon: Icons.person,
+                      text: StringConstant.DETECT,
+                      icon: Icons.search,
                       selectHandle: () => {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => LoginScreen(handel: "")))
+                                builder: (context) => HomePage()))
                       },
                     ),
                     MenuItem(
@@ -102,6 +103,18 @@ class _MenuState extends State<Menu> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => SignUpScreen(
+                                  type: "",
+                                )))
+                      },
+                    ),
+                    MenuItem(
+                      text: StringConstant.LOGIN,
+                      icon: Icons.lock_open,
+                      selectHandle: () => {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginScreen(
                                       type: "",
                                     )))
                       },
@@ -110,6 +123,16 @@ class _MenuState extends State<Menu> {
                 )
               : Column(
                   children: <Widget>[
+                    MenuItem(
+                      text: StringConstant.DETECT,
+                      icon: Icons.search,
+                      selectHandle: () => {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HomePage()))
+                      },
+                    ),
                     MenuItem(
                       text: StringConstant.PROFILE,
                       icon: Icons.person,
@@ -128,16 +151,6 @@ class _MenuState extends State<Menu> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => DetailScreen()))
-                      },
-                    ),
-                    MenuItem(
-                      text: StringConstant.ADD_FACE,
-                      icon: Icons.add_to_photos,
-                      selectHandle: () => {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => TakePictureScreen()))
                       },
                     ),
                     MenuItem(

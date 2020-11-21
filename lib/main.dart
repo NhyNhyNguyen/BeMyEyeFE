@@ -1,11 +1,21 @@
+import 'package:bymyeyefe/constant/ConstantVar.dart';
 import 'package:bymyeyefe/screens/call_video/login_screen.dart';
 import 'package:bymyeyefe/screens/tutorial/ChooseTypeUser.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'screens/call_video//utils/configs.dart' as config;
 import 'package:connectycube_sdk/connectycube_sdk.dart';
 
-void main() => runApp(App());
 
+Future<Null> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  try {
+    ConstantVar.cameras = await availableCameras();
+  } on CameraException catch (e) {
+    print('Error: $e.code\nError Message: $e.message');
+  }
+  runApp(new App());
+}
 class App extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {

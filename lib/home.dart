@@ -1,3 +1,4 @@
+import 'package:bymyeyefe/constant/ConstantVar.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:tflite/tflite.dart';
@@ -8,9 +9,11 @@ import 'bndbox.dart';
 import 'models.dart';
 
 class HomePage extends StatefulWidget {
-  final List<CameraDescription> cameras;
+  HomePage();
 
-  HomePage(this.cameras);
+  @override
+  void initState() {
+  }
 
   @override
   _HomePageState createState() => new _HomePageState();
@@ -75,24 +78,26 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    Size screen = MediaQuery.of(context).size;
+    Size screen = MediaQuery
+        .of(context)
+        .size;
     return Scaffold(
       body: Stack(
-              children: [
-                Camera(
-                  widget.cameras,
-                  _model,
-                  setRecognitions,
-                ),
-                BndBox(
-                    _recognitions == null ? [] : _recognitions,
-                    math.max(_imageHeight, _imageWidth),
-                    math.min(_imageHeight, _imageWidth),
-                    screen.height,
-                    screen.width,
-                    _model),
-              ],
-            ),
+        children: [
+          Camera(
+            ConstantVar.cameras,
+            _model,
+            setRecognitions,
+          ),
+          BndBox(
+              _recognitions == null ? [] : _recognitions,
+              math.max(_imageHeight, _imageWidth),
+              math.min(_imageHeight, _imageWidth),
+              screen.height,
+              screen.width,
+              _model),
+        ],
+      ),
     );
   }
 }

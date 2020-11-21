@@ -18,7 +18,7 @@ class User {
     var userJson = json['user'];
     if (userJson == null) return null;
     return User(
-      id: int.parse(userJson['id']),
+      id: (userJson['id']),
       email: userJson['email'],
       password: userJson['password'],
       role: userJson['role'],

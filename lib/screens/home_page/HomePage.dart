@@ -100,10 +100,21 @@ class _HomepageState extends State<Homepage> {
                     builder: (context) =>
                         LoginScreen(type: "BECOME_ASSISTANCE")));
           })
-        : ButtonGradientLarge("SPECIAL CALL", () {
-            //to do
-            _startCall();
-          });
+        : Expanded(
+            child: Container(
+            width: MediaQuery.of(context).size.width,
+            margin: EdgeInsets.only(top: 10, bottom: 5),
+            padding: EdgeInsets.only(left: 5, right: 5, top: 15, bottom: 15),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(5)),
+              gradient: ColorConstant.RAINBOW_BUTTON,
+            ),
+            child: FlatButton(
+              child: Text(StringConstant.SPECIAL_CALL,
+                  style: StyleConstant.btnLargeStyle),
+              onPressed: () => {_startCall()},
+            ),
+          ));
   }
 
   void _startCall() async {
@@ -297,7 +308,9 @@ class _HomepageState extends State<Homepage> {
                           ),
                         )
                       : Container(),
-                  Expanded(flex: 1, child: Container()),
+                  ConstantVar.user.role == StringConstant.VOLUNTEER
+                      ? Expanded(flex: 1, child: Container())
+                      : Container(),
                   _howToCallBtn(),
                   SizedBox(
                     height: 60,

@@ -1,12 +1,15 @@
 import 'dart:math';
 
 import 'package:bymyeyefe/constant/ConstantVar.dart';
+import 'package:bymyeyefe/constant/StringConstant.dart';
 import 'package:bymyeyefe/home.dart';
 import 'package:bymyeyefe/screens/User/LoginScreen.dart';
 import 'package:bymyeyefe/screens/User/SignUpScreen.dart';
 import 'package:bymyeyefe/screens/call_video/call_screen.dart';
+import 'package:bymyeyefe/services/text_to_speed_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_beep/flutter_beep.dart';
 import 'package:speech_to_text/speech_recognition_error.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
@@ -24,7 +27,6 @@ class _MyAppState extends State<MyApp> {
   String lastWords = "";
   String lastError = "";
   String lastStatus = "";
-  String _currentLocaleId = "vi_VN";
   bool hasStart = false;
   final SpeechToText speech = SpeechToText();
 
@@ -98,10 +100,11 @@ class _MyAppState extends State<MyApp> {
   void startListening() {
     lastWords = "";
     lastError = "";
+    print("_currentLocaleId" + ConstantVar.currentLocal);
     speech.listen(
         onResult: resultListener,
-        listenFor: Duration(seconds: 7),
-        localeId: _currentLocaleId,
+        listenFor: Duration(seconds: 10),
+        localeId: ConstantVar.currentLocal,
         onSoundLevelChange: soundLevelListener,
         cancelOnError: true,
         listenMode: ListenMode.confirmation);
@@ -134,33 +137,43 @@ class _MyAppState extends State<MyApp> {
     redirect(result.recognizedWords.toLowerCase());
   }
 
-  void redirect(String comman) {
-    switch (comman.toLowerCase()) {
-      case "gọi điện":
-      case "call":
+  void redirect(String command) {
+    command = command.trim();
+    switch (command.toLowerCase()) {
+      case StringConstant.CALL_COMMAND:
+      case StringConstant.VI_CALL_COMMAND:
         _startCall();
         break;
       case "tắt gọi":
         break;
-      case "chấp nhận":
+      case StringConstant.ACCEPT_CALL_COMMAND:
+      case StringConstant.VI_ACCEPT_CALL_COMMAND:
         break;
-      case "từ chối":
+      case StringConstant.REJECT_CALL_COMMAND:
+      case StringConstant.VI_REJECT_CALL_COMMAND:
         break;
-      case "đăng nhập":
-      case "sign in":
+      case StringConstant.LOGIN_COMMAND:
+      case StringConstant.VI_LOGIN_COMMAND:
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => LoginScreen()));
         break;
-      case "sign up":
-      case "đăng ký":
+      case StringConstant.SIGN_UP_COMMAND:
+      case StringConstant.VI_SIGN_UP_COMMAND:
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => SignUpScreen()));
         break;
-      case "nhận diện":
-      case "detect":
+      case StringConstant.DETECT_COMMAND:
+      case StringConstant.VI_DETECT_COMMAND:
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => HomePage()));
         break;
+      default:
+        if(command.length > 4 && (command.contains('tìm') || command.contains("set"))){
+            ConstantVar.findObject = command.substring(3).trim();
+            print(ConstantVar.findObject);
+            FlutterBeep.beep();
+           //TextToSpeedService.speak(ConstantVar.currentLocal == "vi-VN" ? StringConstant.VI_FIND_OBJECT : StringConstant.FIND_OBJECT);
+        }
     }
   }
 

@@ -1,22 +1,9 @@
-import 'dart:math';
-
 import 'package:bymyeyefe/constant/ColorConstant.dart';
-import 'package:bymyeyefe/constant/ConstantVar.dart';
-import 'package:bymyeyefe/constant/ImageConstant.dart';
-import 'package:bymyeyefe/constant/StringConstant.dart';
 import 'package:bymyeyefe/constant/StyleConstant.dart';
-import 'package:bymyeyefe/constant/UrlConstant.dart';
 import 'package:bymyeyefe/screens/Menu/Menu.dart';
-import 'package:bymyeyefe/screens/Menu/MenuItem.dart';
-import 'package:bymyeyefe/screens/User/ChoosePage.dart';
-import 'package:bymyeyefe/screens/User/LoginScreen.dart';
-import 'package:bymyeyefe/screens/User/SignUpScreen.dart';
 import 'package:bymyeyefe/screens/home_page/HomePage.dart';
-import 'package:bymyeyefe/screens/tutorial/ChooseTypeUser.dart';
-import 'package:bymyeyefe/voice_control/MyApp.dart';
+import 'package:bymyeyefe/voice_control/SpeechToText.dart';
 import 'package:flutter/material.dart';
-import 'package:speech_to_text/speech_recognition_error.dart';
-import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
 class MainLayOut {
@@ -27,7 +14,6 @@ class MainLayOut {
   static String lastWords = "";
   static String lastError = "";
   static String lastStatus = "";
-  static String _currentLocaleId = "";
   static final SpeechToText speech = SpeechToText();
 
   static Widget getMailLayout(

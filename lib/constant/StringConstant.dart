@@ -1,6 +1,6 @@
 import 'dart:core';
 
-class StringConstant{
+class StringConstant {
   static const APP_NAME = "My Angel Eyes";
   static const USERNAME = 'Username';
   static const USERNAME_HINT = 'Enter your username';
@@ -25,41 +25,8 @@ class StringConstant{
   static const EMAIL_HINT = 'Enter your email';
   static const PHONE = 'Phone number';
   static const PHONE_HINT = 'Enter your phone number';
-
-  //news
-  static const TICKET_PRICE = 'Ticket Price';
   static const SPECIAL_CALL = 'Special call';
-  static const NEWS = '     News     ';
-  static const NEWSDETAIL1 ='''
-MEMBER - NGÀY HỘI THÀNH VIÊN
-Thành Viên Cinestar được áp dụng giá vé ưu đãi, hạng thẻ C’FRIEND và C’VIP
-Thời gian: Thứ Tư hàng tuần
-- Giá vé: 45,000 đ/vé 2D và  55,000 đ/ vé 3D
-- Giảm 10% giá trị hóa đơn bắp nước cho chủ thẻ C’FRIEND và 15% cho chủ thẻ C’VIP.
-- Chương trình tích điểm thành viên và các điều kiện thành viên khác được áp dụng.
-- Lưu ý: chương trình không giới hạn số vé và số lần giao dịch trong thời gian diễn ra.''';
-  static const NEWSDETAIL2 = '''
-C'TUESDAY - COMBO THẢ GA
-Áp dụng cho mỗi vé xem phim vào ngày Thứ Ba hàng tuần.
-Được mua Combo đồng giá 45.000đ:
-- 2 vé: mua được 1 Combo "Có Gấu" 45k gồm 2 nước vừa + 1 bắp vừa
-- 3 vé: mua được 1 Combo "3 Người" giá 45k gồm 2 nước vừa + 1 nước nhỏ + 2 bắp vừa
-- 4 vé: mua được 1 Combo "Nhà Gấu" giá 45k gồm 2 nước vừa + 2 nước nhỏ + 2 bắp vừa. ''';
-  static const NEWSDETAIL3 = '''
-TẸT GA 45K SUỐT TUẦN TOÀN HỆ THỐNG
-ÁP DỤNG MỨC GIÁ 45K / VÉ 2D - CẢ TUẦN - TOÀN HỆ THỐNG
-✔️ KHÔNG đắn đo về giá vé
-✔️ KHÔNG nhức đầu nghĩ điểm hẹn cuối tuần
-✔️ KHÔNG cần miệt mài lựa chọn phim
-Áp dụng dành cho giáo viên, giảng viên, học sinh, sinh viên và thanh niên dưới 22 tuổi, trên toàn hệ thống.
-Ưu đãi giá vé xem phim chỉ 45,000đ/vé 2D.
-Vui lòng xuất trình thẻ HSSV-GV hoặc CMND có dán ảnh và còn hiệu lực khi mua vé.
-Mỗi thẻ mua được một vé.
-Không áp dụng cho các ngày Lễ, Tết, suất chiếu đặc biệt, hoặc suất chiếu có phụ thu từ nhà phát hành phim.''';
-
-
-  // Book ticket
-  static const BOOK_TICKET = 'Book Ticket';
+  static const CHANGE_LANGUAGE = 'Change language';
 
   //Edit
   static const SAVE = "Save";
@@ -78,28 +45,37 @@ Không áp dụng cho các ngày Lễ, Tết, suất chiếu đặc biệt, ho�
   static const CHANGE_PASS = "Change pass";
   static const UPLOAD = "Upload Image";
 
-  //Home page
-  static const NOW_SHOWING = "Now Showing";
-  static const COMMING_SOON = "Coming Soon";
-  static const SEARCH = "search";
-
-  //homepage_movie
-static const NAME1= "Spdierman";
-static const NAME2 = "High Kick";
-static const NAME3 =" Frozen";
-
 //side bar
-static const NOT_LOGIN = "Not login";
-static const CHOOSE_YOUR_SEAT = "Choose your seat";
-static const ADD_FACE = "Add Face";
-
+  static const NOT_LOGIN = "Not login";
 
 // My Angle eyes
   static const BECOME_ASSISTANCE = "I need visual assistance";
   static const BECOME_VOLUNTEER = "I'd like become volunteer";
-  static const SLOGAN = "Join a global support community.\nSee the world together";
+  static const SLOGAN =
+      "Join a global support community.\nSee the world together";
   static const HOW_TO_CALL = "Learn the way how to call";
   static const BLIND = "blind";
   static const VOLUNTEER = "volunteer";
 
+  //command english
+  static const CALL_COMMAND = "call";
+  static const TURN_OFF_APP_COMMAND = "call";
+  static const ACCEPT_CALL_COMMAND = "accept";
+  static const REJECT_CALL_COMMAND = "reject";
+  static const LOGIN_COMMAND = "login";
+  static const SIGN_UP_COMMAND = "sign up";
+  static const DETECT_COMMAND = "detect";
+  static const SET_OBJECT_COMMAND = "set";
+  static const FIND_OBJECT = "Set object successful";
+
+  //command vi
+  static const VI_CALL_COMMAND = "gọi ";
+  static const VI_TURN_OFF_APP_COMMAND = "tắt ";
+  static const VI_ACCEPT_CALL_COMMAND = "chấp nhận";
+  static const VI_REJECT_CALL_COMMAND = "từ chối";
+  static const VI_LOGIN_COMMAND = "đăng nhập";
+  static const VI_SIGN_UP_COMMAND = "đăng ký";
+  static const VI_DETECT_COMMAND = "nhận diện";
+  static const VI_SET_OBJECT_COMMAND = "tìm đồ vật";
+  static const VI_FIND_OBJECT = "Set đồ vật thành công";
 }

@@ -3,7 +3,6 @@ import 'package:bymyeyefe/constant/ConstantVar.dart';
 import 'package:bymyeyefe/constant/ImageConstant.dart';
 import 'package:bymyeyefe/constant/StringConstant.dart';
 import 'package:bymyeyefe/constant/StyleConstant.dart';
-import 'package:bymyeyefe/detect_face/TakePictureScreen.dart';
 import 'package:bymyeyefe/home.dart';
 import 'package:bymyeyefe/screens/User/ChangePassword.dart';
 import 'package:bymyeyefe/screens/User/ChooseProfile.dart';
@@ -89,10 +88,8 @@ class _MenuState extends State<Menu> {
                       text: StringConstant.DETECT,
                       icon: Icons.search,
                       selectHandle: () => {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => HomePage()))
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => HomePage()))
                       },
                     ),
                     MenuItem(
@@ -103,8 +100,8 @@ class _MenuState extends State<Menu> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => SignUpScreen(
-                                  type: "",
-                                )))
+                                      type: "",
+                                    )))
                       },
                     ),
                     MenuItem(
@@ -119,6 +116,36 @@ class _MenuState extends State<Menu> {
                                     )))
                       },
                     ),
+                    Container(
+                        margin:
+                            EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                        decoration: BoxDecoration(
+                            border: Border(
+                                bottom: BorderSide(
+                                    width: 1, color: ColorConstant.WHITE))),
+                        child: Row(
+                          children: <Widget>[
+                            Switch(
+                              value: ConstantVar.currentLocal == "vi-VN"
+                                  ? true
+                                  : false,
+                              onChanged: (value) {
+                                setState(() {
+                                  ConstantVar.currentLocal =
+                                      value ? "vi-VN" : "en-US";
+                                });
+                              },
+                              activeTrackColor: ColorConstant.VIOLET,
+                              activeColor: ColorConstant.WHITE,
+                            ),
+                            Text(
+                              ConstantVar.currentLocal == "vi-VN"
+                                  ? "Viet Nam"
+                                  : "English",
+                              style: StyleConstant.priceTextStyle,
+                            ),
+                          ],
+                        )),
                   ],
                 )
               : Column(
@@ -127,10 +154,8 @@ class _MenuState extends State<Menu> {
                       text: StringConstant.DETECT,
                       icon: Icons.search,
                       selectHandle: () => {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => HomePage()))
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => HomePage()))
                       },
                     ),
                     MenuItem(
@@ -174,6 +199,14 @@ class _MenuState extends State<Menu> {
                             MaterialPageRoute(
                                 builder: (context) => LoginScreen(handel: "")))
                       },
+                    ),
+                    Switch(
+                      value: true,
+                      onChanged: (value) {
+                        setState(() {});
+                      },
+                      activeTrackColor: ColorConstant.VIOLET,
+                      activeColor: ColorConstant.WHITE,
                     ),
                   ],
                 ),

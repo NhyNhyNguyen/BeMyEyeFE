@@ -12,14 +12,15 @@ class ConstantVar {
   static User user = null;
   static String registerToken = "";
   static String resetPassWordToken = "";
-  static String currentLocal = "vi_VN";
+  static String currentLocal = "en-US";
   static CubeUser currentUser;
   static CallManager callManager;
   static ConferenceClient callClient;
   static ConferenceSession currentCall;
   static List<CameraDescription> cameras;
   static FlutterTts flutterTts;
+  static String findObject = "";
   static final double volume = 0.5;
-  static final double pitch = 1.5;
-  static final double rate = 0.7;
+  static final double pitch = 1.4;
+  static final double rate = 0.6;
 }

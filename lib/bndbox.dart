@@ -17,16 +17,6 @@ class BndBox extends StatelessWidget {
   final String model;
 
 
-  Future _speak(String text) async {
-    if (text != null && ConstantVar.flutterTts != null) {
-      if (text.isNotEmpty) {
-        await ConstantVar.flutterTts.awaitSpeakCompletion(true);
-        await ConstantVar.flutterTts.speak(text);
-      }
-    }
-  }
-
-
   BndBox(this.results, this.previewH, this.previewW, this.screenH, this.screenW,
       this.model);
 

@@ -3,6 +3,7 @@ import 'package:bymyeyefe/model/UserDetail.dart';
 import 'package:bymyeyefe/screens/call_video/utils/call_manager.dart';
 import 'package:camera/camera.dart';
 import 'package:connectycube_sdk/connectycube_sdk.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
 class ConstantVar {
   static String jwt = "";
@@ -17,4 +18,8 @@ class ConstantVar {
   static ConferenceClient callClient;
   static ConferenceSession currentCall;
   static List<CameraDescription> cameras;
+  static FlutterTts flutterTts;
+  static final double volume = 0.5;
+  static final double pitch = 1.5;
+  static final double rate = 0.7;
 }

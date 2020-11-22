@@ -1,4 +1,9 @@
+import 'dart:io';
+
+import 'package:bymyeyefe/constant/ConstantVar.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_beep/flutter_beep.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'dart:math' as math;
 import 'models.dart';
@@ -10,29 +15,13 @@ class BndBox extends StatelessWidget {
   final double screenH;
   final double screenW;
   final String model;
-  FlutterTts flutterTts;
-  double volume = 0.5;
-  double pitch = 1.0;
-  double rate = 0.5;
 
-  @override
-  initState() {
-    initTts();
-  }
-
-  initTts() {
-    flutterTts = FlutterTts();
-  }
 
   Future _speak(String text) async {
-    await flutterTts.setVolume(volume);
-    await flutterTts.setSpeechRate(rate);
-    await flutterTts.setPitch(pitch);
-
-    if (text != null) {
+    if (text != null && ConstantVar.flutterTts != null) {
       if (text.isNotEmpty) {
-        await flutterTts.awaitSpeakCompletion(true);
-        await flutterTts.speak(text);
+        await ConstantVar.flutterTts.awaitSpeakCompletion(true);
+        await ConstantVar.flutterTts.speak(text);
       }
     }
   }
@@ -75,7 +64,8 @@ class BndBox extends StatelessWidget {
 
         if(re["detectedClass"] == "person"){
           print("======" + re["detectedClass"]);
-          _speak("người");
+        //  _speak("");
+          FlutterBeep.beep();
         }
 
         return Positioned(

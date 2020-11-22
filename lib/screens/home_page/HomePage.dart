@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:bymyeyefe/Loading.dart';
 import 'package:bymyeyefe/constant/ColorConstant.dart';
 import 'package:bymyeyefe/constant/ConstantVar.dart';
 import 'package:bymyeyefe/constant/ImageConstant.dart';
@@ -10,7 +11,9 @@ import 'package:bymyeyefe/screens/User/LoginScreen.dart';
 import 'package:bymyeyefe/screens/call_video/call_screen.dart';
 import 'package:bymyeyefe/screens/call_video/utils/call_manager.dart';
 import 'package:bymyeyefe/screens/call_video/utils/configs.dart' as utils;
+import 'package:bymyeyefe/screens/room/Room.dart';
 import 'package:connectycube_sdk/connectycube_calls.dart';
+import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -32,6 +35,7 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   String url;
+  bool _isLoginContinues = false;
 
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
@@ -39,8 +43,12 @@ class _HomepageState extends State<Homepage> {
   void initState() {
     super.initState();
     _initConferenceConfig();
-    _initCalls();
-    super.initState();
+    if(CubeChatConnection.instance.systemMessagesManager == null){
+      _loginToCC(ConstantVar.currentUser);
+      _isLoginContinues = true;
+    }else{
+      _initCalls();
+    }
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
@@ -65,27 +73,75 @@ class _HomepageState extends State<Homepage> {
     }
   }
 
+  _loginToCC(CubeUser user) {
+    if (CubeSessionManager.instance.isActiveSessionValid()) {
+      _loginToCubeChat(user);
+    } else {
+      createSession(user).then((cubeSession) {
+        _loginToCubeChat(user);
+      }).catchError(_processLoginError);
+    }
+  }
+
+  void _loginToCubeChat(CubeUser user) {
+    CubeChatConnection.instance.login(user).then((cubeUser) {
+      setState(() {
+        _isLoginContinues = false;
+      });
+      ConstantVar.currentUser = cubeUser;
+      _initCalls();
+    }).catchError(_processLoginError);
+  }
+
+  void _processLoginError(exception) {
+
+    setState(() {
+      _isLoginContinues = false;
+    });
+
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Login Error"),
+            content: Text("Something went wrong during reconnect to ConnectyCube"),
+            actions: <Widget>[
+              FlatButton(
+                child: Text("OK"),
+                onPressed: () => Navigator.of(context).pop(),
+              )
+            ],
+          );
+        });
+  }
+
+
   void _initConferenceConfig() {
     ConferenceConfig.instance.url = utils.SERVER_ENDPOINT;
   }
 
   void _initCalls() {
-    ConstantVar.callClient = ConferenceClient.instance;
-    ConstantVar.callManager = CallManager.instance;
-    ConstantVar.callManager.onReceiveNewCall = (roomId, participantIds) {
-      _showIncomingCallScreen(roomId, participantIds);
-    };
+    if(CubeChatConnection.instance.systemMessagesManager == null){
+      _loginToCC(ConstantVar.currentUser);
+      _isLoginContinues = true;
+    }else{
+      ConstantVar.callClient = ConferenceClient.instance;
+      ConstantVar.callManager = CallManager.instance;
+      ConstantVar.callManager.onReceiveNewCall = (roomId, participantIds, name) {
+        _showIncomingCallScreen(roomId, participantIds, name);
+      };
 
-    ConstantVar.callManager.onCloseCall = () {
-      ConstantVar.currentCall = null;
-    };
+      ConstantVar.callManager.onCloseCall = () {
+        ConstantVar.currentCall = null;
+      };
+    }
   }
 
-  void _showIncomingCallScreen(String roomId, List<int> participantIds) {
+  void _showIncomingCallScreen(String roomId, List<int> participantIds, name) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => IncomingCallScreen(roomId, participantIds),
+        builder: (context) => IncomingCallScreen(roomId, participantIds, name),
       ),
     );
   }
@@ -98,7 +154,7 @@ class _HomepageState extends State<Homepage> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        LoginScreen(type: "BECOME_ASSISTANCE")));
+                        ListRoom()));
           })
         : Expanded(
             child: Container(
@@ -138,7 +194,7 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return ConstantVar.currentUser != null && ConstantVar.user != null
-        ? MainLayOut.getMailLayout(
+        ? !_isLoginContinues ?  MainLayOut.getMailLayout(
             context,
             Container(
               width: double.infinity,
@@ -319,7 +375,7 @@ class _HomepageState extends State<Homepage> {
               ),
             ),
             "USER",
-            StringConstant.APP_NAME)
+            StringConstant.APP_NAME) : Loading(title: StringConstant.APP_NAME, type: "USER",)
         : LoginScreen();
   }
 }

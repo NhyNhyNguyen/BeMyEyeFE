@@ -188,25 +188,49 @@ class _MenuState extends State<Menu> {
                                 builder: (context) => ChangePasswordScreen()))
                       },
                     ),
+                    Container(
+                        margin:
+                            EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                        decoration: BoxDecoration(
+                            border: Border(
+                                bottom: BorderSide(
+                                    width: 1, color: ColorConstant.WHITE))),
+                        child: Row(
+                          children: <Widget>[
+                            Switch(
+                              value: ConstantVar.currentLocal == "vi-VN"
+                                  ? true
+                                  : false,
+                              onChanged: (value) {
+                                setState(() {
+                                  ConstantVar.currentLocal =
+                                      value ? "vi-VN" : "en-US";
+                                });
+                              },
+                              activeTrackColor: ColorConstant.VIOLET,
+                              activeColor: ColorConstant.WHITE,
+                            ),
+                            Text(
+                              ConstantVar.currentLocal == "vi-VN"
+                                  ? "Viet Nam"
+                                  : "English",
+                              style: StyleConstant.priceTextStyle,
+                            ),
+                          ],
+                        )),
                     MenuItem(
                       text: StringConstant.LOGOUT,
                       icon: Icons.arrow_forward,
                       selectHandle: () => {
                         ConstantVar.user = null,
                         ConstantVar.currentCall = null,
+                        ConstantVar.removeData('user'),
+                        ConstantVar.removeData('cubeUser'),
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => LoginScreen(handel: "")))
                       },
-                    ),
-                    Switch(
-                      value: true,
-                      onChanged: (value) {
-                        setState(() {});
-                      },
-                      activeTrackColor: ColorConstant.VIOLET,
-                      activeColor: ColorConstant.WHITE,
                     ),
                   ],
                 ),

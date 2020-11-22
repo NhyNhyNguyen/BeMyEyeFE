@@ -11,8 +11,9 @@ class IncomingCallScreen extends StatelessWidget {
   static const String TAG = "IncomingCallScreen";
   String _roomId;
   List<int> _participantIds;
+  String _name;
 
-  IncomingCallScreen(this._roomId, this._participantIds);
+  IncomingCallScreen(this._roomId, this._participantIds, this._name);
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +39,7 @@ class IncomingCallScreen extends StatelessWidget {
               ),
               Padding(
                 padding: EdgeInsets.only(bottom: 86),
-                child: Text(_participantIds.join(", "),
+                child: Text(this._name,
                     style: TextStyle(fontSize: 18)),
               ),
               Row(

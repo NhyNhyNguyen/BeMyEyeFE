@@ -27,6 +27,28 @@ class User {
     );
   }
 
+  factory User.fromJson2(Map<String, dynamic> userJson) {
+    return User(
+      id: (userJson['id']),
+      email: userJson['email'],
+      password: userJson['password'],
+      role: userJson['role'],
+      username: userJson['username'],
+      firebaseToken: userJson['token'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'username': this.username,
+      'id': this.id,
+      'password': this.password,
+      'role': this.role,
+      'token': this.firebaseToken,
+      'email': this.email,
+    };
+  }
+
   static Future<User> login(String username, String password) async {
     http.Response response = await http.post(
       UrlConstant.LOGIN,

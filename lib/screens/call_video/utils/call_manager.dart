@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bymyeyefe/constant/ConstantVar.dart';
 import 'package:bymyeyefe/model/User.dart';
 import 'package:bymyeyefe/screens/home_page/HomePage.dart';
 import 'package:connectycube_sdk/connectycube_chat.dart';
@@ -34,12 +35,13 @@ class CallManager {
     final properties = cubeMessage.properties;
     if(properties.containsKey("callStart")) {
       String roomId = properties["janusRoomId"];
+      String name = properties["name"];
       List<int> participantIds = properties["participantIds"].split(',').map((id) => int.parse(id)).toList();
       if(_roomId == null) {
         _roomId = roomId;
         _initiatorId = cubeMessage.senderId;
         _participantIds = participantIds;
-        if(onReceiveNewCall != null) onReceiveNewCall(roomId, participantIds);
+        if(onReceiveNewCall != null) onReceiveNewCall(roomId, participantIds, name);
       }
     } else if(properties.containsKey("callAccepted")) {
       String roomId = properties["janusRoomId"];
@@ -143,7 +145,7 @@ class CallManager {
     return participantIds.map((userId) {
       var msg = CubeMessage();
       msg.recipientId = userId;
-      msg.properties = {"janusRoomId": roomId};
+      msg.properties = {"janusRoomId": roomId, "name": ConstantVar.user.username};
       return msg;
     }).toList();
   }
@@ -196,7 +198,7 @@ class CallManager {
     }
   }
 }
-typedef void NewCallCallback(String roomId, List<int> participantIds);
+typedef void NewCallCallback(String roomId, List<int> participantIds, String name);
 typedef void CloseCall();
 typedef void RejectCallCallback(String roomId, int participantId, bool isBusy);
 typedef void UserNotAnswerCallback(int participantId);

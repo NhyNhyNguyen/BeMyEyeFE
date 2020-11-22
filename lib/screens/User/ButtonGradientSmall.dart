@@ -13,15 +13,15 @@ class ButtonGradientSmall extends StatelessWidget {
   Widget build(BuildContext context) {
     return
       Container(
-        height: 50,
+        height: 60,
         margin: EdgeInsets.all(5),
-        padding: EdgeInsets.only(left: 10, right: 10),
+        padding: EdgeInsets.only(left: 5, right: 5),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
+          borderRadius: BorderRadius.all(Radius.circular(5)),
           gradient: ColorConstant.RAINBOW_BUTTON,
         ),
         child: FlatButton(
-          child: Text(text, style:StyleConstant.btnSelectedStyle ),
+          child: Text(text, style:StyleConstant.btnSelectedStyle),
           onPressed: selectHandler,
         ),
       );

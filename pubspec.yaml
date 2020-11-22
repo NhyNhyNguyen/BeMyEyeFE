@@ -60,7 +60,8 @@ dependencies:
   firebase_messaging: ^4.0.0+3
   tflite: 1.0.4
   flutter_beep: ^0.2.0
-
+  localstorage: ^3.0.0
+  flutter_launcher_name: "^0.0.1"
 
 
 
@@ -72,6 +73,9 @@ analyzer:
   enable-experiment:
     - control-flow-collections
     - spread-collections
+
+flutter_launcher_name:
+  name: "yourNewAppLauncherName"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -133,4 +137,4 @@ flutter:
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   #
-  # For details regarding fonts from package dependencies,
+  # For details regarding

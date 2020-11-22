@@ -151,8 +151,8 @@ class _BodyLayoutState extends State<BodyLayout> {
   void _initCalls() {
     _callClient = ConferenceClient.instance;
     _callManager = CallManager.instance;
-    _callManager.onReceiveNewCall = (roomId, participantIds) {
-      _showIncomingCallScreen(roomId, participantIds);
+    _callManager.onReceiveNewCall = (roomId, participantIds, name) {
+      _showIncomingCallScreen(roomId, participantIds, name);
     };
 
     _callManager.onCloseCall = () {
@@ -171,11 +171,11 @@ class _BodyLayoutState extends State<BodyLayout> {
     );
   }
 
-  void _showIncomingCallScreen(String roomId, List<int> participantIds) {
+  void _showIncomingCallScreen(String roomId, List<int> participantIds, name) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => IncomingCallScreen(roomId, participantIds),
+        builder: (context) => IncomingCallScreen(roomId, participantIds, name),
       ),
     );
   }

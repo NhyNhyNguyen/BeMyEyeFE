@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
       default:
         res = await Tflite.loadModel(
             model: "assets/ssd_mobilenet.tflite",
-            labels: "assets/ssd_mobilenet.txt");
+            labels: "assets/ssd_mobilenet_vi.txt");
     }
     print(res);
   }

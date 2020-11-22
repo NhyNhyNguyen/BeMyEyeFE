@@ -172,7 +172,7 @@ class _MyAppState extends State<MyApp> {
             ConstantVar.findObject = command.substring(3).trim();
             print(ConstantVar.findObject);
             FlutterBeep.beep();
-           //TextToSpeedService.speak(ConstantVar.currentLocal == "vi-VN" ? StringConstant.VI_FIND_OBJECT : StringConstant.FIND_OBJECT);
+          // TextToSpeedService.speak(ConstantVar.currentLocal == "vi-VN" ? StringConstant.VI_FIND_OBJECT : StringConstant.FIND_OBJECT);
         }
     }
   }

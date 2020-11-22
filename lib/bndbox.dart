@@ -1,11 +1,10 @@
-import 'dart:io';
+import 'dart:math' as math;
 
 import 'package:bymyeyefe/constant/ConstantVar.dart';
-import 'package:flutter/foundation.dart';
+import 'package:bymyeyefe/services/text_to_speed_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_beep/flutter_beep.dart';
-import 'package:flutter_tts/flutter_tts.dart';
-import 'dart:math' as math;
+
 import 'models.dart';
 
 class BndBox extends StatelessWidget {
@@ -15,7 +14,6 @@ class BndBox extends StatelessWidget {
   final double screenH;
   final double screenW;
   final String model;
-
 
   BndBox(this.results, this.previewH, this.previewW, this.screenH, this.screenW,
       this.model);
@@ -52,9 +50,8 @@ class BndBox extends StatelessWidget {
           if (_y < difH / 2) h -= (difH / 2 - _y) * scaleH;
         }
 
-        if(re["detectedClass"] == "person"){
-          print("======" + re["detectedClass"]);
-        //  _speak("");
+        if (re["detectedClass"].toString().contains(ConstantVar.findObject) && re["confidenceInClass"] * 100 > 60) {
+          print("======" + re["detectedClass"] + ConstantVar.findObject);
           FlutterBeep.beep();
         }
 
@@ -71,7 +68,7 @@ class BndBox extends StatelessWidget {
                 width: 3.0,
               ),
             ),
-      child: Text(
+            child: Text(
               "${re["detectedClass"]} ${(re["confidenceInClass"] * 100).toStringAsFixed(0)}%",
               style: TextStyle(
                 color: Color.fromRGBO(37, 213, 253, 1.0),
@@ -85,12 +82,10 @@ class BndBox extends StatelessWidget {
     }
 
     List<Widget> _renderStrings() {
-      print("================");
       double offset = -10;
       return results.map((re) {
         offset = offset + 14;
-        print("======");
-        if(re["label"] == "person"){
+        if (re["label"] == ConstantVar.findObject && re["confidence"] * 100 > 50) {
           print("======");
         }
         return Positioned(
@@ -111,7 +106,6 @@ class BndBox extends StatelessWidget {
     }
 
     List<Widget> _renderKeypoints() {
-      print("=====zdfsdfsdf=sdfsd==========");
 
       var lists = <Widget>[];
       results.forEach((re) {
@@ -159,7 +153,9 @@ class BndBox extends StatelessWidget {
     return Stack(
       children: model == mobilenet
           ? _renderStrings()
-          : model == posenet ? _renderKeypoints() : _renderBoxes(),
+          : model == posenet
+              ? _renderKeypoints()
+              : _renderBoxes(),
     );
   }
 }

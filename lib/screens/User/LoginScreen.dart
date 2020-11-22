@@ -175,8 +175,8 @@ Future<void > login (
       setState(() {
         _isLoginContinues = false;
       });
-      _goSelectOpponentsScreen(context, cubeUser);
       ConstantVar.currentUser = cubeUser;
+      _goSelectOpponentsScreen(context, cubeUser);
     }).catchError(_processLoginError);
   }
 
@@ -215,6 +215,8 @@ Future<void > login (
         builder: (context) => Homepage(),
       ),
     );
+    ConstantVar.saveData(cubeUser);
+    ConstantVar.saveUserData(ConstantVar.user);
   }
 
   @override
@@ -231,7 +233,7 @@ Future<void > login (
                     child: SingleChildScrollView(
                       physics: AlwaysScrollableScrollPhysics(),
                       padding:
-                          EdgeInsets.symmetric(horizontal: 25, vertical: 60.0),
+                          EdgeInsets.symmetric(horizontal: 25, vertical: 25.0),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[

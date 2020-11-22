@@ -1,10 +1,13 @@
 import 'package:bymyeyefe/constant/ColorConstant.dart';
+import 'package:bymyeyefe/constant/ConstantVar.dart';
 import 'package:bymyeyefe/constant/ImageConstant.dart';
 import 'package:bymyeyefe/constant/StringConstant.dart';
 import 'package:bymyeyefe/constant/StyleConstant.dart';
+import 'package:bymyeyefe/home.dart';
 import 'package:bymyeyefe/layout/mainLayout.dart';
 import 'package:bymyeyefe/model/User.dart';
 import 'package:bymyeyefe/screens/User/LoginScreen.dart';
+import 'package:bymyeyefe/screens/home_page/HomePage.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
@@ -27,10 +30,21 @@ class _ChooseTypeUserScreenState extends State<ChooseTypeUser> {
   @override
   void initState() {
     super.initState();
+    initStorage();
+  }
+
+  initStorage() async {
+    await ConstantVar.storage.ready;
+    await ConstantVar.getData();
+    await ConstantVar.getUserData();
+    setState(() {
+
+    });
   }
 
 
   final String handle;
+
 
   bool isLoading = true;
   final _formKey = GlobalKey<FormState>();
@@ -63,7 +77,7 @@ class _ChooseTypeUserScreenState extends State<ChooseTypeUser> {
 
   @override
   Widget build(BuildContext context) {
-    return MainLayOut.getMailLayout(
+    return ConstantVar.currentUser == null ? MainLayOut.getMailLayout(
         context,
         Container(
           color: ColorConstant.VIOLET,
@@ -154,6 +168,6 @@ class _ChooseTypeUserScreenState extends State<ChooseTypeUser> {
           ),
         ),
         "SETTING",
-        StringConstant.APP_NAME);
+        StringConstant.APP_NAME) : Homepage();
   }
 }

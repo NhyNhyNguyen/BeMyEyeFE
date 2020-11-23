@@ -258,13 +258,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0+14"
-  flutter_launcher_name:
-    dependency: "direct main"
-    description:
-      name: flutter_launcher_name
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.1"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -714,13 +707,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.9"
-  yaml:
-    dependency: transitive
-    description:
-      name: yaml
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.2.1"
 sdks:
   dart: ">=2.10.2 <2.11.0"
   flutter: ">=1.22.2 <2.0.0"

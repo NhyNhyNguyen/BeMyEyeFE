@@ -19,7 +19,7 @@
 
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="bymyeyefe"
+        android:label="My Angel Eyes"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true"
         >

@@ -1,13 +1,11 @@
 import 'package:bymyeyefe/constant/ColorConstant.dart';
-import 'package:bymyeyefe/constant/ImageConstant.dart';
 import 'package:bymyeyefe/constant/StyleConstant.dart';
-import 'package:bymyeyefe/model/User.dart';
-import 'package:bymyeyefe/screens/User/ButtonGradientSmall.dart';
+import 'package:bymyeyefe/model/Room.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class RoomItem extends StatefulWidget {
-  final List<User> users;
+  final List<Room> users;
 
   const RoomItem({Key key, this.users}) : super(key: key);
 
@@ -16,7 +14,7 @@ class RoomItem extends StatefulWidget {
 }
 
 class _RoomItemState extends State<RoomItem> {
-  final List<User> users;
+  final List<Room> users;
 
   _RoomItemState(this.users);
 
@@ -38,26 +36,24 @@ class _RoomItemState extends State<RoomItem> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
-            children: users.map((user) {
+            children: users.map((room) {
               return Container(
                 margin: EdgeInsets.symmetric(horizontal: 5),
                 child: Row(
                   children: [
                     Container(
-                      width: 70,
-                      height: 70,
-                      margin: EdgeInsets.only(right: 10),
-                      decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              image: DecorationImage(
-                                image: AssetImage(ImageConstant.POSTER9),
-                                fit: BoxFit.cover,
-                              ),
-                        borderRadius: BorderRadius.circular(5)
-                            )
-                    ),
+                        width: 70,
+                        height: 70,
+                        margin: EdgeInsets.only(right: 10),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            image: DecorationImage(
+                              image: NetworkImage(room.avatarUrl),
+                              fit: BoxFit.cover,
+                            ),
+                            borderRadius: BorderRadius.circular(5))),
                     Text(
-                      user != null ? user.username : "",
+                      room != null ? room.name : "",
                       style: StyleConstant.normalTextStyle,
                     )
                   ],
@@ -66,21 +62,21 @@ class _RoomItemState extends State<RoomItem> {
             }).toList(),
           ),
           Container(
-          height: 70,
-          width: 70,
-          padding: EdgeInsets.only(left: 0, right: 5),
-          decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(5)),
-          gradient: ColorConstant.RAINBOW_BUTTON,
-          ),
-          child: IconButton(
-            icon: Icon(
-              Icons.phone,
-              size: 50,
-              color: Colors.white,
+            height: 70,
+            width: 70,
+            padding: EdgeInsets.only(left: 0, right: 5),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(5)),
+              gradient: ColorConstant.RAINBOW_BUTTON,
             ),
-            onPressed: () => {},
-          ),
+            child: IconButton(
+              icon: Icon(
+                Icons.phone,
+                size: 50,
+                color: Colors.white,
+              ),
+              onPressed: () => {},
+            ),
           )
         ],
       ),

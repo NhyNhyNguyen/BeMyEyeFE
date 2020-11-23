@@ -16,7 +16,12 @@ class UrlConstant{
   static const String RESET_PASS = HOST + "/api/reset-password";
   static const String IMAGE = HOST + "/api/images/";
   static const String POST_IMAGE = HOST + "/api/users/upload-avatar";
-  static const String HISTORY = HOST + "/api/reservations/history";
+  static const String GET_USER_SIZE = HOST + "/getSizeUser";
+
+  static const String CREATE_ROOM = HOST + "/room/create";
+  static const String JOIN_ROOM = HOST + "/room/join";
+  static const String REMOVE_ROOM = HOST + "/room/remove";
+  static const String GET_EMPTY_ROOM = HOST + "/room/getEmptyRoom";
 
 
   static const String URL_COGNITIVE = HOST +"/v1/cognitive_face" ;

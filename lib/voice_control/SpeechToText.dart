@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:bymyeyefe/constant/ConstantVar.dart';
 import 'package:bymyeyefe/constant/StringConstant.dart';
-import 'package:bymyeyefe/home.dart';
+import 'package:bymyeyefe/detect_object/home.dart';
 import 'package:bymyeyefe/screens/User/LoginScreen.dart';
 import 'package:bymyeyefe/screens/User/SignUpScreen.dart';
 import 'package:bymyeyefe/screens/call_video/call_screen.dart';

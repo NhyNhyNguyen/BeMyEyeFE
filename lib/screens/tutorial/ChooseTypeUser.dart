@@ -3,7 +3,7 @@ import 'package:bymyeyefe/constant/ConstantVar.dart';
 import 'package:bymyeyefe/constant/ImageConstant.dart';
 import 'package:bymyeyefe/constant/StringConstant.dart';
 import 'package:bymyeyefe/constant/StyleConstant.dart';
-import 'package:bymyeyefe/home.dart';
+import 'package:bymyeyefe/detect_object/home.dart';
 import 'package:bymyeyefe/layout/mainLayout.dart';
 import 'package:bymyeyefe/model/User.dart';
 import 'package:bymyeyefe/screens/User/LoginScreen.dart';

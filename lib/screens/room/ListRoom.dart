@@ -43,7 +43,7 @@ class _ListRoomState extends State<ListRoom> {
                       child: Column(
                         children: rooms.map((room) {
                           return RoomItem(
-                            users: rooms,
+                            room: room,
                           );
                         }).toList(),
                       ),

@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:bymyeyefe/constant/ConstantVar.dart';
 import 'package:bymyeyefe/constant/StringConstant.dart';
 import 'package:bymyeyefe/detect_object/home.dart';
+import 'package:bymyeyefe/model/Room.dart';
 import 'package:bymyeyefe/screens/User/LoginScreen.dart';
 import 'package:bymyeyefe/screens/User/SignUpScreen.dart';
 import 'package:bymyeyefe/screens/call_video/call_screen.dart';
@@ -182,6 +183,7 @@ class _MyAppState extends State<MyApp> {
       ConstantVar.currentCall = await ConstantVar.callClient
           .createCallSession(ConstantVar.currentUser.id);
 
+      Room.create();
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -198,22 +200,18 @@ class _MyAppState extends State<MyApp> {
   void soundLevelListener(double level) {
     minSoundLevel = min(minSoundLevel, level);
     maxSoundLevel = max(maxSoundLevel, level);
-    // print("sound level $level: $minSoundLevel - $maxSoundLevel ");
     setState(() {
       this.level = level;
     });
   }
 
   void errorListener(SpeechRecognitionError error) {
-    // print("Received error status: $error, listening: ${speech.isListening}");
     setState(() {
       lastError = "${error.errorMsg} - ${error.permanent}";
     });
   }
 
   void statusListener(String status) {
-    // print(
-    // "Received listener status: $status, listening: ${speech.isListening}");
     setState(() {
       lastStatus = "$status";
     });

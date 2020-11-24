@@ -42,7 +42,7 @@ class Room {
   }
 
 
-  static Future<Room> create(int id) async {
+  static Future<Room> create() async {
     http.Response response = await http.post(
       UrlConstant.CREATE_ROOM,
       headers: <String, String>{
@@ -50,6 +50,8 @@ class Room {
       },
       body: jsonEncode(<String, String>{
         'id': ConstantVar.user.id.toString(),
+        'name': ConstantVar.user.username.toString(),
+        "avatarUrl" : ConstantVar.user.avatarUrl
       }),
     );
 
@@ -84,7 +86,7 @@ class Room {
       },
       body: jsonEncode(<String, String>{
         'id': roomId.toString(),
-        'member': ConstantVar.user.id.toString(),
+        'userJoinId': ConstantVar.user.id.toString(),
       }),
     );
 

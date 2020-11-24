@@ -56,6 +56,7 @@ class StringConstant {
   static const HOW_TO_CALL = "Learn the way how to call";
   static const BLIND = "blind";
   static const VOLUNTEER = "volunteer";
+  static const JOIN_CALL = "Join call";
 
   //command english
   static const CALL_COMMAND = "call";
@@ -69,7 +70,7 @@ class StringConstant {
   static const FIND_OBJECT = "Set object successful";
 
   //command vi
-  static const VI_CALL_COMMAND = "gọi ";
+  static const VI_CALL_COMMAND = "gọi điện";
   static const VI_TURN_OFF_APP_COMMAND = "tắt ";
   static const VI_ACCEPT_CALL_COMMAND = "chấp nhận";
   static const VI_REJECT_CALL_COMMAND = "từ chối";

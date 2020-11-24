@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bymyeyefe/constant/ConstantVar.dart';
+import 'package:bymyeyefe/model/Room.dart';
 import 'package:bymyeyefe/model/User.dart';
 import 'package:bymyeyefe/screens/home_page/HomePage.dart';
 import 'package:connectycube_sdk/connectycube_chat.dart';
@@ -80,24 +81,13 @@ class CallManager {
     _clearProperties();
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   stopCall() {
     _clearNoAnswerTimers();
     sendEndCallMessage(_roomId, _participantIds);
     _clearProperties();
+    if(ConstantVar.user.id == _roomId){
+      Room.removeRoom();
+    }
   }
 
   sendCallMessage(String roomId, List<int> participantIds) async {
@@ -197,6 +187,7 @@ class CallManager {
       if(onCloseCall != null) onCloseCall();
     }
   }
+
 }
 typedef void NewCallCallback(String roomId, List<int> participantIds, String name);
 typedef void CloseCall();

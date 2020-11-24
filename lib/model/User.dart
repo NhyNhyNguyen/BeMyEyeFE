@@ -11,8 +11,10 @@ class User {
   final String username;
   final String role;
   String firebaseToken;
+  String avatarUrl;
+  int createTime;
 
-  User({this.id, this.email, this.password, this.role, this.username, this.firebaseToken});
+  User({this.id, this.email, this.password, this.role, this.username, this.firebaseToken, this.avatarUrl, this.createTime});
 
   factory User.fromJson(Map<String, dynamic> json) {
     var userJson = json['user'];
@@ -24,6 +26,8 @@ class User {
       role: userJson['role'],
       username: userJson['username'],
       firebaseToken: userJson['token'],
+      avatarUrl: userJson['avatarUrl'],
+      createTime: userJson['createTime'],
     );
   }
 
@@ -35,6 +39,8 @@ class User {
       role: userJson['role'],
       username: userJson['username'],
       firebaseToken: userJson['token'],
+      avatarUrl: userJson['avatarUrl'],
+      createTime: userJson['createTime'],
     );
   }
 
@@ -46,6 +52,8 @@ class User {
       'role': this.role,
       'token': this.firebaseToken,
       'email': this.email,
+      'avatarUrl': this.avatarUrl,
+      'createTime': this.createTime,
     };
   }
 
@@ -79,12 +87,8 @@ class User {
 
     if (response.statusCode == 200) {
       print(response.body);
-      print("=======");
-      print(json.decode(response.body) as List);
       return json.decode(response.body) as List;
     } else {
-      print("===sai====");
-
       return [];
     }
   }
@@ -100,6 +104,7 @@ class User {
         'username': user.username,
         'email': user.email,
         'token': user.firebaseToken,
+        'avatarUrl': user.avatarUrl
       }),
     );
 
@@ -113,6 +118,22 @@ class User {
       return true;
     } else {
       return true;
+    }
+  }
+
+  static Future<dynamic> getSizeUser() async {
+    http.Response response = await http.get(
+      UrlConstant.GET_USER_SIZE,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      print(response.body);
+      return json.decode(response.body);
+    } else {
+      return "";
     }
   }
 }

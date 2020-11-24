@@ -45,7 +45,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   _SignUpScreenState(this.type);
 
   Future<http.Response> postUserDetail(BuildContext context, CubeUser user) async {
-    print("type "  + type);
     final http.Response response = await http.post(
       UrlConstant.REGISTER,
       headers: <String, String>{

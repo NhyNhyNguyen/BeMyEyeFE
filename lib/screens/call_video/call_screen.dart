@@ -1,4 +1,5 @@
 import 'package:bymyeyefe/constant/ConstantVar.dart';
+import 'package:bymyeyefe/model/Room.dart';
 import 'package:bymyeyefe/screens/call_video/login_screen.dart';
 import 'package:bymyeyefe/screens/call_video/utils/call_manager.dart';
 import 'package:bymyeyefe/screens/call_video/utils/video_config.dart';
@@ -91,9 +92,8 @@ class IncomingCallScreen extends StatelessWidget {
             ConversationCallScreen(callSession, _roomId, _participantIds, true),
       ),
     );
-
-    print("=====");
     print(callSession.toString() +  _roomId + _participantIds.toString());
+    Room.joinRoom(int.parse(_roomId));
   }
 
   void _rejectCall(BuildContext context) {

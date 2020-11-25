@@ -19,11 +19,12 @@ class _ListRoomState extends State<ListRoom> {
   @override
   void initState() {
     super.initState();
-    Room.getListEmptyRoom()
-        .then((rooms) => {setState((){
-          this.isLoading = false;
-    }),
-      this.rooms = rooms});
+    Room.getListEmptyRoom().then((rooms) => {
+          setState(() {
+            this.isLoading = false;
+          }),
+          this.rooms = rooms
+        });
   }
 
   @override
@@ -38,8 +39,8 @@ class _ListRoomState extends State<ListRoom> {
                     color: ColorConstant.VIOLET,
                     child: SingleChildScrollView(
                       physics: AlwaysScrollableScrollPhysics(),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 25, vertical: 20.0),
+                      padding: EdgeInsets.only(
+                          top: 10, bottom: 60.0, left: 10, right: 10),
                       child: Column(
                         children: rooms.map((room) {
                           return RoomItem(

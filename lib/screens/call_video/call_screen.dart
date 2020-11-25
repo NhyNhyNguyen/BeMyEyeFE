@@ -4,9 +4,8 @@ import 'package:bymyeyefe/screens/call_video/login_screen.dart';
 import 'package:bymyeyefe/screens/call_video/utils/call_manager.dart';
 import 'package:bymyeyefe/screens/call_video/utils/video_config.dart';
 import 'package:bymyeyefe/screens/home_page/HomePage.dart';
-import 'package:flutter/material.dart';
-
 import 'package:connectycube_sdk/connectycube_sdk.dart';
+import 'package:flutter/material.dart';
 
 class IncomingCallScreen extends StatelessWidget {
   static const String TAG = "IncomingCallScreen";
@@ -40,8 +39,7 @@ class IncomingCallScreen extends StatelessWidget {
               ),
               Padding(
                 padding: EdgeInsets.only(bottom: 86),
-                child: Text(this._name,
-                    style: TextStyle(fontSize: 18)),
+                child: Text(this._name, style: TextStyle(fontSize: 18)),
               ),
               Row(
                 mainAxisSize: MainAxisSize.min,
@@ -85,15 +83,16 @@ class IncomingCallScreen extends StatelessWidget {
   void _acceptCall(BuildContext context) async {
     ConferenceSession callSession = await ConferenceClient.instance
         .createCallSession(CubeChatConnection.instance.currentUser.id);
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) =>
-            ConversationCallScreen(callSession, _roomId, _participantIds, true),
-      ),
-    );
-    print(callSession.toString() +  _roomId + _participantIds.toString());
-    Room.joinRoom(int.parse(_roomId));
+    print(callSession.toString() + _roomId + _participantIds.toString());
+    Room.joinRoom(int.parse(_roomId)).then((value) => {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ConversationCallScreen(
+                  callSession, _roomId, _participantIds, true),
+            ),
+          )
+        });
   }
 
   void _rejectCall(BuildContext context) {
@@ -296,62 +295,67 @@ class _ConversationCallScreenState extends State<ConversationCallScreen>
 
   @override
   Widget build(BuildContext context) {
-    return ConstantVar.currentUser != null?  WillPopScope(
-      onWillPop: () => _onBackPressed(context),
-      child: Stack(
-        children: [
-          Scaffold(
-              body: _isVideoCall()
-                  ? OrientationBuilder(
-                      builder: (context, orientation) {
-                        return Center(
-                          child: Container(
-                            child: orientation == Orientation.portrait
-                                ? Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: renderStreamsGrid(orientation))
-                                : Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: renderStreamsGrid(orientation)),
-                          ),
-                        );
-                      },
-                    )
-                  : Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.only(bottom: 24),
-                            child: Text(
-                              "Audio call",
-                              style: TextStyle(fontSize: 28),
+    return ConstantVar.currentUser != null
+        ? WillPopScope(
+            onWillPop: () => _onBackPressed(context),
+            child: Stack(
+              children: [
+                Scaffold(
+                    body: _isVideoCall()
+                        ? OrientationBuilder(
+                            builder: (context, orientation) {
+                              return Center(
+                                child: Container(
+                                  child: orientation == Orientation.portrait
+                                      ? Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children:
+                                              renderStreamsGrid(orientation))
+                                      : Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children:
+                                              renderStreamsGrid(orientation)),
+                                ),
+                              );
+                            },
+                          )
+                        : Center(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.only(bottom: 24),
+                                  child: Text(
+                                    "Audio call",
+                                    style: TextStyle(fontSize: 28),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(bottom: 12),
+                                  child: Text(
+                                    "Members:",
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontStyle: FontStyle.italic),
+                                  ),
+                                ),
+                                Text(
+                                  _callSession.allActivePublishers.join(", "),
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                              ],
                             ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(bottom: 12),
-                            child: Text(
-                              "Members:",
-                              style: TextStyle(
-                                  fontSize: 20, fontStyle: FontStyle.italic),
-                            ),
-                          ),
-                          Text(
-                            _callSession.allActivePublishers.join(", "),
-                            style: TextStyle(fontSize: 20),
-                          ),
-                        ],
-                      ),
-                    )),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: _getActionsPanel(),
-          ),
-        ],
-      ),
-    ) : LoginScreen();
+                          )),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: _getActionsPanel(),
+                ),
+              ],
+            ),
+          )
+        : LoginScreen();
   }
 
   Widget _getActionsPanel() {
@@ -444,6 +448,7 @@ class _ConversationCallScreenState extends State<ConversationCallScreen>
   }
 
   _endCall(BuildContext context) {
+    Room.removeRoom();
     _callManager.stopCall();
     _callSession.leave();
     Navigator.push(

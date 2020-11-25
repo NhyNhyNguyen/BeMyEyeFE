@@ -65,7 +65,7 @@ class Room {
 
   static Future<bool> removeRoom() async {
     http.Response response = await http.get(
-      UrlConstant.REMOVE_ROOM + "?room=${ConstantVar.user.id}}",
+      UrlConstant.REMOVE_ROOM + "?id=${ConstantVar.user.id}",
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

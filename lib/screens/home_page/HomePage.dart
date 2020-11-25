@@ -59,21 +59,22 @@ class _HomepageState extends State<Homepage> {
       _isLoginContinues = true;
     } else {
       _initCalls();
+      _firebaseMessaging.configure(
+        onMessage: (Map<String, dynamic> message) async {
+          print("onMessage: $message");
+          receiveCall(message);
+        },
+        onLaunch: (Map<String, dynamic> message) async {
+          print("onLaunch: $message");
+          getListRoom();
+        },
+        onResume: (Map<String, dynamic> message) async {
+          print("onResume: $message");
+          receiveCall(message);
+        },
+      );
     }
-    _firebaseMessaging.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        print("onMessage: $message");
-        receiveCall(message);
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        print("onLaunch: $message");
-        receiveCall(message);
-      },
-      onResume: (Map<String, dynamic> message) async {
-        print("onResume: $message");
-        receiveCall(message);
-      },
-    );
+
 
     User.getSizeUser().then((value) => {
           setState(() {
@@ -98,6 +99,15 @@ class _HomepageState extends State<Homepage> {
     }
   }
 
+  void getListRoom(){
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ListRoom(),
+      ),
+    );
+  }
+
   _loginToCC(CubeUser user) {
     if (CubeSessionManager.instance.isActiveSessionValid()) {
       _loginToCubeChat(user);
@@ -115,6 +125,20 @@ class _HomepageState extends State<Homepage> {
       });
       ConstantVar.currentUser = cubeUser;
       _initCalls();
+      _firebaseMessaging.configure(
+        onMessage: (Map<String, dynamic> message) async {
+          print("onMessage: $message");
+          receiveCall(message);
+        },
+        onLaunch: (Map<String, dynamic> message) async {
+          print("onLaunch: $message");
+          getListRoom();
+        },
+        onResume: (Map<String, dynamic> message) async {
+          print("onResume: $message");
+          receiveCall(message);
+        },
+      );
     }).catchError(_processLoginError);
   }
 
@@ -200,6 +224,7 @@ class _HomepageState extends State<Homepage> {
       ConstantVar.currentCall = await ConstantVar.callClient
           .createCallSession(ConstantVar.currentUser.id);
 
+      Room.create();
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -445,6 +470,8 @@ class _HomepageState extends State<Homepage> {
   }
 
   void uploadFile() {
-    User.updateUserProfile(ConstantVar.user);
+    User.updateUserProfile(ConstantVar.user).then((value) => {
+      _imageUrl = null
+    });
   }
 }

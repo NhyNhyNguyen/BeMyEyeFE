@@ -3,12 +3,9 @@ import 'package:bymyeyefe/constant/ConstantVar.dart';
 import 'package:bymyeyefe/constant/ImageConstant.dart';
 import 'package:bymyeyefe/constant/StringConstant.dart';
 import 'package:bymyeyefe/constant/StyleConstant.dart';
-import 'package:bymyeyefe/detect_object/home.dart';
 import 'package:bymyeyefe/layout/mainLayout.dart';
-import 'package:bymyeyefe/model/User.dart';
 import 'package:bymyeyefe/screens/User/LoginScreen.dart';
 import 'package:bymyeyefe/screens/home_page/HomePage.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 import '../../modal.dart';
@@ -25,8 +22,6 @@ class ChooseTypeUser extends StatefulWidget {
 }
 
 class _ChooseTypeUserScreenState extends State<ChooseTypeUser> {
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-
   @override
   void initState() {
     super.initState();
@@ -37,14 +32,10 @@ class _ChooseTypeUserScreenState extends State<ChooseTypeUser> {
     await ConstantVar.storage.ready;
     await ConstantVar.getData();
     await ConstantVar.getUserData();
-    setState(() {
-
-    });
+    setState(() {});
   }
 
-
   final String handle;
-
 
   bool isLoading = true;
   final _formKey = GlobalKey<FormState>();
@@ -77,97 +68,99 @@ class _ChooseTypeUserScreenState extends State<ChooseTypeUser> {
 
   @override
   Widget build(BuildContext context) {
-    return ConstantVar.currentUser == null ? MainLayOut.getMailLayout(
-        context,
-        Container(
-          color: ColorConstant.VIOLET,
-          width: double.infinity,
-          height: double.infinity,
-          child: Container(
-            padding:
-                EdgeInsets.only(top: 25, bottom: 60.0, left: 20, right: 20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Expanded(
-                  flex: 2,
-                  child: Column(
-                    children: [
-                      Image.asset(ImageConstant.LOGO),
-                      Text(
-                        StringConstant.SLOGAN,
-                        style: StyleConstant.bigTxtStyle,
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+    return ConstantVar.currentUser == null
+        ? MainLayOut.getMailLayout(
+            context,
+            Container(
+              color: ColorConstant.VIOLET,
+              width: double.infinity,
+              height: double.infinity,
+              child: Container(
+                padding:
+                    EdgeInsets.only(top: 25, bottom: 60.0, left: 20, right: 20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Expanded(
+                      flex: 2,
+                      child: Column(
                         children: [
-                          Container(
-                            padding: EdgeInsets.all(20),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: ColorConstant.LIGHT_VIOLET,
-                            ),
-                            child: Column(
-                              children: [
-                                Text(
-                                  "111111",
-                                  style: StyleConstant.normalTextStyle,
-                                  textAlign: TextAlign.center,
-                                ),
-                                Text(
-                                  "Blind",
-                                  style: StyleConstant.colorTextStyle,
-                                  textAlign: TextAlign.center,
-                                )
-                              ],
-                            ),
+                          Image.asset(ImageConstant.LOGO),
+                          Text(
+                            StringConstant.SLOGAN,
+                            style: StyleConstant.bigTxtStyle,
+                            textAlign: TextAlign.center,
                           ),
-                          Container(
-                            width: 1,
-                            height: 45,
-                            margin: EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 30),
+                          SizedBox(
+                            height: 30,
                           ),
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: ColorConstant.LIGHT_VIOLET,
-                            ),
-                            padding: EdgeInsets.all(20),
-                            child: Column(
-                              children: [
-                                Text(
-                                  "11111",
-                                  style: StyleConstant.normalTextStyle,
-                                  textAlign: TextAlign.center,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(20),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: ColorConstant.LIGHT_VIOLET,
                                 ),
-                                Text(
-                                  "Volunteers",
-                                  style: StyleConstant.colorTextStyle,
-                                  textAlign: TextAlign.center,
-                                )
-                              ],
-                            ),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      "111111",
+                                      style: StyleConstant.normalTextStyle,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    Text(
+                                      "Blind",
+                                      style: StyleConstant.colorTextStyle,
+                                      textAlign: TextAlign.center,
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                width: 1,
+                                height: 45,
+                                margin: EdgeInsets.symmetric(
+                                    vertical: 5, horizontal: 30),
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: ColorConstant.LIGHT_VIOLET,
+                                ),
+                                padding: EdgeInsets.all(20),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      "11111",
+                                      style: StyleConstant.normalTextStyle,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    Text(
+                                      "Volunteers",
+                                      style: StyleConstant.colorTextStyle,
+                                      textAlign: TextAlign.center,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                    ],
-                  ),
+                    ),
+                    _assistanceBtn(),
+                    _volunteerBtn(),
+                    SizedBox(
+                      height: 20,
+                    )
+                  ],
                 ),
-                _assistanceBtn(),
-                _volunteerBtn(),
-                SizedBox(
-                  height: 20,
-                )
-              ],
+              ),
             ),
-          ),
-        ),
-        "SETTING",
-        StringConstant.APP_NAME) : Homepage();
+            "SETTING",
+            StringConstant.APP_NAME)
+        : Homepage();
   }
 }

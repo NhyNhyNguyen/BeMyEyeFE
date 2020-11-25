@@ -158,26 +158,26 @@ class _MenuState extends State<Menu> {
                             MaterialPageRoute(builder: (context) => HomePage()))
                       },
                     ),
-                    MenuItem(
-                      text: StringConstant.PROFILE,
-                      icon: Icons.person,
-                      selectHandle: () => {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ChooseProfile()))
-                      },
-                    ),
-                    MenuItem(
-                      text: StringConstant.EDIT,
-                      icon: Icons.edit,
-                      selectHandle: () => {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => DetailScreen()))
-                      },
-                    ),
+//                    MenuItem(
+//                      text: StringConstant.PROFILE,
+//                      icon: Icons.person,
+//                      selectHandle: () => {
+//                        Navigator.push(
+//                            context,
+//                            MaterialPageRoute(
+//                                builder: (context) => ChooseProfile()))
+//                      },
+//                    ),
+//                    MenuItem(
+//                      text: StringConstant.EDIT,
+//                      icon: Icons.edit,
+//                      selectHandle: () => {
+//                        Navigator.push(
+//                            context,
+//                            MaterialPageRoute(
+//                                builder: (context) => DetailScreen()))
+//                      },
+//                    ),
                     MenuItem(
                       text: StringConstant.CHANGE_PASS,
                       icon: Icons.lock_open,

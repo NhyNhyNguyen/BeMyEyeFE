@@ -85,9 +85,8 @@ class CallManager {
     _clearNoAnswerTimers();
     sendEndCallMessage(_roomId, _participantIds);
     _clearProperties();
-    if(ConstantVar.user.id == _roomId){
-      Room.removeRoom();
-    }
+   // if(ConstantVar.user.id == _roomId){
+   // }
   }
 
   sendCallMessage(String roomId, List<int> participantIds) async {

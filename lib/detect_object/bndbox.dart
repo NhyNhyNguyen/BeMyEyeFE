@@ -21,7 +21,6 @@ class BndBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Widget> _renderBoxes() {
-      print("======sdfsd==========");
 
       return results.map((re) {
         var _x = re["rect"]["x"];
@@ -50,7 +49,9 @@ class BndBox extends StatelessWidget {
           if (_y < difH / 2) h -= (difH / 2 - _y) * scaleH;
         }
 
-        if (re["detectedClass"].toString().contains(ConstantVar.findObject) && re["confidenceInClass"] * 100 > 60) {
+        print("======" + re["detectedClass"] + ConstantVar.findObject);
+
+        if (ConstantVar.findObject != "" && re["detectedClass"].toString().contains(ConstantVar.findObject) && re["confidenceInClass"] * 100 > 60) {
           print("======" + re["detectedClass"] + ConstantVar.findObject);
           FlutterBeep.beep();
         }

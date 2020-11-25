@@ -68,6 +68,7 @@ class StringConstant {
   static const DETECT_COMMAND = "detect";
   static const SET_OBJECT_COMMAND = "set";
   static const FIND_OBJECT = "Set object successful";
+  static const REMOVE_OBJECT = "delete object";
 
   //command vi
   static const VI_CALL_COMMAND = "gọi điện";
@@ -79,4 +80,5 @@ class StringConstant {
   static const VI_DETECT_COMMAND = "nhận diện";
   static const VI_SET_OBJECT_COMMAND = "tìm đồ vật";
   static const VI_FIND_OBJECT = "Set đồ vật thành công";
+  static const REMOVE_OBJECT_VI = "Xoá đồ vật";
 }

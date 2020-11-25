@@ -168,6 +168,10 @@ class _MyAppState extends State<MyApp> {
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => HomePage()));
         break;
+      case StringConstant.VI_DETECT_COMMAND:
+      case StringConstant.VI_DETECT_COMMAND:
+        ConstantVar.findObject = "";
+        break;
       default:
         if(command.length > 4 && (command.contains('tìm') || command.contains("set"))){
             ConstantVar.findObject = command.substring(3).trim();
@@ -200,18 +204,22 @@ class _MyAppState extends State<MyApp> {
   void soundLevelListener(double level) {
     minSoundLevel = min(minSoundLevel, level);
     maxSoundLevel = max(maxSoundLevel, level);
+    // print("sound level $level: $minSoundLevel - $maxSoundLevel ");
     setState(() {
       this.level = level;
     });
   }
 
   void errorListener(SpeechRecognitionError error) {
+    // print("Received error status: $error, listening: ${speech.isListening}");
     setState(() {
       lastError = "${error.errorMsg} - ${error.permanent}";
     });
   }
 
   void statusListener(String status) {
+    // print(
+    // "Received listener status: $status, listening: ${speech.isListening}");
     setState(() {
       lastStatus = "$status";
     });

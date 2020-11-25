@@ -1,4 +1,6 @@
+import 'package:bymyeyefe/constant/ColorConstant.dart';
 import 'package:bymyeyefe/constant/ConstantVar.dart';
+import 'package:bymyeyefe/voice_control/SpeechToText.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:tflite/tflite.dart';
@@ -96,6 +98,88 @@ class _HomePageState extends State<HomePage> {
               screen.height,
               screen.width,
               _model),
+          Container(
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.1,
+                child: Stack(
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.015,
+                        ),
+                        Container(
+                          height: MediaQuery.of(context).size.height * 0.07,
+                          alignment: Alignment.bottomCenter,
+                          color: ColorConstant.LIGHT_VIOLET,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical:
+                              MediaQuery.of(context).size.height * 0.01),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+//                                InkWell(
+//                                  onTap: () {
+//                                    Navigator.push(
+//                                        context,
+//                                        MaterialPageRoute(
+//                                            builder: (context) => Homepage()));
+//                                  },
+//                                  child: type == 'HOME'
+//                                      ? Image.asset(ImageConstant.HOME_YELLOW,
+//                                          height: MediaQuery.of(context)
+//                                                  .size
+//                                                  .height *
+//                                              0.04)
+//                                      : Image.asset(ImageConstant.HOME_GRAY,
+//                                          height: MediaQuery.of(context)
+//                                                  .size
+//                                                  .height *
+//                                              0.04),
+//                                ),
+//                                InkWell(
+//                                  onTap: () {
+//                                    Navigator.push(
+//                                        context,
+//                                        MaterialPageRoute(
+//                                            builder: (context) =>
+//                                                ChooseTypeUser()));
+//                                  },
+//                                  child: type == 'SETTING'
+//                                      ? Icon(
+//                                          Icons.settings,
+//                                          color: Colors.yellow,
+//                                          size: 38,
+//                                        )
+//                                      : Icon(
+//                                          Icons.settings,
+//                                          color: Colors.white,
+//                                          size: 38,
+//                                  ))
+                            ],
+                          ),
+                        ),
+                        Container(
+                          height: MediaQuery.of(context).size.height * 0.015,
+                          color: ColorConstant.LIGHT_VIOLET,
+                        )
+                      ],
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.1,
+                      alignment: Alignment.center,
+                      child: MyApp(),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          )
+
         ],
       ),
     );

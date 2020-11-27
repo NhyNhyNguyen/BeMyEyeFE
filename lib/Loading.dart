@@ -1,3 +1,4 @@
+import 'package:bymyeyefe/constant/StyleConstant.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:load/load.dart';
@@ -25,12 +26,17 @@ class Loading extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Container(
+                    margin: EdgeInsets.all(10),
                       width: 50, height: 50,
                       child:  CircularProgressIndicator(
                         strokeWidth: 4,
                         backgroundColor: Colors.white,
                         valueColor: new AlwaysStoppedAnimation<Color>(ColorConstant.LIGHT_VIOLET),
                       )
+                  ),
+                  Text(
+                    "Please wait!",
+                    style: StyleConstant.normalTextStyle,
                   )
                 ],
               ),

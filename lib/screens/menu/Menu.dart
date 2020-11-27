@@ -26,13 +26,6 @@ class _MenuState extends State<Menu> {
       color: ColorConstant.LIGHT_VIOLET,
       child: ListView(
         children: <Widget>[
-          /*   new UserAccountsDrawerHeader(
-                accountName: new Text('Raja'),
-                accountEmail: new Text('testemail@test.com'),
-                currentAccountPicture: new CircleAvatar(
-                  backgroundImage: new NetworkImage(UrlConstant.IMAGE + "iu2.jpg"),
-                ),
-              ),*/
           Stack(alignment: Alignment.bottomCenter, children: <Widget>[
             Column(
               children: <Widget>[
@@ -62,12 +55,18 @@ class _MenuState extends State<Menu> {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     image: DecorationImage(
-                      image: AssetImage(ImageConstant.LOGO1),
+                      image:
+                          ConstantVar.user == null || ConstantVar.user.avatarUrl == ""
+                          ? AssetImage(
+                          ImageConstant.BG)
+                          : NetworkImage(ConstantVar.user.avatarUrl),
                       fit: BoxFit.cover,
                     ),
-                    // border: Border.all(color: Colors.white70, width: 4),
+                    border: Border.all(
+                        color: Colors.white70, width: 2),
                   ),
                 ),
+
               ],
             ),
           ]),

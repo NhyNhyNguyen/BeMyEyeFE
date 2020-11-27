@@ -35,7 +35,8 @@ class IncomingCallScreen extends StatelessWidget {
               ),
               Padding(
                 padding: EdgeInsets.only(top: 36, bottom: 8),
-                child: Text("Members:", style: TextStyle(fontSize: 20)),
+                child:
+                    Text("From: ${this._name}", style: TextStyle(fontSize: 20)),
               ),
               Padding(
                 padding: EdgeInsets.only(bottom: 86),
@@ -84,15 +85,14 @@ class IncomingCallScreen extends StatelessWidget {
     ConferenceSession callSession = await ConferenceClient.instance
         .createCallSession(CubeChatConnection.instance.currentUser.id);
     print(callSession.toString() + _roomId + _participantIds.toString());
-    Room.joinRoom(int.parse(_roomId)).then((value) => {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ConversationCallScreen(
-                  callSession, _roomId, _participantIds, true),
-            ),
-          )
-        });
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            ConversationCallScreen(callSession, _roomId, _participantIds, true),
+      ),
+    );
+    Room.joinRoom(int.parse(_roomId)).then((value) => {});
   }
 
   void _rejectCall(BuildContext context) {
@@ -448,7 +448,6 @@ class _ConversationCallScreenState extends State<ConversationCallScreen>
   }
 
   _endCall(BuildContext context) {
-    Room.removeRoom();
     _callManager.stopCall();
     _callSession.leave();
     Navigator.push(

@@ -75,7 +75,6 @@ class _HomepageState extends State<Homepage> {
       );
     }
 
-
     User.getSizeUser().then((value) => {
           setState(() {
             blindSize = value['blind'];
@@ -85,7 +84,7 @@ class _HomepageState extends State<Homepage> {
 
     if (ConstantVar.user != null) {
       var date =
-          new DateTime.fromMicrosecondsSinceEpoch(ConstantVar.user.createTime);
+          new DateTime.fromMillisecondsSinceEpoch(ConstantVar.user.createTime);
       final df = new DateFormat('dd/MM/yyyy');
       sDate = df.format(date);
     }
@@ -99,7 +98,7 @@ class _HomepageState extends State<Homepage> {
     }
   }
 
-  void getListRoom(){
+  void getListRoom() {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -156,9 +155,13 @@ class _HomepageState extends State<Homepage> {
                 Text("Something went wrong during reconnect to ConnectyCube"),
             actions: <Widget>[
               FlatButton(
-                child: Text("OK"),
-                onPressed: () => Navigator.of(context).pop(),
-              )
+                  child: Text("OK"),
+                  onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ListRoom(),
+                        ),
+                      ))
             ],
           );
         });
@@ -282,7 +285,6 @@ class _HomepageState extends State<Homepage> {
                             ]),
                         child: Column(
                           children: [
-//                    Image.asset(ImageConstant.LOGO),
                             Stack(
                               alignment: Alignment.bottomRight,
                               children: <Widget>[
@@ -290,8 +292,8 @@ class _HomepageState extends State<Homepage> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: <Widget>[
                                     Container(
-                                      width: 160,
-                                      height: 160,
+                                      width: 140,
+                                      height: 140,
                                       decoration: BoxDecoration(
                                         shape: BoxShape.circle,
                                         image: DecorationImage(
@@ -305,34 +307,35 @@ class _HomepageState extends State<Homepage> {
                                                   : ConstantVar.user.avatarUrl),
                                           fit: BoxFit.cover,
                                         ),
-                                        // border: Border.all(color: Colors.white70, width: 4),
+                                        border: Border.all(
+                                            color: Colors.white70, width: 2),
                                       ),
                                     ),
                                   ],
                                 ),
                                 Container(
+                                  margin: EdgeInsets.only(right: 5, bottom: 5),
                                   child: IconButton(
                                     icon: Icon(
                                       Icons.camera_alt,
-                                      size: 30,
+                                      size: 20,
                                       color: Colors.black,
                                     ),
                                     onPressed: () => {chooseAndUploadImage()},
                                   ),
-                                  width: 45,
-                                  height: 45,
+                                  width: 35,
+                                  height: 35,
                                   decoration: BoxDecoration(
                                       shape: BoxShape.circle,
-                                      color: Colors.grey),
+                                      color: Colors.white),
                                 ),
                               ],
                             ),
-
                             SizedBox(
                               height: 7,
                             ),
                             Text(
-                              ConstantVar.user.email,
+                              ConstantVar.user.username,
                               style: StyleConstant.bigTxtStyle,
                               textAlign: TextAlign.center,
                             ),
@@ -347,50 +350,146 @@ class _HomepageState extends State<Homepage> {
                             SizedBox(
                               height: 13,
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  child: Column(
+                            ConstantVar.user.role == StringConstant.VOLUNTEER
+                                ? Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text(
-                                        (blindSize + 100).toString(),
-                                        style: StyleConstant.normalTextStyle,
-                                        textAlign: TextAlign.center,
+                                      Container(
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              (blindSize + 100).toString(),
+                                              style: TextStyle(
+                                                  color: ColorConstant.WHITE,
+                                                  fontSize: 27,
+                                                  fontWeight: FontWeight.w500),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                            Text(
+                                              StringConstant.NUM_HELPED,
+                                              style:
+                                                  StyleConstant.colorTextStyle,
+                                              textAlign: TextAlign.center,
+                                            )
+                                          ],
+                                        ),
                                       ),
-                                      Text(
-                                        "Blinds",
-                                        style: StyleConstant.colorTextStyle,
-                                        textAlign: TextAlign.center,
-                                      )
+                                      Container(
+                                        width: 1,
+                                        height: 45,
+                                        color: Colors.white,
+                                        margin: EdgeInsets.symmetric(
+                                            vertical: 5, horizontal: 30),
+                                      ),
+                                      Container(
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              (volunteerSize + 100).toString(),
+                                              style: TextStyle(
+                                                  color: ColorConstant.WHITE,
+                                                  fontSize: 27,
+                                                  fontWeight: FontWeight.w500),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                            Text(
+                                              StringConstant.POINTED_HELPED,
+                                              style:
+                                                  StyleConstant.colorTextStyle,
+                                              textAlign: TextAlign.center,
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : Column(
+                                    children: [
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Column(
+                                            children: [
+                                              Text(
+                                                (blindSize + 100).toString(),
+                                                style: TextStyle(
+                                                    color: ColorConstant.WHITE,
+                                                    fontSize: 27,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                              Text(
+                                                StringConstant.BLINDS,
+                                                style: StyleConstant
+                                                    .colorTextStyle,
+                                                textAlign: TextAlign.center,
+                                              )
+                                            ],
+                                          ),
+                                          Container(
+                                            width: 1,
+                                            height: 45,
+                                            color: Colors.white,
+                                            margin: EdgeInsets.symmetric(
+                                                vertical: 5, horizontal: 20),
+                                          ),
+                                          Column(
+                                            children: [
+                                              Text(
+                                                (volunteerSize + 100)
+                                                    .toString(),
+                                                style: TextStyle(
+                                                    color: ColorConstant.WHITE,
+                                                    fontSize: 27,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                              Text(
+                                                StringConstant.VOLUNTEERS,
+                                                style: StyleConstant
+                                                    .colorTextStyle,
+                                                textAlign: TextAlign.center,
+                                              )
+                                            ],
+                                          ),
+                                          Container(
+                                            width: 1,
+                                            height: 45,
+                                            color: Colors.white,
+                                            margin: EdgeInsets.symmetric(
+                                                vertical: 5, horizontal: 20),
+                                          ),
+                                          Column(
+                                            children: [
+                                              Text(
+                                                (volunteerSize + 100)
+                                                    .toString(),
+                                                style: TextStyle(
+                                                    color: ColorConstant.WHITE,
+                                                    fontSize: 27,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                              Text(
+                                                StringConstant.HELPED,
+                                                style: StyleConstant
+                                                    .colorTextStyle,
+                                                textAlign: TextAlign.center,
+                                              )
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 20),
                                     ],
                                   ),
-                                ),
-                                Container(
-                                  width: 1,
-                                  height: 45,
-                                  color: Colors.white,
-                                  margin: EdgeInsets.symmetric(
-                                      vertical: 5, horizontal: 30),
-                                ),
-                                Container(
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        (volunteerSize + 100).toString(),
-                                        style: StyleConstant.normalTextStyle,
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      Text(
-                                        "Volunteers",
-                                        style: StyleConstant.colorTextStyle,
-                                        textAlign: TextAlign.center,
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
                           ],
                         ),
                       )),
@@ -400,7 +499,7 @@ class _HomepageState extends State<Homepage> {
                       ConstantVar.user.role != StringConstant.BLIND
                           ? Container(
                               padding: EdgeInsets.symmetric(
-                                  horizontal: 20.0, vertical: 20.0),
+                                  horizontal: 5.0, vertical: 15.0),
                               decoration: BoxDecoration(
                                   color: ColorConstant.LIGHT_VIOLET,
                                   borderRadius: BorderRadius.circular(5),
@@ -414,12 +513,75 @@ class _HomepageState extends State<Homepage> {
                                         offset: Offset(0, -10),
                                         blurRadius: 10)
                                   ]),
-                              child: Text(
-                                "You will receive notification when someone need you help",
-                                style: StyleConstant.normalTextStyle,
-                                textAlign: TextAlign.center,
-                              ),
-                            )
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "The My Angel Eyes Network",
+                                    style: StyleConstant.bigTxtStyle,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Column(
+                                        children: [
+                                          Text(
+                                            (blindSize + 100).toString(),
+                                            style: TextStyle(
+                                                color: ColorConstant.WHITE,
+                                                fontSize: 27,
+                                                fontWeight: FontWeight.w500),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          Text(
+                                            StringConstant.BLINDS,
+                                            style: StyleConstant.colorTextStyle,
+                                            textAlign: TextAlign.center,
+                                          )
+                                        ],
+                                      ),
+                                      Column(
+                                        children: [
+                                          Text(
+                                            (volunteerSize + 100).toString(),
+                                            style: TextStyle(
+                                                color: ColorConstant.WHITE,
+                                                fontSize: 27,
+                                                fontWeight: FontWeight.w500),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          Text(
+                                            StringConstant.VOLUNTEERS,
+                                            style: StyleConstant.colorTextStyle,
+                                            textAlign: TextAlign.center,
+                                          )
+                                        ],
+                                      ),
+                                      Column(
+                                        children: [
+                                          Text(
+                                            (volunteerSize + 100).toString(),
+                                            style: TextStyle(
+                                                color: ColorConstant.WHITE,
+                                                fontSize: 27,
+                                                fontWeight: FontWeight.w500),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          Text(
+                                            StringConstant.HELPED,
+                                            style: StyleConstant.colorTextStyle,
+                                            textAlign: TextAlign.center,
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ))
                           : Container(),
                       ConstantVar.user.role == StringConstant.VOLUNTEER
                           ? Expanded(flex: 1, child: Container())
@@ -470,8 +632,7 @@ class _HomepageState extends State<Homepage> {
   }
 
   void uploadFile() {
-    User.updateUserProfile(ConstantVar.user).then((value) => {
-      _imageUrl = null
-    });
+    User.updateUserProfile(ConstantVar.user)
+        .then((value) => {_imageUrl = null});
   }
 }

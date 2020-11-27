@@ -3,11 +3,9 @@ import 'dart:async';
 import 'package:bymyeyefe/constant/ConstantVar.dart';
 import 'package:bymyeyefe/model/Room.dart';
 import 'package:bymyeyefe/model/User.dart';
-import 'package:bymyeyefe/screens/home_page/HomePage.dart';
 import 'package:connectycube_sdk/connectycube_chat.dart';
-import 'package:flutter/material.dart';
 
-const NO_ANSWER_TIMER_INTERVAL = 30;
+const NO_ANSWER_TIMER_INTERVAL = 3000;
 
 class CallManager {
   SystemMessagesManager _systemMessagesManager;
@@ -19,12 +17,12 @@ class CallManager {
   List<int> _participantIds;
   int _initiatorId;
 
-  var _answerUserTimers = Map<int,Timer>();
+  var _answerUserTimers = Map<int, Timer>();
 
   CallManager._privateConstructor() {
     _systemMessagesManager = CubeChatConnection.instance.systemMessagesManager;
-    _systemMessagesManager.systemMessagesStream.listen((cubeMessage) =>
-        parseCallMessage(cubeMessage));
+    _systemMessagesManager.systemMessagesStream
+        .listen((cubeMessage) => parseCallMessage(cubeMessage));
   }
 
   static final CallManager _instance = CallManager._privateConstructor();
@@ -34,31 +32,37 @@ class CallManager {
   parseCallMessage(CubeMessage cubeMessage) {
     log("parseCallMessage cubeMessage= $cubeMessage");
     final properties = cubeMessage.properties;
-    if(properties.containsKey("callStart")) {
+    if (properties.containsKey("callStart")) {
       String roomId = properties["janusRoomId"];
       String name = properties["name"];
-      List<int> participantIds = properties["participantIds"].split(',').map((id) => int.parse(id)).toList();
-      if(_roomId == null) {
+      List<int> participantIds = properties["participantIds"]
+          .split(',')
+          .map((id) => int.parse(id))
+          .toList();
+      if (_roomId == null) {
         _roomId = roomId;
         _initiatorId = cubeMessage.senderId;
         _participantIds = participantIds;
-        if(onReceiveNewCall != null) onReceiveNewCall(roomId, participantIds, name);
+        if (onReceiveNewCall != null)
+          onReceiveNewCall(roomId, participantIds, name);
       }
-    } else if(properties.containsKey("callAccepted")) {
+    } else if (properties.containsKey("callAccepted")) {
       String roomId = properties["janusRoomId"];
-      if(_roomId == roomId) {
+      if (_roomId == roomId) {
         _clearNoAnswerTimers(id: cubeMessage.senderId);
       }
-    } else if(properties.containsKey("callRejected")) {
+    } else if (properties.containsKey("callRejected")) {
       String roomId = properties["janusRoomId"];
       bool isBusy = properties["busy"] == 'true';
-      if(_roomId == roomId) {
-        if(onReceiveRejectCall != null) onReceiveRejectCall(roomId, cubeMessage.senderId, isBusy);
+      if (_roomId == roomId) {
+        if (onReceiveRejectCall != null)
+          onReceiveRejectCall(roomId, cubeMessage.senderId, isBusy);
         handleRejectCall(cubeMessage.senderId, isBusy);
       }
-    } else if(properties.containsKey("callEnd")) {
+    } else if (properties.containsKey("callEnd")) {
       String roomId = properties["janusRoomId"];
-      if(_roomId == roomId) {
+      if (_roomId == roomId) {
+        Room.removeRoom();
         _clearCall(cubeMessage.senderId);
       }
     }
@@ -85,18 +89,13 @@ class CallManager {
     _clearNoAnswerTimers();
     sendEndCallMessage(_roomId, _participantIds);
     _clearProperties();
-   // if(ConstantVar.user.id == _roomId){
-   // }
   }
 
   sendCallMessage(String roomId, List<int> participantIds) async {
-    print("===xcvxcvxv==");
     print(participantIds);
-    await User.getUsersByRole("volunteer").then((value) => {
-      participantIds = value.map((s) => s as int).toList()
-    });
-    print("===xcvxcvxv==");
-    print(participantIds);
+    await User.getUsersByRole("volunteer").then(
+        (value) => {participantIds = value.map((s) => s as int).toList()});
+    _participantIds = participantIds;
     List<CubeMessage> callMsgList = _buildCallMessages(roomId, participantIds);
     callMsgList.forEach((callMsg) {
       callMsg.properties["callStart"] = '1';
@@ -107,7 +106,7 @@ class CallManager {
 
   sendAcceptMessage(String roomId, int participantId) {
     List<CubeMessage> callMsgList = _buildCallMessages(roomId, [participantId]);
-    callMsgList.forEach((callMsg){
+    callMsgList.forEach((callMsg) {
       callMsg.properties["callAccepted"] = '1';
     });
     callMsgList.forEach((msg) => _systemMessagesManager.sendSystemMessage(msg));
@@ -130,11 +129,18 @@ class CallManager {
     callMsgList.forEach((msg) => _systemMessagesManager.sendSystemMessage(msg));
   }
 
-  List<CubeMessage> _buildCallMessages(String roomId, List<int> participantIds) {
+  List<CubeMessage> _buildCallMessages(
+      String roomId, List<int> participantIds) {
+    if (_participantIds == null) {
+      return [];
+    }
     return participantIds.map((userId) {
       var msg = CubeMessage();
       msg.recipientId = userId;
-      msg.properties = {"janusRoomId": roomId, "name": ConstantVar.user.username};
+      msg.properties = {
+        "janusRoomId": roomId,
+        "name": ConstantVar.user.username
+      };
       return msg;
     }).toList();
   }
@@ -149,15 +155,15 @@ class CallManager {
   }
 
   startNoAnswerTimers(participantIds) {
-    participantIds.forEach((userId) =>
-    {
-      _answerUserTimers[userId] =
-          Timer(Duration(seconds: NO_ANSWER_TIMER_INTERVAL), () => noUserAnswer(userId))
-    });
+    participantIds.forEach((userId) => {
+          _answerUserTimers[userId] = Timer(
+              Duration(seconds: NO_ANSWER_TIMER_INTERVAL),
+              () => noUserAnswer(userId))
+        });
   }
 
   noUserAnswer(int participantId) {
-    if(onUserNotAnswerCallback != null) onUserNotAnswerCallback(participantId);
+    if (onUserNotAnswerCallback != null) onUserNotAnswerCallback(participantId);
     _clearNoAnswerTimers(id: participantId);
     sendEndCallMessage(_roomId, [participantId]);
     _clearCall(participantId);
@@ -165,8 +171,11 @@ class CallManager {
 
   _clearNoAnswerTimers({int id = 0}) {
     if (id != 0) {
-      _answerUserTimers[id].cancel();
-      _answerUserTimers.remove(id);
+      if(_answerUserTimers[id] != null){
+        _answerUserTimers[id].cancel();
+        _answerUserTimers.remove(id);
+      }
+
     } else {
       _answerUserTimers.forEach((participantId, timer) => timer.cancel());
       _answerUserTimers.clear();
@@ -181,14 +190,17 @@ class CallManager {
 
   _clearCall(int participantId) {
     _participantIds.remove(participantId);
-    if(_participantIds.isEmpty || participantId == _initiatorId) {
+    print(_participantIds);
+    print("_participantIds ===" + participantId.toString());
+    if (_participantIds.isEmpty || participantId == _initiatorId) {
       _clearProperties();
-      if(onCloseCall != null) onCloseCall();
+      if (onCloseCall != null) onCloseCall();
     }
   }
-
 }
-typedef void NewCallCallback(String roomId, List<int> participantIds, String name);
+
+typedef void NewCallCallback(
+    String roomId, List<int> participantIds, String name);
 typedef void CloseCall();
 typedef void RejectCallCallback(String roomId, int participantId, bool isBusy);
 typedef void UserNotAnswerCallback(int participantId);

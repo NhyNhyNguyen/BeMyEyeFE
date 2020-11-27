@@ -89,7 +89,6 @@ class Room {
         'userJoinId': ConstantVar.user.id.toString(),
       }),
     );
-
     if (response.statusCode == 200) {
       print(response.body);
       return json.decode(response.body)["err"] == 0 ? true : false;

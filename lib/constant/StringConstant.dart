@@ -56,7 +56,13 @@ class StringConstant {
   static const HOW_TO_CALL = "Learn the way how to call";
   static const BLIND = "blind";
   static const VOLUNTEER = "volunteer";
+  static const BLINDS = "Blinds";
+  static const VOLUNTEERS = "Volunteers";
   static const JOIN_CALL = "Join call";
+  static const POINTED_HELPED = "Point Helped";
+  static const NUM_HELPED = "People Helped";
+  static const HELPED = "Helped";
+
 
   //command english
   static const CALL_COMMAND = "call";

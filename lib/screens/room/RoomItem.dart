@@ -86,7 +86,7 @@ class _RoomItemState extends State<RoomItem> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => IncomingCallScreen(roomId.toString(), [], roomName),
+        builder: (context) => IncomingCallScreen(roomId.toString(), [roomId], roomName),
       ),
     );
   }

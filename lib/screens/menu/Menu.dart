@@ -5,7 +5,6 @@ import 'package:bymyeyefe/constant/StringConstant.dart';
 import 'package:bymyeyefe/constant/StyleConstant.dart';
 import 'package:bymyeyefe/detect_object/home.dart';
 import 'package:bymyeyefe/screens/User/ChangePassword.dart';
-import 'package:bymyeyefe/screens/User/ChooseProfile.dart';
 import 'package:bymyeyefe/screens/User/DetailScreen.dart';
 import 'package:bymyeyefe/screens/User/LoginScreen.dart';
 import 'package:bymyeyefe/screens/User/SignUpScreen.dart';
@@ -58,7 +57,7 @@ class _MenuState extends State<Menu> {
                       image:
                           ConstantVar.user == null || ConstantVar.user.avatarUrl == ""
                           ? AssetImage(
-                          ImageConstant.BG)
+                          ImageConstant.NO_IMAGE)
                           : NetworkImage(ConstantVar.user.avatarUrl),
                       fit: BoxFit.cover,
                     ),
@@ -157,26 +156,16 @@ class _MenuState extends State<Menu> {
                             MaterialPageRoute(builder: (context) => HomePage()))
                       },
                     ),
-//                    MenuItem(
-//                      text: StringConstant.PROFILE,
-//                      icon: Icons.person,
-//                      selectHandle: () => {
-//                        Navigator.push(
-//                            context,
-//                            MaterialPageRoute(
-//                                builder: (context) => ChooseProfile()))
-//                      },
-//                    ),
-//                    MenuItem(
-//                      text: StringConstant.EDIT,
-//                      icon: Icons.edit,
-//                      selectHandle: () => {
-//                        Navigator.push(
-//                            context,
-//                            MaterialPageRoute(
-//                                builder: (context) => DetailScreen()))
-//                      },
-//                    ),
+                    MenuItem(
+                      text: StringConstant.EDIT,
+                      icon: Icons.edit,
+                      selectHandle: () => {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => DetailScreen()))
+                      },
+                    ),
                     MenuItem(
                       text: StringConstant.CHANGE_PASS,
                       icon: Icons.lock_open,

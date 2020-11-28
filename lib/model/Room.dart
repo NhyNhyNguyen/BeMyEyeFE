@@ -6,18 +6,18 @@ import 'package:http/http.dart' as http;
 
 class Room {
   final int id;
-  final int member;
+  final int members;
   final String name;
   final String avatarUrl;
 
-  Room({this.member, this.id, this.name, this.avatarUrl});
+  Room({this.members, this.id, this.name, this.avatarUrl});
 
   factory Room.fromJson1(Map<String, dynamic> json) {
     var roomJson = json['room'];
     if (roomJson == null) return null;
     return Room(
       id: roomJson['id'],
-      member: roomJson['member'],
+      members: roomJson['members'],
       name: roomJson['name'],
       avatarUrl: roomJson['avatarUrl'],
     );
@@ -26,7 +26,7 @@ class Room {
   Map<String, dynamic> toJson() {
     return {
       'id': this.id,
-      'menber': this.member,
+      'menbers': this.members,
       'name': this.name,
       'avatarUrl': this.avatarUrl
     };
@@ -36,7 +36,7 @@ class Room {
     return Room(
       id: (json['id']),
       name: json['name'],
-      member: json['member'],
+      members: json['members'],
       avatarUrl: json['avatarUrl'],
     );
   }

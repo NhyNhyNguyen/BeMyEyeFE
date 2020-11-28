@@ -49,12 +49,13 @@ class _RoomItemState extends State<RoomItem> {
                     height: 70,
                     margin: EdgeInsets.only(right: 10),
                     decoration: BoxDecoration(
-                        shape: BoxShape.rectangle,
+                        shape: BoxShape.circle,
                         image: DecorationImage(
                           image: NetworkImage(room.avatarUrl),
                           fit: BoxFit.cover,
                         ),
-                        borderRadius: BorderRadius.circular(5))),
+                      border: Border.all(
+                          color: Colors.white70, width: 2))),
                 Text(
                   room != null ? room.name : "",
                   style: StyleConstant.normalTextStyle,
@@ -63,7 +64,7 @@ class _RoomItemState extends State<RoomItem> {
             ),
           ),
           Container(
-            height: 70,
+            height: 55,
             padding: EdgeInsets.only(left: 0, right: 5),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(5)),

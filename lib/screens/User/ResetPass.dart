@@ -8,7 +8,6 @@ import 'package:bymyeyefe/constant/StringConstant.dart';
 import 'package:bymyeyefe/constant/StyleConstant.dart';
 import 'package:bymyeyefe/constant/UrlConstant.dart';
 import 'package:bymyeyefe/layout/mainLayout.dart';
-import 'package:bymyeyefe/screens/User/ChooseProfile.dart';
 import 'package:bymyeyefe/screens/User/LoginScreen.dart';
 import 'package:bymyeyefe/screens/User/ResetPassword.dart';
 import 'package:bymyeyefe/screens/User/TextfieldWidget.dart';

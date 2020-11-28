@@ -49,10 +49,10 @@ class _ListRoomState extends State<ListRoom> {
                         }).toList(),
                       ),
                     )),
-                "USER",
+                "ROOM",
                 "Rooms")
             : Loading(
-                type: "USER",
+                type: "ROOM",
                 title: "Rooms",
               )
         : LoginScreen();

@@ -8,22 +8,17 @@ import 'package:bymyeyefe/constant/StyleConstant.dart';
 import 'package:bymyeyefe/constant/UrlConstant.dart';
 import 'package:bymyeyefe/layout/mainLayout.dart';
 import 'package:bymyeyefe/model/User.dart';
-import 'package:bymyeyefe/model/UserDetail.dart';
-import 'package:bymyeyefe/screens/User/ChooseProfile.dart';
 import 'package:bymyeyefe/screens/User/ResetPass.dart';
 import 'package:bymyeyefe/screens/User/TextfieldWidget.dart';
-import 'package:bymyeyefe/screens/call_video/select_opponents_screen.dart';
+import 'package:bymyeyefe/screens/call_video/utils/configs.dart' as utils;
 import 'package:bymyeyefe/screens/home_page/HomePage.dart';
 import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:bymyeyefe/screens/call_video/utils/configs.dart' as utils;
 
-import '../../main.dart';
 import '../../modal.dart';
 import '../ButtonGradientLarge.dart';
-import 'DetailScreen.dart';
 import 'SignUpScreen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -52,9 +47,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
-
   @override
-  void initState(){
+  void initState() {
     // update token
     this.token = '';
     _firebaseMessaging.getToken().then((String token) {
@@ -102,8 +96,8 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
-Future<void > login (
-     BuildContext context, String email, String password)  async {
+  Future<void> login(
+      BuildContext context, String email, String password) async {
     http.Response response = await http.post(
       UrlConstant.LOGIN,
       headers: <String, String>{
@@ -115,17 +109,19 @@ Future<void > login (
       }),
     );
 
-
     if (response.statusCode == 200) {
-      User user =  User.fromJson(json.decode(response.body));
-      if(user == null){
+      User user = User.fromJson(json.decode(response.body));
+      if (user == null) {
         Modal.showSimpleCustomDialog(context, "Login Fail!", "LOGIN");
         return null;
       }
       ConstantVar.user = user;
-      _loginToCC(context, CubeUser(
-          id: user.id, password: passController.text , login: user.username)
-      );
+      _loginToCC(
+          context,
+          CubeUser(
+              id: user.id,
+              password: passController.text,
+              login: user.username));
       return user;
     } else {
       Modal.showSimpleCustomDialog(context, "Login Fail!", "LOGIN");
@@ -134,7 +130,7 @@ Future<void > login (
   }
 
   void onPressedLoginSuccess(BuildContext context) {
-      Modal.showSimpleCustomDialog(context, "Login successfull!", "HOME_PAGE");
+    Modal.showSimpleCustomDialog(context, "Login successfull!", "HOME_PAGE");
   }
 
   Widget _signInBtn() {
@@ -160,7 +156,6 @@ Future<void > login (
   }
 
   _loginToCC(BuildContext context, CubeUser user) {
-
     if (CubeSessionManager.instance.isActiveSessionValid()) {
       _loginToCubeChat(context, user);
     } else {
@@ -181,7 +176,6 @@ Future<void > login (
   }
 
   void _processLoginError(exception) {
-
     setState(() {
       _isLoginContinues = false;
     });
@@ -203,8 +197,8 @@ Future<void > login (
   }
 
   void _goSelectOpponentsScreen(BuildContext context, CubeUser cubeUser) {
-
-    if(ConstantVar.user != null && ConstantVar.user.firebaseToken != this.token){
+    if (ConstantVar.user != null &&
+        ConstantVar.user.firebaseToken != this.token) {
       //update token
       ConstantVar.user.firebaseToken = this.token;
       User.updateUserProfile(ConstantVar.user);
@@ -227,69 +221,76 @@ Future<void > login (
         ? MainLayOut.getMailLayout(
             context,
             Container(
-                    color: ColorConstant.VIOLET,
-                    width: double.infinity,
-                    height: double.infinity,
-                    child: SingleChildScrollView(
-                      physics: AlwaysScrollableScrollPhysics(),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 25, vertical: 25.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Text("Sign in your account",
-                              style: StyleConstant.headerTextStyle),
-                          SizedBox(
-                            height: 13,
-                          ),
-                          Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 20.0, vertical: 20.0),
-                              decoration: BoxDecoration(
-                                  color: ColorConstant.LIGHT_VIOLET,
-                                  borderRadius: BorderRadius.circular(5),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Colors.black12,
-                                        offset: Offset(0, 15),
-                                        blurRadius: 15),
-                                    BoxShadow(
-                                        color: Colors.black12,
-                                        offset: Offset(0, -10),
-                                        blurRadius: 10)
-                                  ]),
-                              child: Form(
-                                key: _formKey,
-                                child: Column(
-                                  children: <Widget>[
-                                    TextFieldWidget.buildTextField(
-                                        StringConstant.EMAIL,
-                                        StringConstant.EMAIL_HINT,
-                                        Icon(Icons.mail, color: Colors.white),
-                                        TextInputType.text,
-                                        usernameController),
-                                    TextFieldWidget.buildPassField(
-                                        StringConstant.PASSWORD,
-                                        StringConstant.PASSWORD_HINT,
-                                        Icon(Icons.lock, color: Colors.white),
-                                        TextInputType.text,
-                                        passController),
-                                    _forgetPassAndRememberMe(context),
-                                    SizedBox(
-                                      height: 15,
-                                    ),
-                                    _loginBtn(context),
-                                  ],
-                                ),
-                              )),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          _signInBtn(),
-                        ],
-                      ),
+              color: ColorConstant.VIOLET,
+              width: double.infinity,
+              height: double.infinity,
+              child: SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                padding: EdgeInsets.symmetric(horizontal: 25, vertical: 25.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Text("Sign in your account",
+                        style: StyleConstant.headerTextStyle),
+                    SizedBox(
+                      height: 13,
                     ),
-                  ), "USER", "Login")
-        : Loading(type: "USER",title: "Login");
+                    Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 20.0),
+                        decoration: BoxDecoration(
+                            color: ColorConstant.LIGHT_VIOLET,
+                            borderRadius: BorderRadius.circular(5),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.black12,
+                                  offset: Offset(0, 15),
+                                  blurRadius: 15),
+                              BoxShadow(
+                                  color: Colors.black12,
+                                  offset: Offset(0, -10),
+                                  blurRadius: 10)
+                            ]),
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            children: <Widget>[
+                              TextFieldWidget.buildTextField(
+                                  StringConstant.USERNAME,
+                                  StringConstant.USERNAME_HINT,
+                                  Icon(
+                                    Icons.account_circle,
+                                    color: Colors.white,
+                                  ),
+                                  TextInputType.text,
+                                  usernameController),
+                              TextFieldWidget.buildPassField(
+                                  StringConstant.PASSWORD,
+                                  StringConstant.PASSWORD_HINT,
+                                  Icon(
+                                    Icons.vpn_key,
+                                    color: Colors.white,
+                                  ),
+                                  TextInputType.visiblePassword,
+                                  passController),
+                              _forgetPassAndRememberMe(context),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              _loginBtn(context),
+                            ],
+                          ),
+                        )),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    _signInBtn(),
+                  ],
+                ),
+              ),
+            ),
+            "USER",
+            "Login")
+        : Loading(type: "USER", title: "Login");
   }
 }

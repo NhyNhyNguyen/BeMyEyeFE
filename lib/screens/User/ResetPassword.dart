@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:bymyeyefe/constant/ColorConstant.dart';
 import 'package:bymyeyefe/constant/ConstantVar.dart';
 import 'package:bymyeyefe/constant/ImageConstant.dart';
@@ -7,9 +5,6 @@ import 'package:bymyeyefe/constant/StringConstant.dart';
 import 'package:bymyeyefe/constant/StyleConstant.dart';
 import 'package:bymyeyefe/constant/UrlConstant.dart';
 import 'package:bymyeyefe/layout/mainLayout.dart';
-import 'package:bymyeyefe/screens/User/ChooseProfile.dart';
-import 'package:bymyeyefe/screens/User/LoginScreen.dart';
-import 'package:bymyeyefe/screens/User/ResetPass.dart';
 import 'package:bymyeyefe/screens/User/TextfieldWidget.dart';
 import 'package:bymyeyefe/screens/home_page/HomePage.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +12,6 @@ import 'package:http/http.dart' as http;
 
 import '../../modal.dart';
 import '../ButtonGradientLarge.dart';
-
 
 class ResetPasswordScreen extends StatefulWidget {
   final String jwt;
@@ -39,7 +33,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   _ResetPasswordScreenState(this.jwt);
 
   Future<String> resetPass(BuildContext context) async {
-    var uri = UrlConstant.HOST + '/api/save-password?token=' + jwt + '&newPassword=' + passConfirmController.text ;
+    var uri = UrlConstant.HOST +
+        '/api/save-password?token=' +
+        jwt +
+        '&newPassword=' +
+        passConfirmController.text;
     http.Response response = await http.post(
       uri,
       headers: <String, String>{
@@ -49,8 +47,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
     if (response.statusCode == 200) {
       Modal.showSimpleCustomDialog(
-          context,
-          "Change pass successfull!", "LOGINRe");
+          context, "Change pass successfull!", "LOGINRe");
       ConstantVar.resetPassWordToken = "";
       ConstantVar.userDetail = null;
       ConstantVar.jwt = "";
@@ -59,7 +56,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       ConstantVar.resetPassWordToken = "";
     }
   }
-
 
 //  }
 
@@ -71,12 +67,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   }
 
   @override
-  void initState() {
-  }
+  void initState() {}
 
   @override
   Widget build(BuildContext context) {
-    return ConstantVar.jwt == "" ? MainLayOut.getMailLayout(
+    return ConstantVar.jwt == ""
+        ? MainLayOut.getMailLayout(
             context,
             Container(
               color: ColorConstant.VIOLET,
@@ -147,6 +143,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               ),
             ),
             "USER",
-            "Change Password") : Homepage();
+            "Change Password")
+        : Homepage();
   }
 }

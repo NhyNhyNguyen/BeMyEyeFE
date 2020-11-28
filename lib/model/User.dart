@@ -6,15 +6,27 @@ import 'package:http/http.dart' as http;
 
 class User {
   final int id;
-  final String email;
-  final String password;
-  final String username;
+  String email;
+  String password;
+  String username;
   final String role;
   String firebaseToken;
   String avatarUrl;
   int createTime;
+  int numHelp;
+  int point;
 
-  User({this.id, this.email, this.password, this.role, this.username, this.firebaseToken, this.avatarUrl, this.createTime});
+  User(
+      {this.id,
+      this.email,
+      this.password,
+      this.role,
+      this.username,
+      this.firebaseToken,
+      this.avatarUrl,
+      this.createTime,
+      this.numHelp,
+      this.point});
 
   factory User.fromJson(Map<String, dynamic> json) {
     var userJson = json['user'];
@@ -28,6 +40,8 @@ class User {
       firebaseToken: userJson['token'],
       avatarUrl: userJson['avatarUrl'],
       createTime: userJson['createTime'],
+      numHelp: userJson['numHelp'],
+      point: userJson['point'],
     );
   }
 
@@ -41,6 +55,8 @@ class User {
       firebaseToken: userJson['token'],
       avatarUrl: userJson['avatarUrl'],
       createTime: userJson['createTime'],
+      numHelp: userJson['numHelp'],
+      point: userJson['point'],
     );
   }
 
@@ -54,6 +70,8 @@ class User {
       'email': this.email,
       'avatarUrl': this.avatarUrl,
       'createTime': this.createTime,
+      'numHelp': this.numHelp,
+      'point': this.point,
     };
   }
 
@@ -110,11 +128,13 @@ class User {
 
     if (response.statusCode == 200) {
       print(response.body);
-      User user =  User.fromJson(json.decode(response.body));
-      if(user == null){
+      User user = User.fromJson(json.decode(response.body));
+      if (user == null) {
         return false;
       }
       ConstantVar.user = user;
+      ConstantVar.saveUserData(user);
+      ConstantVar.saveData(ConstantVar.currentUser);
       return true;
     } else {
       return true;

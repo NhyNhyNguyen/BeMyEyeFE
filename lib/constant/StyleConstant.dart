@@ -91,7 +91,7 @@ class StyleConstant {
 
   // style for detail page
   static const bigTxtStyle = TextStyle(
-    fontSize: 18,
+    fontSize: 19,
     color: ColorConstant.WHITE,
   );
 
@@ -133,9 +133,9 @@ class StyleConstant {
 
 
   static const UnderlineInputBorder enabledBorder =
-      UnderlineInputBorder(borderSide: BorderSide(color: Colors.white));
+      UnderlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1));
   static const focusedBorder = UnderlineInputBorder(
-    borderSide: BorderSide(color: ColorConstant.LIGHT_VIOLET),
+    borderSide: BorderSide(color: ColorConstant.WHITE, width: 1.5),
   );
 
 

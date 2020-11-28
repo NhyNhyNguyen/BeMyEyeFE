@@ -1,28 +1,21 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:bymyeyefe/Loading.dart';
 import 'package:bymyeyefe/constant/ColorConstant.dart';
 import 'package:bymyeyefe/constant/ConstantVar.dart';
 import 'package:bymyeyefe/constant/ImageConstant.dart';
 import 'package:bymyeyefe/constant/StringConstant.dart';
 import 'package:bymyeyefe/constant/StyleConstant.dart';
-import 'package:bymyeyefe/constant/UrlConstant.dart';
 import 'package:bymyeyefe/layout/mainLayout.dart';
-import 'package:bymyeyefe/model/UserDetail.dart';
-import 'package:bymyeyefe/screens/User/ChooseProfile.dart';
+import 'package:bymyeyefe/model/User.dart';
 import 'package:bymyeyefe/screens/User/LoginScreen.dart';
 import 'package:bymyeyefe/screens/User/TextfieldWidget.dart';
-import 'package:dio/dio.dart';
+import 'package:connectycube_sdk/connectycube_sdk.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 import '../../modal.dart';
 import '../ButtonGradientLarge.dart';
-import 'UploadAvartar.dart';
-import 'UploadImage.dart';
 
 class DetailScreen extends StatefulWidget {
   @override
@@ -33,287 +26,303 @@ class _DetailScreenState extends State<DetailScreen> {
   bool isLoading = true;
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  TextEditingController fullNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
-  TextEditingController addressController = TextEditingController();
+  var _imageUrl = null;
+  bool isUploadAvatar = false;
+  String sDate = "";
 
-  Future<File> file;
-  String status = '';
-  String base64Image;
-  File tmpFile;
-  String errMessage = 'Error Uploading Image';
-
-  chooseImage() {
-    setState(() {
-      file = ImagePicker.pickImage(source: ImageSource.gallery);
-    });
-  }
-
-  startUpload(BuildContext context) {
-    if (null == tmpFile) {
-      return;
-    }
-    String fileName = tmpFile.path.split('/').last;
-    print(tmpFile.path + fileName);
-    _uploadFileAsFormData(context, tmpFile.path, fileName);
-  }
-
-  Future<void> _uploadFileAsFormData(
-      BuildContext context, String path, String fileName) async {
-    try {
-      final dio = Dio();
-
-      dio.options.headers = {
-        'Content-Type': 'multilpart/form-data',
-        'Authorization': 'Bearer ${ConstantVar.jwt}',
-      };
-
-      final file = await MultipartFile.fromFile(path,
-          filename: fileName, contentType: MediaType('image', 'png'));
-
-      final formData = FormData.fromMap(
-        {
-          'file': file,
-          'type': "image/png",
-        },
-      ); //
-
-      final response = await dio.post(
-        // or dio.post
-        UrlConstant.POST_IMAGE,
-        data: formData,
-      );
-      if (response.statusCode == 200) {
-        Modal.showSimpleCustomDialog(context, "Upload Successfull!", null);
-      } else {
-        Modal.showSimpleCustomDialog(context, "Upload fail!", null);
-      }
-    } catch (err) {
-      print('uploading error: $err');
-    }
-  }
-
-  bool isUploadImageLoading = false;
-
-  Widget showImage(BuildContext context) {
-    return FutureBuilder<File>(
-      future: file,
-      builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
-        if (snapshot.connectionState == ConnectionState.done &&
-            null != snapshot.data) {
-          tmpFile = snapshot.data;
-          base64Image = base64Encode(snapshot.data.readAsBytesSync());
-          startUpload(context);
-          return Stack(alignment: Alignment.bottomCenter, children: <Widget>[
-            Column(
-              children: <Widget>[
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.3,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      image: DecorationImage(
-                        image: NetworkImage(UrlConstant.IMAGE +
-                            "photo1528790532372-1528790532372684051980-15889023877795083171.jpg"),
-                        fit: BoxFit.cover,
-                      ),
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10))),
-                ),
-                SizedBox(
-                  height: 70,
-                )
-              ],
-            ),
-            Stack(
-              alignment: Alignment.bottomRight,
-              children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      width: 180,
-                      height: 180,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          image: FileImage(snapshot.data),
-                          fit: BoxFit.cover,
-                        ),
-                        // border: Border.all(color: Colors.white70, width: 4),
-                      ),
-                    )
-                  ],
-                ),
-                Container(
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.camera_alt,
-                      size: 30,
-                      color: Colors.black,
-                    ),
-                    onPressed: chooseImage,
-                  ),
-                  width: 45,
-                  height: 45,
-                  decoration:
-                      BoxDecoration(shape: BoxShape.circle, color: Colors.grey),
-                ),
-              ],
-            ),
-          ]);
-        } else if (null != snapshot.error) {
-          return const Text(
-            'Error Picking Image',
-            textAlign: TextAlign.center,
-          );
-        } else {
-          return Stack(alignment: Alignment.bottomCenter, children: <Widget>[
-            Column(
-              children: <Widget>[
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.3,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      image: DecorationImage(
-                        image: NetworkImage(UrlConstant.IMAGE +
-                            "photo1528790532372-1528790532372684051980-15889023877795083171.jpg"),
-                        fit: BoxFit.cover,
-                      ),
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10))),
-                ),
-                SizedBox(
-                  height: 70,
-                )
-              ],
-            ),
-            Stack(
-              alignment: Alignment.bottomRight,
-              children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      width: 180,
-                      height: 180,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          image: ConstantVar.userDetail.avt == null
-                              ? AssetImage(ImageConstant.NO_IMAGE)
-                              : NetworkImage(UrlConstant.IMAGE +
-                                  ConstantVar.userDetail.avt),
-                          fit: BoxFit.cover,
-                        ),
-                        // border: Border.all(color: Colors.white70, width: 4),
-                      ),
-                    ),
-                  ],
-                ),
-                Container(
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.camera_alt,
-                      size: 30,
-                      color: Colors.black,
-                    ),
-                    onPressed: chooseImage,
-                  ),
-                  width: 45,
-                  height: 45,
-                  decoration:
-                      BoxDecoration(shape: BoxShape.circle, color: Colors.grey),
-                ),
-              ],
-            ),
-          ]);
-        }
-      },
-    );
-  }
-
-  DateTime selectedDate = DateTime.now();
   final _formKey = GlobalKey<FormState>();
 
   Widget _SaveBtn() {
     return ButtonGradientLarge(
-        StringConstant.SAVE_CHANGES, () => {postUserDetail()});
-  }
-
-  Future<http.Response> postUserDetail() async {
-    final http.Response response = await http.put(
-      UrlConstant.UPDATE_PROFILE,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Accept': 'application/json',
-        'Authorization': 'Bearer ' + ConstantVar.jwt,
-      },
-      body: jsonEncode(<String, String>{
-        "username": usernameController.text,
-        "fullName": fullNameController.text,
-        "password": passwordController.text,
-        "email": emailController.text,
-        "phone": phoneController.text,
-        "address": addressController.text,
-        "password": "123"
-      }),
-    );
-    if (response.statusCode == 200) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => ChooseProfile()));
-      UserDetail.fetchUserDetail(ConstantVar.jwt);
-    } else {
-      Modal.showSimpleCustomDialog(context, "Not found", "");
-    }
-    return response;
+        StringConstant.SAVE_CHANGES,
+        () => {
+              ConstantVar.user.username = usernameController.text,
+              ConstantVar.user.email = emailController.text,
+              ConstantVar.currentUser.email = emailController.text,
+              ConstantVar.currentUser.login = usernameController.text,
+              updateUser(ConstantVar.currentUser)
+                  .then((updatedUser) {})
+                  .catchError((error) {}),
+              setState(() => {isUploadAvatar = true}),
+              uploadFile().then((value) => {
+                Modal.showSimpleCustomDialog(context, "Update profile successful", null)
+              })
+            });
   }
 
   @override
   initState() {
     super.initState();
-    UserDetail.fetchUserDetail(ConstantVar.jwt).then((value) => setState(() {
-          usernameController.text = ConstantVar.userDetail.username;
-          fullNameController.text = ConstantVar.userDetail.fullName;
-          addressController.text = ConstantVar.userDetail.address;
-          phoneController.text = ConstantVar.userDetail.phone;
-          emailController.text = ConstantVar.userDetail.email;
-          isLoading = false;
-        }));
-    if (ConstantVar.userDetail != null) {
-      usernameController.text = ConstantVar.userDetail.username;
-      fullNameController.text = ConstantVar.userDetail.fullName;
-      addressController.text = ConstantVar.userDetail.address;
-      phoneController.text = ConstantVar.userDetail.phone;
-      emailController.text = ConstantVar.userDetail.email;
+    usernameController.text = ConstantVar.user.username;
+    emailController.text = ConstantVar.user.email;
+    if (ConstantVar.blindSize == 0 && ConstantVar.volunteerSize == 0) {
+      User.getSizeUser().then((value) => {
+            setState(() {
+              ConstantVar.blindSize = value['blind'];
+              ConstantVar.volunteerSize = value['volunteer'];
+            })
+          });
+    }
+
+    if (ConstantVar.user != null) {
+      var date =
+          new DateTime.fromMillisecondsSinceEpoch(ConstantVar.user.createTime);
+      final df = new DateFormat('dd/MM/yyyy');
+      sDate = df.format(date);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (ConstantVar.userDetail != null) {
-      return !isLoading
+    if (ConstantVar.user != null && ConstantVar.currentUser != null) {
+      return !isUploadAvatar
           ? MainLayOut.getMailLayout(
               context,
               Container(
                 color: ColorConstant.VIOLET,
                 height: double.infinity,
                 width: double.infinity,
+                padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 20.0),
                 child: SingleChildScrollView(
                   physics: AlwaysScrollableScrollPhysics(),
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      showImage(context),
                       Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: ColorConstant.LIGHT_VIOLET,
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.black12,
+                                  offset: Offset(0, 15),
+                                  blurRadius: 15),
+                              BoxShadow(
+                                  color: Colors.black12,
+                                  offset: Offset(0, -10),
+                                  blurRadius: 10)
+                            ]),
                         padding: EdgeInsets.symmetric(
-                            horizontal: 10.0, vertical: 20.0),
+                            horizontal: 20.0, vertical: 20.0),
+                        margin: EdgeInsets.only(bottom: 20),
+                        child: Column(
+                          children: [
+                            Stack(
+                              alignment: Alignment.bottomRight,
+                              children: <Widget>[
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    Container(
+                                      width: 140,
+                                      height: 140,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        image: DecorationImage(
+                                          image: ConstantVar.user.avatarUrl ==
+                                                      "" &&
+                                                  _imageUrl == null
+                                              ? AssetImage(
+                                                  ImageConstant.NO_IMAGE)
+                                              : NetworkImage(_imageUrl != null
+                                                  ? _imageUrl
+                                                  : ConstantVar.user.avatarUrl),
+                                          fit: BoxFit.cover,
+                                        ),
+                                        border: Border.all(
+                                            color: Colors.white70, width: 2),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(right: 5, bottom: 5),
+                                  child: IconButton(
+                                    icon: Icon(
+                                      Icons.camera_alt,
+                                      size: 20,
+                                      color: Colors.black,
+                                    ),
+                                    onPressed: () => {chooseAndUploadImage()},
+                                  ),
+                                  width: 35,
+                                  height: 35,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.white),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 7,
+                            ),
+                            Text(
+                              ConstantVar.user.username,
+                              style: StyleConstant.bigTxtStyle,
+                              textAlign: TextAlign.center,
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              "Member since ${sDate}",
+                              style: StyleConstant.colorTextStyle,
+                              textAlign: TextAlign.center,
+                            ),
+                            SizedBox(
+                              height: 13,
+                            ),
+                            ConstantVar.user.role == StringConstant.VOLUNTEER
+                                ? Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              (ConstantVar.user.numHelp + 100)
+                                                  .toString(),
+                                              style: TextStyle(
+                                                  color: ColorConstant.WHITE,
+                                                  fontSize: 27,
+                                                  fontWeight: FontWeight.w500),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                            Text(
+                                              StringConstant.NUM_HELPED,
+                                              style:
+                                                  StyleConstant.colorTextStyle,
+                                              textAlign: TextAlign.center,
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        width: 1,
+                                        height: 45,
+                                        color: Colors.white,
+                                        margin: EdgeInsets.symmetric(
+                                            vertical: 5, horizontal: 30),
+                                      ),
+                                      Container(
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              (ConstantVar.user.point + 100)
+                                                  .toString(),
+                                              style: TextStyle(
+                                                  color: ColorConstant.WHITE,
+                                                  fontSize: 27,
+                                                  fontWeight: FontWeight.w500),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                            Text(
+                                              StringConstant.POINTED_HELPED,
+                                              style:
+                                                  StyleConstant.colorTextStyle,
+                                              textAlign: TextAlign.center,
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : Column(
+                                    children: [
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Column(
+                                            children: [
+                                              Text(
+                                                (ConstantVar.blindSize + 100)
+                                                    .toString(),
+                                                style: TextStyle(
+                                                    color: ColorConstant.WHITE,
+                                                    fontSize: 27,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                              Text(
+                                                StringConstant.BLINDS,
+                                                style: StyleConstant
+                                                    .colorTextStyle,
+                                                textAlign: TextAlign.center,
+                                              )
+                                            ],
+                                          ),
+                                          Container(
+                                            width: 1,
+                                            height: 45,
+                                            color: Colors.white,
+                                            margin: EdgeInsets.symmetric(
+                                                vertical: 5, horizontal: 20),
+                                          ),
+                                          Column(
+                                            children: [
+                                              Text(
+                                                (ConstantVar.volunteerSize +
+                                                        100)
+                                                    .toString(),
+                                                style: TextStyle(
+                                                    color: ColorConstant.WHITE,
+                                                    fontSize: 27,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                              Text(
+                                                StringConstant.VOLUNTEERS,
+                                                style: StyleConstant
+                                                    .colorTextStyle,
+                                                textAlign: TextAlign.center,
+                                              )
+                                            ],
+                                          ),
+                                          Container(
+                                            width: 1,
+                                            height: 45,
+                                            color: Colors.white,
+                                            margin: EdgeInsets.symmetric(
+                                                vertical: 5, horizontal: 20),
+                                          ),
+                                          Column(
+                                            children: [
+                                              Text(
+                                                (ConstantVar.volunteerSize +
+                                                        100)
+                                                    .toString(),
+                                                style: TextStyle(
+                                                    color: ColorConstant.WHITE,
+                                                    fontSize: 27,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                              Text(
+                                                StringConstant.HELPED,
+                                                style: StyleConstant
+                                                    .colorTextStyle,
+                                                textAlign: TextAlign.center,
+                                              )
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 10),
+                                    ],
+                                  ),
+                          ],
+                        ),
+                      ),
+                      Container(
                         child: Form(
                           key: _formKey,
                           child: Column(children: <Widget>[
@@ -329,26 +338,11 @@ class _DetailScreenState extends State<DetailScreen> {
                                 Icon(Icons.email, color: Colors.white),
                                 TextInputType.text,
                                 emailController),
-                            TextFieldWidget.buildTextField(
-                                StringConstant.FULL_NAME,
-                                StringConstant.FULL_NAME_HINT,
-                                Icon(Icons.assessment, color: Colors.white),
-                                TextInputType.text,
-                                fullNameController),
-                            TextFieldWidget.buildTextField(
-                                StringConstant.PHONE,
-                                StringConstant.PHONE_HINT,
-                                Icon(Icons.phone, color: Colors.white),
-                                TextInputType.text,
-                                phoneController),
-                            TextFieldWidget.buildTextField(
-                                StringConstant.ADDRESS,
-                                StringConstant.ADDRESS_HINT,
-                                Icon(Icons.assignment, color: Colors.white),
-                                TextInputType.text,
-                                addressController),
                           ]),
                         ),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.06,
                       ),
                       _SaveBtn(),
                       SizedBox(
@@ -364,5 +358,41 @@ class _DetailScreenState extends State<DetailScreen> {
     } else {
       return LoginScreen(handel: "");
     }
+  }
+
+  chooseAndUploadImage() async {
+    setState(() {
+      isUploadAvatar = true;
+    });
+    await ImagePicker.pickImage(source: ImageSource.gallery).then((image) {
+      uploadFileFireBase(image);
+    });
+  }
+
+  void uploadFileFireBase(_image) async {
+    var storageReference = FirebaseStorage.instance
+        .ref()
+        .child('chats/avatar${ConstantVar.user.id}');
+    StorageUploadTask uploadTask = storageReference.putFile(_image);
+    await uploadTask.onComplete;
+    print('File Uploaded');
+    storageReference.getDownloadURL().then((fileURL) {
+      setState(() {
+        print("file url " + fileURL);
+        _imageUrl = fileURL;
+        isUploadAvatar = false;
+        ConstantVar.user.avatarUrl = fileURL;
+        Modal.showSimpleCustomDialog(
+            context, "Upload avatar successfull!", null);
+        uploadFile();
+      });
+    });
+  }
+
+  Future<void> uploadFile() async {
+    await User.updateUserProfile(ConstantVar.user).then((value) => {
+          _imageUrl = null,
+          setState(() => {isUploadAvatar = false})
+        });
   }
 }

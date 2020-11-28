@@ -75,12 +75,19 @@ class _HomepageState extends State<Homepage> {
       );
     }
 
-    User.getSizeUser().then((value) => {
-          setState(() {
-            blindSize = value['blind'];
-            volunteerSize = value['volunteer'];
-          })
-        });
+    if(ConstantVar.blindSize == 0 && ConstantVar.volunteerSize == 0){
+      User.getSizeUser().then((value) => {
+        setState(() {
+          blindSize = value['blind'];
+          volunteerSize = value['volunteer'];
+          ConstantVar.blindSize = blindSize;
+          ConstantVar.volunteerSize =  volunteerSize;
+        })
+      });
+    }else{
+      blindSize = ConstantVar.blindSize;
+      volunteerSize = ConstantVar.volunteerSize;
+    }
 
     if (ConstantVar.user != null) {
       var date =
@@ -358,7 +365,7 @@ class _HomepageState extends State<Homepage> {
                                         child: Column(
                                           children: [
                                             Text(
-                                              (blindSize + 100).toString(),
+                                              (ConstantVar.user.numHelp + 100).toString(),
                                               style: TextStyle(
                                                   color: ColorConstant.WHITE,
                                                   fontSize: 27,
@@ -385,7 +392,7 @@ class _HomepageState extends State<Homepage> {
                                         child: Column(
                                           children: [
                                             Text(
-                                              (volunteerSize + 100).toString(),
+                                              (ConstantVar.user.point + 100).toString(),
                                               style: TextStyle(
                                                   color: ColorConstant.WHITE,
                                                   fontSize: 27,
@@ -593,11 +600,11 @@ class _HomepageState extends State<Homepage> {
                     ],
                   ),
                 ),
-                "USER",
+                "HOME",
                 StringConstant.APP_NAME)
             : Loading(
                 title: StringConstant.APP_NAME,
-                type: "USER",
+                type: "HOME",
               )
         : LoginScreen();
   }

@@ -4,8 +4,9 @@ import 'package:bymyeyefe/constant/ImageConstant.dart';
 import 'package:bymyeyefe/constant/StringConstant.dart';
 import 'package:bymyeyefe/constant/StyleConstant.dart';
 import 'package:bymyeyefe/screens/Menu/Menu.dart';
-import 'package:bymyeyefe/screens/User/DetailScene.dart';
+import 'package:bymyeyefe/screens/User/DetailScreen.dart';
 import 'package:bymyeyefe/screens/home_page/HomePage.dart';
+import 'package:bymyeyefe/screens/room/ListRoom.dart';
 import 'package:bymyeyefe/screens/tutorial/ChooseTypeUser.dart';
 import 'package:bymyeyefe/voice_control/SpeechToText.dart';
 import 'package:flutter/material.dart';
@@ -80,142 +81,142 @@ class MainLayOut {
                       .size
                       .height * 0.09,
                   child: Stack(
-                      children: <Widget>[
-                  Column(
-                  children: <Widget>[
-                  SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.015,
-                ),
-                Container(
-                  height: MediaQuery
-                      .of(context)
-                      .size
-                      .height * 0.06,
-                  alignment: Alignment.bottomCenter,
-                  decoration: BoxDecoration(
-                      color: ColorConstant.LIGHT_VIOLET,
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(35),
-                          topLeft: Radius.circular(35))
-                  ),
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical:
-                      MediaQuery
-                          .of(context)
-                          .size
-                          .height * 0.01),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Homepage()));
-                        },
-                        child: type == 'HOME'
-                            ? Image.asset(ImageConstant.HOME_YELLOW,
+                      Column(
+                        children: <Widget>[
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.015,
+                          ),
+                          Container(
                             height: MediaQuery
                                 .of(context)
                                 .size
-                                .height *
-                                0.04)
-                            : Image.asset(ImageConstant.HOME_GRAY,
+                                .height * 0.06,
+                            alignment: Alignment.bottomCenter,
+                            decoration: BoxDecoration(
+                                color: ColorConstant.LIGHT_VIOLET,
+                                borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(35),
+                                    topLeft: Radius.circular(35))
+                            ),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical:
+                                MediaQuery
+                                    .of(context)
+                                    .size
+                                    .height * 0.01),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: <Widget>[
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Homepage()));
+                                  },
+                                  child: type == 'HOME'
+                                      ? Image.asset(ImageConstant.HOME_YELLOW,
+                                      height: MediaQuery
+                                          .of(context)
+                                          .size
+                                          .height *
+                                          0.04)
+                                      : Image.asset(ImageConstant.HOME_GRAY,
+                                      height: MediaQuery
+                                          .of(context)
+                                          .size
+                                          .height *
+                                          0.04),
+                                ),
+                                Container(),
+                                InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  DetailScreen()));
+                                    },
+                                    child: type == 'USER'
+                                        ? Icon(
+                                      Icons.person,
+                                      color: Colors.yellow,
+                                      size: 38,
+                                    )
+                                        : Icon(
+                                      Icons.person,
+                                      color: Colors.white,
+                                      size: 38,
+                                    ))
+                              ],
+                            ),
+                          ),
+                          Container(
                             height: MediaQuery
                                 .of(context)
                                 .size
-                                .height *
-                                0.04),
-                      ),
-                      Container(),
-                      InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        DetailScreen()));
-                          },
-                          child: type == 'USER'
-                              ? Icon(
-                            Icons.person,
-                            color: Colors.yellow,
-                            size: 38,
+                                .height * 0.015,
+                            color: ColorConstant.LIGHT_VIOLET,
                           )
-                              : Icon(
-                            Icons.person,
-                            color: Colors.white,
-                            size: 38,
-                          ))
+                        ],
+                      ),
+                      Container(
+                        height: MediaQuery
+                            .of(context)
+                            .size
+                            .height * 0.09,
+                        alignment: Alignment.center,
+                        child: ConstantVar.user == null ||
+                            ConstantVar.currentUser == null ||
+                            ConstantVar.user.role == StringConstant.BLIND ? MyApp() :
+                        Container(
+                          width: 55,
+                          height: 55,
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                  blurRadius: .26,
+                                  spreadRadius: level * 1.5,
+                                  color: Colors.white.withOpacity(.05))
+                            ],
+                            color: ColorConstant.WHITE,
+                            borderRadius: BorderRadius.all(Radius.circular(50)),
+                          ),
+                          child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ListRoom()));
+                              },
+                              child: type == 'ROOM'
+                                  ? Icon(
+                                Icons.phone_in_talk,
+                                color: Colors.yellow,
+                                size: 38,
+                              )
+                                  : Icon(
+                                Icons.phone_in_talk,
+                                color: ColorConstant.LIGHT_VIOLET,
+                                size: 38,
+                              )
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
-                Container(
-                  height: MediaQuery
-                      .of(context)
-                      .size
-                      .height * 0.015,
-                  color: ColorConstant.LIGHT_VIOLET,
-                )
-                ],
               ),
-              Container(
-                height: MediaQuery
-                    .of(context)
-                    .size
-                    .height * 0.09,
-                alignment: Alignment.center,
-                child: ConstantVar.user == null ||
-                    ConstantVar.currentUser == null ||
-                    ConstantVar.user.role == StringConstant.BLIND ? MyApp() :
-                Container(
-                  width: 60,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                          blurRadius: .26,
-                          spreadRadius: level * 1.5,
-                          color: Colors.white.withOpacity(.05))
-                    ],
-                    color: ColorConstant.WHITE,
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
-                  ),
-                  child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    DetailScreen()));
-                      },
-                      child: type == 'ROOM'
-                          ? Icon(
-                        Icons.camera_alt,
-                        color: Colors.yellow,
-                        size: 38,
-                      )
-                          : Icon(
-                        Icons.camera_alt,
-                        color: ColorConstant.LIGHT_VIOLET,
-                        size: 38,
-                      )
-                  ),
-                ),
-              ),
+            )
           ],
         ),
-      ),
-    ),
-    )
-    ],
-    ),
 //        floatingActionButton:
 //          MyApp(),
-    ),
+      ),
     );
-    }
+  }
 }

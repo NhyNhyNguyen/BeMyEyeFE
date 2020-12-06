@@ -62,8 +62,8 @@ class _MyAppState extends State<MyApp> {
 //        ),
 //      ),
       Container(
-        width: 60,
-        height: 60,
+        width: 55,
+        height: 55,
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
@@ -177,6 +177,13 @@ class _MyAppState extends State<MyApp> {
             ConstantVar.findObject = command.substring(3).trim();
             print(ConstantVar.findObject);
             FlutterBeep.beep();
+
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HomePage(),
+              ),
+            );
           // TextToSpeedService.speak(ConstantVar.currentLocal == "vi-VN" ? StringConstant.VI_FIND_OBJECT : StringConstant.FIND_OBJECT);
         }
     }

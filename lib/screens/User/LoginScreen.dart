@@ -12,6 +12,7 @@ import 'package:bymyeyefe/screens/User/ResetPass.dart';
 import 'package:bymyeyefe/screens/User/TextfieldWidget.dart';
 import 'package:bymyeyefe/screens/call_video/utils/configs.dart' as utils;
 import 'package:bymyeyefe/screens/home_page/HomePage.dart';
+import 'package:bymyeyefe/services/text_to_speed_service.dart';
 import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -50,6 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     // update token
+    TextToSpeedService.speak("Chuyển sang trang đăng nhập");
     this.token = '';
     _firebaseMessaging.getToken().then((String token) {
       this.token = token;

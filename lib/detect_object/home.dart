@@ -1,5 +1,6 @@
 import 'package:bymyeyefe/constant/ColorConstant.dart';
 import 'package:bymyeyefe/constant/ConstantVar.dart';
+import 'package:bymyeyefe/services/text_to_speed_service.dart';
 import 'package:bymyeyefe/voice_control/SpeechToText.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
@@ -30,6 +31,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    TextToSpeedService.speak("Bắt đầu tìm kiếm" + ConstantVar.findObject);
     _model = ssd;
     loadModel();
   }
@@ -122,44 +124,6 @@ class _HomePageState extends State<HomePage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-//                                InkWell(
-//                                  onTap: () {
-//                                    Navigator.push(
-//                                        context,
-//                                        MaterialPageRoute(
-//                                            builder: (context) => Homepage()));
-//                                  },
-//                                  child: type == 'HOME'
-//                                      ? Image.asset(ImageConstant.HOME_YELLOW,
-//                                          height: MediaQuery.of(context)
-//                                                  .size
-//                                                  .height *
-//                                              0.04)
-//                                      : Image.asset(ImageConstant.HOME_GRAY,
-//                                          height: MediaQuery.of(context)
-//                                                  .size
-//                                                  .height *
-//                                              0.04),
-//                                ),
-//                                InkWell(
-//                                  onTap: () {
-//                                    Navigator.push(
-//                                        context,
-//                                        MaterialPageRoute(
-//                                            builder: (context) =>
-//                                                ChooseTypeUser()));
-//                                  },
-//                                  child: type == 'SETTING'
-//                                      ? Icon(
-//                                          Icons.settings,
-//                                          color: Colors.yellow,
-//                                          size: 38,
-//                                        )
-//                                      : Icon(
-//                                          Icons.settings,
-//                                          color: Colors.white,
-//                                          size: 38,
-//                                  ))
                             ],
                           ),
                         ),

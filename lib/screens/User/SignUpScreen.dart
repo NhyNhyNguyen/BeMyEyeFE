@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:bymyeyefe/Loading.dart';
 import 'package:bymyeyefe/constant/ColorConstant.dart';
+import 'package:bymyeyefe/constant/ConstantVar.dart';
 import 'package:bymyeyefe/constant/StringConstant.dart';
 import 'package:bymyeyefe/constant/StyleConstant.dart';
 import 'package:bymyeyefe/constant/UrlConstant.dart';
@@ -9,6 +10,7 @@ import 'package:bymyeyefe/layout/mainLayout.dart';
 import 'package:bymyeyefe/modal.dart';
 import 'package:bymyeyefe/model/User.dart';
 import 'package:bymyeyefe/screens/User/TextfieldWidget.dart';
+import 'package:bymyeyefe/services/text_to_speed_service.dart';
 import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -110,6 +112,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   void initState() {
+    TextToSpeedService.speak("Chuyển sang trang đăng ký");
+
     usernameController.text = "nhinhinhi";
     passwordController.text = "123456789";
     emailController.text = "a@gmail.com";

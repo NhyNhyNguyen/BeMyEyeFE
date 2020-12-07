@@ -6,6 +6,7 @@ import 'package:bymyeyefe/constant/ConstantVar.dart';
 import 'package:bymyeyefe/constant/ImageConstant.dart';
 import 'package:bymyeyefe/constant/StringConstant.dart';
 import 'package:bymyeyefe/constant/StyleConstant.dart';
+import 'package:bymyeyefe/detect_object/home.dart';
 import 'package:bymyeyefe/layout/mainLayout.dart';
 import 'package:bymyeyefe/model/Room.dart';
 import 'package:bymyeyefe/model/User.dart';
@@ -677,7 +678,10 @@ class _HomepageState extends State<Homepage> {
                     child: FlatButton(
                       child: Text(StringConstant.DETECT,
                           style: StyleConstant.btnLargeStyle),
-                      onPressed: () => {_startCall()},
+                      onPressed: () => {
+                      Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => HomePage()))
+                        },
                     ),
                   )),
               Expanded(

@@ -54,8 +54,6 @@ class _DetailScreenState extends State<DetailScreen> {
   @override
   initState() {
     super.initState();
-    usernameController.text = ConstantVar.user.username;
-    emailController.text = ConstantVar.user.email;
     if (ConstantVar.blindSize == 0 && ConstantVar.volunteerSize == 0) {
       User.getSizeUser().then((value) => {
             setState(() {
@@ -70,6 +68,8 @@ class _DetailScreenState extends State<DetailScreen> {
           new DateTime.fromMillisecondsSinceEpoch(ConstantVar.user.createTime);
       final df = new DateFormat('dd/MM/yyyy');
       sDate = df.format(date);
+      usernameController.text = ConstantVar.user.username;
+      emailController.text = ConstantVar.user.email;
     }
   }
 

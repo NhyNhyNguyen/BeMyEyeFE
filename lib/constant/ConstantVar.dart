@@ -25,10 +25,11 @@ class ConstantVar {
   static FlutterTts flutterTts;
   static String findObject = "";
   static final double volume = 0.5;
-  static final double pitch = 1.4;
-  static final double rate = 0.6;
+  static final double pitch = 1.6;
+  static final double rate = 0.8;
   static int volunteerSize = 0;
   static int blindSize = 0;
+  static double timeFindObject = 0;
 
   static final LocalStorage storage = new LocalStorage('localstorage_app');
 

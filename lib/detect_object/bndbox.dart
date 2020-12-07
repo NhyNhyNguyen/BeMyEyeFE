@@ -21,7 +21,6 @@ class BndBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Widget> _renderBoxes() {
-
       return results.map((re) {
         var _x = re["rect"]["x"];
         var _w = re["rect"]["w"];
@@ -51,9 +50,14 @@ class BndBox extends StatelessWidget {
 
         print("======" + re["detectedClass"] + ConstantVar.findObject);
 
-        if (ConstantVar.findObject != "" && re["detectedClass"].toString().contains(ConstantVar.findObject) && re["confidenceInClass"] * 100 > 60) {
-          print("======" + re["detectedClass"] + ConstantVar.findObject);
+        if (ConstantVar.findObject != "" &&
+            re["detectedClass"].toString().contains(ConstantVar.findObject) &&
+            re["confidenceInClass"] * 100 > 50) {
           FlutterBeep.beep();
+          if(DateTime.now().millisecondsSinceEpoch / 1000 - ConstantVar.timeFindObject > 5){
+            TextToSpeedService.speak("Đã tìm thấy");
+            ConstantVar.timeFindObject = DateTime.now().millisecondsSinceEpoch / 1000;
+          }
         }
 
         return Positioned(
@@ -86,7 +90,8 @@ class BndBox extends StatelessWidget {
       double offset = -10;
       return results.map((re) {
         offset = offset + 14;
-        if (re["label"] == ConstantVar.findObject && re["confidence"] * 100 > 50) {
+        if (re["label"] == ConstantVar.findObject &&
+            re["confidence"] * 100 > 50) {
           print("======");
         }
         return Positioned(
@@ -107,7 +112,6 @@ class BndBox extends StatelessWidget {
     }
 
     List<Widget> _renderKeypoints() {
-
       var lists = <Widget>[];
       results.forEach((re) {
         var list = re["keypoints"].values.map<Widget>((k) {

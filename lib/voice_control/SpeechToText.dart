@@ -50,6 +50,8 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       _hasSpeech = hasSpeech;
     });
+
+    start();
   }
 
   @override
@@ -104,7 +106,7 @@ class _MyAppState extends State<MyApp> {
     print("_currentLocaleId" + ConstantVar.currentLocal);
     speech.listen(
         onResult: resultListener,
-        listenFor: Duration(seconds: 10),
+        listenFor: Duration(seconds: 1000),
         localeId: ConstantVar.currentLocal,
         onSoundLevelChange: soundLevelListener,
         cancelOnError: true,
@@ -165,25 +167,21 @@ class _MyAppState extends State<MyApp> {
         break;
       case StringConstant.DETECT_COMMAND:
       case StringConstant.VI_DETECT_COMMAND:
-        Navigator.push(
+      Navigator.push(
             context, MaterialPageRoute(builder: (context) => HomePage()));
-        break;
-      case StringConstant.VI_DETECT_COMMAND:
-      case StringConstant.VI_DETECT_COMMAND:
-        ConstantVar.findObject = "";
         break;
       default:
         if(command.length > 4 && (command.contains('tìm') || command.contains("set"))){
             ConstantVar.findObject = command.substring(3).trim();
             print(ConstantVar.findObject);
-            FlutterBeep.beep();
+            TextToSpeedService.speak("Tìm kiếm " + ConstantVar.findObject);
 
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => HomePage(),
-              ),
-            );
+//            Navigator.push(
+//              context,
+//              MaterialPageRoute(
+//                builder: (context) => HomePage(),
+//              ),
+//            );
           // TextToSpeedService.speak(ConstantVar.currentLocal == "vi-VN" ? StringConstant.VI_FIND_OBJECT : StringConstant.FIND_OBJECT);
         }
     }

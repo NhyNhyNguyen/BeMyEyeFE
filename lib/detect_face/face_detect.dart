@@ -374,7 +374,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       alignment: Alignment.center,
                       child: InkWell(
                         onTap: () {},
-                        child: Image.asset(ImageConstant.TICKET,
+                        child: Image.asset(ImageConstant.PERSON_YELLOW,
                             height: MediaQuery.of(context).size.height * 0.12),
                       ),
                     ),

@@ -4,6 +4,7 @@ import 'package:bymyeyefe/screens/call_video/login_screen.dart';
 import 'package:bymyeyefe/screens/call_video/utils/call_manager.dart';
 import 'package:bymyeyefe/screens/call_video/utils/video_config.dart';
 import 'package:bymyeyefe/screens/home_page/HomePage.dart';
+import 'package:bymyeyefe/services/text_to_speed_service.dart';
 import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:flutter/material.dart';
 
@@ -140,6 +141,7 @@ class _ConversationCallScreenState extends State<ConversationCallScreen>
 
   @override
   void initState() {
+    TextToSpeedService.speak("Chuyển sang gọi điện");
     super.initState();
     _initCustomMediaConfigs();
     _callManager.onReceiveRejectCall = _onReceiveRejectCall;

@@ -80,6 +80,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget _signUpBtn(BuildContext context) {
     return ButtonGradientLarge(StringConstant.REGISTER_NOW, () {
       if (_formKey.currentState.validate()) {
+        setState(() {
+          isSignUp = true;
+        });
         if (CubeSessionManager.instance.isActiveSessionValid()) {
           _signUpCC(context);
         } else {
@@ -123,69 +126,69 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return !isSignUp
         ? MainLayOut.getMailLayout(
-            context,
-            Container(
-              color: ColorConstant.VIOLET,
-              height: double.infinity,
-              width: double.infinity,
-              child: SingleChildScrollView(
-                physics: AlwaysScrollableScrollPhysics(),
-                padding: EdgeInsets.symmetric(horizontal: 25, vertical: 20.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text("Create your account",
-                        style: StyleConstant.headerTextStyle),
-                    SizedBox(
-                      height: 13,
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 20.0),
-                      decoration: BoxDecoration(
-                          color: ColorConstant.LIGHT_VIOLET,
-                          borderRadius: BorderRadius.circular(5),
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.black12,
-                                offset: Offset(0, 15),
-                                blurRadius: 15),
-                            BoxShadow(
-                                color: Colors.black12,
-                                offset: Offset(0, -10),
-                                blurRadius: 10)
-                          ]),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          children: <Widget>[
-                            TextFieldWidget.buildTextField(
-                                StringConstant.EMAIL,
-                                StringConstant.EMAIL_HINT,
-                                Icon(Icons.email, color: Colors.white),
-                                TextInputType.text,
-                                emailController),
-                            TextFieldWidget.buildTextField(
-                                StringConstant.USERNAME,
-                                StringConstant.USERNAME_HINT,
-                                Icon(
-                                  Icons.account_circle,
-                                  color: Colors.white,
-                                ),
-                                TextInputType.text,
-                                usernameController),
-                            TextFieldWidget.buildPassField(
-                                StringConstant.PASSWORD,
-                                StringConstant.PASSWORD_HINT,
-                                Icon(
-                                  Icons.vpn_key,
-                                  color: Colors.white,
-                                ),
-                                TextInputType.visiblePassword,
-                                passwordController),
-                            Container(
-                              child: Row(mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
+        context,
+        Container(
+          color: ColorConstant.VIOLET,
+          height: double.infinity,
+          width: double.infinity,
+          child: SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
+            padding: EdgeInsets.symmetric(horizontal: 25, vertical: 20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text("Create your account",
+                    style: StyleConstant.headerTextStyle),
+                SizedBox(
+                  height: 13,
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 20.0),
+                  decoration: BoxDecoration(
+                      color: ColorConstant.LIGHT_VIOLET,
+                      borderRadius: BorderRadius.circular(5),
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.black12,
+                            offset: Offset(0, 15),
+                            blurRadius: 15),
+                        BoxShadow(
+                            color: Colors.black12,
+                            offset: Offset(0, -10),
+                            blurRadius: 10)
+                      ]),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: <Widget>[
+                        TextFieldWidget.buildTextField(
+                            StringConstant.EMAIL,
+                            StringConstant.EMAIL_HINT,
+                            Icon(Icons.email, color: Colors.white),
+                            TextInputType.text,
+                            emailController),
+                        TextFieldWidget.buildTextField(
+                            StringConstant.USERNAME,
+                            StringConstant.USERNAME_HINT,
+                            Icon(
+                              Icons.account_circle,
+                              color: Colors.white,
+                            ),
+                            TextInputType.text,
+                            usernameController),
+                        TextFieldWidget.buildPassField(
+                            StringConstant.PASSWORD,
+                            StringConstant.PASSWORD_HINT,
+                            Icon(
+                              Icons.vpn_key,
+                              color: Colors.white,
+                            ),
+                            TextInputType.visiblePassword,
+                            passwordController),
+                        Container(
+                          child: Row(mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
                                 Text(
                                   "Blind",
                                   style: StyleConstant.bigTxtStyle,
@@ -196,10 +199,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   activeColor: Color(0xFFcb4a9c),
                                   onChanged:
                                       (String value) {
-                                          setState(() {
-                                            type = StringConstant.BLIND;
-                                          });
-                                        },
+                                    setState(() {
+                                      type = StringConstant.BLIND;
+                                    });
+                                  },
                                 ),
                                 Text(
                                   "Volunteer",
@@ -210,27 +213,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   groupValue: type,
                                   activeColor:Color(0xFFcb4a9c),
                                   onChanged: (String value) {
-                                          setState(() {
-                                            type = StringConstant.VOLUNTEER;
-                                          });
-                                        },
+                                    setState(() {
+                                      type = StringConstant.VOLUNTEER;
+                                    });
+                                  },
                                 )
                               ]),
-                            )
-                          ],
-                        ),
-                      ),
+                        )
+                      ],
                     ),
-                    _signUpBtn(context),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.1,
-                    )
-                  ],
+                  ),
                 ),
-              ),
+                _signUpBtn(context),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.1,
+                )
+              ],
             ),
-            "USER",
-            "Sign up")
+          ),
+        ),
+        "USER",
+        "Sign up")
         : Loading(type: "USER", title: "Sign up");
   }
 }

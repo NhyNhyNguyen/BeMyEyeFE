@@ -39,10 +39,6 @@ class IncomingCallScreen extends StatelessWidget {
                 child:
                     Text("From: ${this._name}", style: TextStyle(fontSize: 20)),
               ),
-              Padding(
-                padding: EdgeInsets.only(bottom: 86),
-                child: Text(this._name, style: TextStyle(fontSize: 18)),
-              ),
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[

@@ -16,24 +16,7 @@ class TextToSpeedService{
 
   static initTts() {
     ConstantVar.flutterTts = FlutterTts();
-
-    if (!kIsWeb) {
-      if (Platform.isAndroid) {
-        _getEngines();
-      }
-    }
     ConstantVar.flutterTts.setLanguage(ConstantVar.currentLocal);
   }
 
-  static Future _getEngines() async {
-    var engines = await ConstantVar.flutterTts.getEngines;
-    if (engines != null) {
-      for (dynamic engine in engines) {
-        print(engine);
-      }
-    }
-    await ConstantVar.flutterTts.setVolume(ConstantVar.volume);
-    await ConstantVar.flutterTts.setSpeechRate(ConstantVar.rate);
-    await ConstantVar.flutterTts.setPitch(ConstantVar.pitch);
-  }
 }

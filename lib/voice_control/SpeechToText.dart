@@ -50,8 +50,6 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       _hasSpeech = hasSpeech;
     });
-
-    start();
   }
 
   @override
@@ -106,7 +104,7 @@ class _MyAppState extends State<MyApp> {
     print("_currentLocaleId" + ConstantVar.currentLocal);
     speech.listen(
         onResult: resultListener,
-        listenFor: Duration(seconds: 1000),
+        listenFor: Duration(seconds: 15),
         localeId: ConstantVar.currentLocal,
         onSoundLevelChange: soundLevelListener,
         cancelOnError: true,
@@ -167,14 +165,14 @@ class _MyAppState extends State<MyApp> {
         break;
       case StringConstant.DETECT_COMMAND:
       case StringConstant.VI_DETECT_COMMAND:
-      Navigator.push(
+        Navigator.push(
             context, MaterialPageRoute(builder: (context) => HomePage()));
         break;
       default:
         if(command.length > 4 && (command.contains('tìm') || command.contains("set"))){
-            ConstantVar.findObject = command.substring(3).trim();
-            print(ConstantVar.findObject);
-            TextToSpeedService.speak("Tìm kiếm " + ConstantVar.findObject);
+          ConstantVar.findObject = command.substring(3).trim();
+          print(ConstantVar.findObject);
+          TextToSpeedService.speak("Tìm kiếm " + ConstantVar.findObject);
 
 //            Navigator.push(
 //              context,

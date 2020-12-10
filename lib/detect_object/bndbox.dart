@@ -54,7 +54,7 @@ class BndBox extends StatelessWidget {
             re["detectedClass"].toString().contains(ConstantVar.findObject) &&
             re["confidenceInClass"] * 100 > 50) {
           FlutterBeep.beep();
-          if(DateTime.now().millisecondsSinceEpoch / 1000 - ConstantVar.timeFindObject > 5){
+          if(DateTime.now().millisecondsSinceEpoch / 1000 - ConstantVar.timeFindObject > 5 || ConstantVar.timeFindObject ==0){
             TextToSpeedService.speak("Đã tìm thấy");
             ConstantVar.timeFindObject = DateTime.now().millisecondsSinceEpoch / 1000;
           }

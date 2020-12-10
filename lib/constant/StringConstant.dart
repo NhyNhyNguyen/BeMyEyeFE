@@ -53,7 +53,7 @@ class StringConstant {
   static const BECOME_VOLUNTEER = "I'd like become volunteer";
   static const SLOGAN =
       "Join a global support community.\nSee the world together";
-  static const HOW_TO_CALL = "Learn the way how to call";
+  static const HOW_TO_CALL = "Join To Help";
   static const BLIND = "blind";
   static const VOLUNTEER = "volunteer";
   static const BLINDS = "Blinds";

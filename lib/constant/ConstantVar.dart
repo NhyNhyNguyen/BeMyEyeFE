@@ -16,7 +16,7 @@ class ConstantVar {
   static User user = null;
   static String registerToken = "";
   static String resetPassWordToken = "";
-  static String currentLocal = "vi";
+  static String currentLocal = "vi-VN";
   static CubeUser currentUser;
   static CallManager callManager;
   static ConferenceClient callClient;

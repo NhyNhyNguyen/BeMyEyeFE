@@ -165,7 +165,7 @@ class _MenuState extends State<Menu> {
                             MaterialPageRoute(
                                 builder: (context) => DetailScreen()))
                       },
-                    ),
+                    )/*,
                     MenuItem(
                       text: StringConstant.CHANGE_PASS,
                       icon: Icons.lock_open,
@@ -175,7 +175,7 @@ class _MenuState extends State<Menu> {
                             MaterialPageRoute(
                                 builder: (context) => ChangePasswordScreen()))
                       },
-                    ),
+                    )*/,
                     Container(
                         margin:
                             EdgeInsets.symmetric(vertical: 5, horizontal: 20),
@@ -186,20 +186,20 @@ class _MenuState extends State<Menu> {
                         child: Row(
                           children: <Widget>[
                             Switch(
-                              value: ConstantVar.currentLocal == "vi-VN"
+                              value: ConstantVar.currentLocal == "vi"
                                   ? true
                                   : false,
                               onChanged: (value) {
                                 setState(() {
                                   ConstantVar.currentLocal =
-                                      value ? "vi-VN" : "en-US";
+                                      value ? "vi" : "en-US";
                                 });
                               },
                               activeTrackColor: ColorConstant.VIOLET,
                               activeColor: ColorConstant.WHITE,
                             ),
                             Text(
-                              ConstantVar.currentLocal == "vi-VN"
+                              ConstantVar.currentLocal == "vi"
                                   ? "Viet Nam"
                                   : "English",
                               style: StyleConstant.priceTextStyle,

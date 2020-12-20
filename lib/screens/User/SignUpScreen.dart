@@ -117,9 +117,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   void initState() {
     TextToSpeedService.speak("Chuyển sang trang đăng ký");
 
-    usernameController.text = "nhinhinhi";
+    usernameController.text = "zen";
     passwordController.text = "123456789";
-    emailController.text = "a@gmail.com";
+    emailController.text = "zen@gmail.com";
   }
 
   @override

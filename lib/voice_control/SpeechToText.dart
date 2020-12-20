@@ -169,7 +169,7 @@ class _MyAppState extends State<MyApp> {
             context, MaterialPageRoute(builder: (context) => HomePage()));
         break;
       default:
-        if(command.length > 4 && (command.contains('tìm') || command.contains("set"))){
+        if(command.trim().length > 8 && (command.contains('tìm') || command.contains("set"))){
           ConstantVar.findObject = command.substring(3).trim();
           print(ConstantVar.findObject);
           TextToSpeedService.speak("Tìm kiếm " + ConstantVar.findObject);

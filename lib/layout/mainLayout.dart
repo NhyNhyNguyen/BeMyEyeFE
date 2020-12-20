@@ -48,17 +48,6 @@ class MainLayOut {
                 style: StyleConstant.appBarText,
               ),
               actions: <Widget>[
-                type == 'HOME'
-                    ? IconButton(
-                  icon: Icon(Icons.search, color: Colors.white),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => Homepage()));
-                  },
-                )
-                    : Container(),
               ],
               leading: new IconButton(
                   icon: new Icon(Icons.storage, color: ColorConstant.WHITE),

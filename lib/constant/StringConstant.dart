@@ -83,7 +83,7 @@ class StringConstant {
   static const VI_REJECT_CALL_COMMAND = "từ chối";
   static const VI_LOGIN_COMMAND = "đăng nhập";
   static const VI_SIGN_UP_COMMAND = "đăng ký";
-  static const VI_DETECT_COMMAND = "nhận diện";
+  static const VI_DETECT_COMMAND = "tìm đồ vật";
   static const VI_SET_OBJECT_COMMAND = "tìm đồ vật";
   static const VI_FIND_OBJECT = "Set đồ vật thành công";
   static const REMOVE_OBJECT_VI = "Xoá đồ vật";

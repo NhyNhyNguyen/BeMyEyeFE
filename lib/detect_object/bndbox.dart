@@ -48,13 +48,13 @@ class BndBox extends StatelessWidget {
           if (_y < difH / 2) h -= (difH / 2 - _y) * scaleH;
         }
 
-        print("======" + re["detectedClass"] + ConstantVar.findObject);
+        print("Objects: " + re["detectedClass"] + ConstantVar.findObject);
 
         if (ConstantVar.findObject != "" &&
             re["detectedClass"].toString().contains(ConstantVar.findObject) &&
             re["confidenceInClass"] * 100 > 50) {
           FlutterBeep.beep();
-          if(DateTime.now().millisecondsSinceEpoch / 1000 - ConstantVar.timeFindObject > 5 || ConstantVar.timeFindObject ==0){
+          if(DateTime.now().millisecondsSinceEpoch / 1000 - ConstantVar.timeFindObject > 5 || ConstantVar.timeFindObject == 0){
             TextToSpeedService.speak("Đã tìm thấy");
             ConstantVar.timeFindObject = DateTime.now().millisecondsSinceEpoch / 1000;
           }
@@ -92,7 +92,6 @@ class BndBox extends StatelessWidget {
         offset = offset + 14;
         if (re["label"] == ConstantVar.findObject &&
             re["confidence"] * 100 > 50) {
-          print("======");
         }
         return Positioned(
           left: 10,

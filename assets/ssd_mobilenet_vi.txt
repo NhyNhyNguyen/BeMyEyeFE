@@ -1,7 +1,7 @@
 ???
 người
 xe đạp
-tô ô
+ô tô
 xe máy
 Máy bay
 xe buýt
@@ -13,7 +13,7 @@ vòi chữa cháy
 ???
 biển báo dừng
 đồng hồ đậu xe
-Băng ghế
+Cái ghế
 chim
 con mèo
 chó
@@ -26,7 +26,7 @@ ngựa rằn
 hươu cao cổ
 ???
 ba lô
-ô
+cái ô
 ???
 ???
 túi xách tay
@@ -47,7 +47,7 @@ chai
 ly rượu
 cốc
 cái nĩa
-dao
+cái dao
 cái thìa
 bát
 trái chuối
@@ -61,11 +61,11 @@ pizza
 bánh vòng
 bánh ngọt
 cái ghế
-đi văng
+???
 cây trồng trong chậu
 Giường
 ???
-bàn ăn
+cái bàn
 ???
 ???
 phòng vệ sinh
@@ -73,19 +73,19 @@ phòng vệ sinh
 TV
 máy tính
 chuột
-Xa xôi
+???
 bàn phím
 điện thoại
 lò vi sóng
 lò
-lò nướnbàng
+lò nướng
 bồn rửa
 tủ lạnh
 ???
 sách
 đồng hồ
 bình hoa
-kéo
+cái kéo
 gấu bông
 máy sấy tóc
 Bàn chải đánh răng
